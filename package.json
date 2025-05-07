@@ -1,0 +1,31 @@
+{
+  "name": "agensy-care-management",
+  "version": "0.0.0",
+  "description": "APIs for agensy-care-management",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/agensy-care-management",
+    "dev": "nodemon ./bin/agensy-care-management"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.4.5",
+    "ejs": "~2.6.1",
+    "express": "^4.21.0",
+    "express-session": "^1.18.0",
+    "http-errors": "~1.6.3",
+    "joi": "^17.12.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.3",
+    "nodemailer": "^6.9.16",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "author": "brandon",
+  "license": "MIT"
+}
