@@ -1,17 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const userController = require('../controllers/user.controller');
-const { ensureAuthenticated } = require('../middlewares/auth.mw');
+const userController = require("../controllers/user.controller");
 
-router.post('/signup', userController.signup_local_post);
-router.post('/verify-email', userController.verify_email_post); //resend code
-router.post('/confirm-email', userController.confirm_email_post);
-router.post('/verify-phone', userController.verify_phone_post); //resend code
-router.post('/confirm-phone', userController.confirm_phone_post);
-router.post('/login', userController.login_local_post);
-router.get('/me', ensureAuthenticated, userController.me_get);
-router.post('/change-password', ensureAuthenticated, userController.change_password_post);
-router.post('/forgot-password', userController.forgot_password_post);
-router.post('/reset-password', userController.reset_password_post);
+// User routes
+router.post("/", userController.user_post);
+router.get("/", userController.users_get);
+router.get("/:id", userController.user_get);
+router.put("/:id", userController.user_put);
+router.delete("/:id", userController.user_delete);
 
 module.exports = router;

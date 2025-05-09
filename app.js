@@ -5,7 +5,7 @@ var createError = require("http-errors");
 var express = require("express");
 const cors = require("cors");
 
-const { mongooseConnection } = require("./config/db");
+const { testConnection: sequelizeConnection } = require("./config/sequelize");
 const session = require("express-session");
 
 // Importing middlewares
@@ -17,7 +17,8 @@ var app = express();
 // Response Middleware
 app.use(responseMiddleware);
 
-mongooseConnection();
+// Database Connection
+sequelizeConnection();
 
 // Accept JSON in Request
 app.use(express.urlencoded({ extended: true }));

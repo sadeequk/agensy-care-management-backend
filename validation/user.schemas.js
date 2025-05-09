@@ -1,20 +1,16 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
 module.exports.local_signup_post = Joi.object({
-  firstName: Joi.string().required(),
-  lastName: Joi.string().required(),
   email: Joi.string().email().required(),
+  username: Joi.string().required(),
   password: Joi.string().min(6).required(),
-  phone: Joi.string().required(),
 });
 
 module.exports.local_login_post = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().required().messages({
-    'string.base': 'Password is required.',
-    'string.empty': 'Password cannot be empty.',
-  }),
+  password: Joi.string().min(6).required(),
 });
+
 module.exports.change_password_post = Joi.object({
   currentPassword: Joi.string().required(),
   newPassword: Joi.string().min(6).required(),
@@ -28,4 +24,12 @@ module.exports.reset_password_post = Joi.object({
   email: Joi.string().email().required(),
   forgotPasswordCode: Joi.string().required(),
   newPassword: Joi.string().min(6).required(),
+});
+
+module.exports.single_user_get = Joi.object({
+  id: Joi.string().uuid().required(),
+});
+
+module.exports.single_user_delete = Joi.object({
+  id: Joi.string().uuid().required(),
 });
