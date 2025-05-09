@@ -46,10 +46,10 @@ module.exports = (sequelize) =>
         allowNull: false,
         unique: true,
       },
-      password: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-      },
+      // password: {
+      //   type: DataTypes.STRING(255),
+      //   allowNull: false,
+      // },
       cognito_id: {
         type: DataTypes.STRING(255),
         unique: true,

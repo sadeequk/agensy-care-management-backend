@@ -87,3 +87,14 @@ module.exports.validatePassword = async (user, password) => {
     throw error;
   }
 };
+
+module.exports.getUserByCognitoId = (cognito_id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findOne({ where: { cognito_id } });
+      resolve(user);
+    } catch (error) {
+      console.error("UserService [getUserByCognitoId] Error:", error);
+      reject(error);
+    }
+  });

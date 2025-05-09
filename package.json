@@ -20,6 +20,7 @@
     "http-errors": "~1.6.3",
     "joi": "^17.12.2",
     "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0",
     "mongoose": "^8.5.3",
     "nodemailer": "^6.9.16",
     "path": "^0.12.7",

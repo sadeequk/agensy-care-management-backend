@@ -1,7 +1,8 @@
 const userService = require("../services/user.service");
+const clientService = require("../services/client.service");
 const joiSchemas = require("../validation/user.schemas");
 
-module.exports.user_post = async (req, res) => {
+module.exports.user_signup = async (req, res) => {
   try {
     const results = await joiSchemas.local_signup_post.validateAsync(req.body);
 
@@ -10,14 +11,47 @@ module.exports.user_post = async (req, res) => {
       return res.fail("User with this email already exists");
     }
 
-    const newUser = await userService.createUser(results);
-    return res.success({
-      message: "Account created successfully",
-      user: newUser,
+    const newUser = await userService.createUser({
+      first_name: results.first_name,
+      last_name: results.last_name,
+      email: results.email,
+      cognito_id: results.cognito_id,
     });
+
+    // const newClient = await clientService.createClient({
+    await clientService.createClient({
+      first_name: results.client_first_name,
+      last_name: results.client_last_name,
+      relation: results.relation_with_client,
+      date_of_birth: results.client_dob,
+      primary_user_id: newUser.id,
+    });
+
+    return res.success(newUser);
   } catch (error) {
     console.error("UserController [createUser] Error:", error);
     return res.serverError(error);
+  }
+};
+
+module.exports.user_login = async (req, res) => {
+  try {
+    const results = await joiSchemas.local_login_post.validateAsync(req.body);
+
+    const user = await userService.getUserByCognitoId(results.cognito_id);
+    if (!user) {
+      return res.fail("User not found");
+    }
+
+    const updatedUser = await userService.updateUser(user.id, {
+      email_verified: true,
+      last_login: new Date(),
+    });
+
+    res.success(updatedUser);
+  } catch (error) {
+    console.error("UserController [login] Error:", error);
+    res.serverError(error);
   }
 };
 
@@ -57,13 +91,16 @@ module.exports.user_delete = async (req, res) => {
   }
 };
 
-module.exports.users_get = async (req, res) => {
+module.exports.me_get = async (req, res) => {
   try {
-    const { page = 1, limit = 10 } = req.query;
-    const users = await userService.getAllUsers(parseInt(page), parseInt(limit));
-    res.success(users);
+    const cognito_id = req.user.sub;
+    const user = await userService.getUserByCognitoId(cognito_id);
+    if (!user) {
+      return res.fail("User not found");
+    }
+    res.success(user);
   } catch (error) {
-    console.error("UserController [getAllUsers] Error:", error);
+    console.error("UserController [me] Error:", error);
     res.serverError(error);
   }
 };
