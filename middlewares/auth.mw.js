@@ -49,7 +49,6 @@
 const jwt = require("jsonwebtoken");
 const jwksClient = require("jwks-rsa");
 
-// Replace with your actual Cognito JWKS URI
 const client = jwksClient({
   jwksUri: "https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_RXGHY5qLr/.well-known/jwks.json",
 });
@@ -67,16 +66,15 @@ function getKey(header, callback) {
 
 module.exports = function verifyCognitoToken(req, res, next) {
   let token = req.headers.authorization;
-  if (!token) return res.status(401).json({ error: "No token provided" });
+  if (!token) return res.fail("No token provided");
 
-  // Remove 'Bearer ' prefix if present
   if (token.startsWith("Bearer ")) {
     token = token.slice(7);
   }
 
   jwt.verify(token, getKey, {}, (err, decoded) => {
-    if (err) return res.status(401).json({ error: "Invalid token" });
-    req.user = decoded; // Attach decoded payload to request
+    if (err) return res.fail("Invalid token");
+    req.user = decoded;
     next();
   });
 };
