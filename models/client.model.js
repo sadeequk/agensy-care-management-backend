@@ -109,7 +109,12 @@ module.exports = (sequelize) =>
     },
     {
       tableName: "clients",
-      timestamps: false,
+      timestamps: true,
       underscored: true,
+      hooks: {
+        beforeUpdate: (instance) => {
+          instance.updated_at = new Date();
+        },
+      },
     }
   );
