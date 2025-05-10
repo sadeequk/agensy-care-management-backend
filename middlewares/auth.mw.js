@@ -50,7 +50,7 @@ const jwt = require("jsonwebtoken");
 const jwksClient = require("jwks-rsa");
 
 const client = jwksClient({
-  jwksUri: "https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_RXGHY5qLr/.well-known/jwks.json",
+  jwksUri: `https://cognito-idp.${process.env.AWS_REGION}.amazonaws.com/${process.env.USER_POOL_ID}/.well-known/jwks.json`,
 });
 
 function getKey(header, callback) {
