@@ -40,7 +40,10 @@ module.exports.updateUser = (id, userData) =>
       if (!user) {
         return reject(new Error("User not found"));
       }
+      console.log("Before:", user.email_verified, user.last_login, user.updated_at);
       await user.update(userData);
+      await user.reload();
+      console.log("After:", user.email_verified, user.last_login, user.updated_at);
       resolve(user);
     } catch (error) {
       console.error("UserService [updateUser] Error:", error);

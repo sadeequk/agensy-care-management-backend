@@ -92,16 +92,6 @@ module.exports = (sequelize) =>
       notes: {
         type: DataTypes.TEXT,
       },
-      created_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-      updated_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
       active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
@@ -111,10 +101,5 @@ module.exports = (sequelize) =>
       tableName: "clients",
       timestamps: true,
       underscored: true,
-      hooks: {
-        beforeUpdate: (instance) => {
-          instance.updated_at = new Date();
-        },
-      },
     }
   );

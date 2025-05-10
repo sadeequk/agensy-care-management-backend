@@ -83,16 +83,6 @@ module.exports = (sequelize) =>
       last_login: {
         type: DataTypes.DATE,
       },
-      created_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-      updated_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
       active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
@@ -100,7 +90,7 @@ module.exports = (sequelize) =>
     },
     {
       tableName: "users",
-      timestamps: false,
+      timestamps: true,
       underscored: true,
     }
   );
