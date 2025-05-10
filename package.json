@@ -9,6 +9,7 @@
     "dev": "nodemon ./bin/agensy-care-management"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.806.0",
     "@prisma/client": "^6.7.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
