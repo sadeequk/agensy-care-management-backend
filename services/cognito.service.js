@@ -1,12 +1,56 @@
-const {
-  CognitoIdentityProviderClient,
-  AdminAddUserToGroupCommand,
-  AdminCreateGroupCommand,
-  AdminListGroupsForUserCommand,
-  ListGroupsCommand,
-} = require("@aws-sdk/client-cognito-identity-provider");
+// const {
+//   AdminAddUserToGroupCommand,
+//   AdminCreateGroupCommand,
+//   ListGroupsCommand,
+// } = require("@aws-sdk/client-cognito-identity-provider/commands");
 
-const cognito = new CognitoIdentityProviderClient({
+// const cognito = new CognitoIdentityProviderClient({
+//   region: process.env.AWS_REGION,
+//   credentials: {
+//     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+//   },
+// });
+
+// const USER_POOL_ID = process.env.USER_POOL_ID;
+
+// module.exports.addUserToGroup = async (username, groupName) => {
+//   try {
+//     const groups = await cognito.send(
+//       new ListGroupsCommand({
+//         UserPoolId: USER_POOL_ID,
+//       })
+//     );
+
+//     const groupExists = groups.Groups.some((group) => group.GroupName === groupName);
+
+//     if (!groupExists) {
+//       await cognito.send(
+//         new AdminCreateGroupCommand({
+//           UserPoolId: USER_POOL_ID,
+//           GroupName: groupName,
+//         })
+//       );
+//     }
+
+//     await cognito.send(
+//       new AdminAddUserToGroupCommand({
+//         UserPoolId: USER_POOL_ID,
+//         Username: username,
+//         GroupName: groupName,
+//       })
+//     );
+
+//     return true;
+//   } catch (error) {
+//     console.error("CognitoService [addUserToGroup] Error:", error);
+//     throw error;
+//   }
+// };
+
+const AWS = require("aws-sdk");
+
+const cognito = new AWS.CognitoIdentityServiceProvider({
   region: process.env.AWS_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -18,49 +62,37 @@ const USER_POOL_ID = process.env.USER_POOL_ID;
 
 module.exports.addUserToGroup = async (username, groupName) => {
   try {
-    const groups = await cognito.send(
-      new ListGroupsCommand({
+    // Check if group exists
+    const groups = await cognito
+      .listGroups({
         UserPoolId: USER_POOL_ID,
       })
-    );
+      .promise();
 
     const groupExists = groups.Groups.some((group) => group.GroupName === groupName);
 
+    // Create group if it doesn't exist
     if (!groupExists) {
-      await cognito.send(
-        new AdminCreateGroupCommand({
+      await cognito
+        .createGroup({
           UserPoolId: USER_POOL_ID,
           GroupName: groupName,
         })
-      );
+        .promise();
     }
 
-    await cognito.send(
-      new AdminAddUserToGroupCommand({
+    // Add user to group
+    await cognito
+      .adminAddUserToGroup({
         UserPoolId: USER_POOL_ID,
         Username: username,
         GroupName: groupName,
       })
-    );
+      .promise();
 
     return true;
   } catch (error) {
     console.error("CognitoService [addUserToGroup] Error:", error);
-    throw error;
-  }
-};
-
-module.exports.getUserGroups = async (username) => {
-  try {
-    const response = await cognito.send(
-      new AdminListGroupsForUserCommand({
-        UserPoolId: USER_POOL_ID,
-        Username: username,
-      })
-    );
-    return response.Groups.map((group) => group.GroupName);
-  } catch (error) {
-    console.error("CognitoService [getUserGroups] Error:", error);
     throw error;
   }
 };

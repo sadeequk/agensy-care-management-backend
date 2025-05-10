@@ -2,7 +2,7 @@ const userService = require("../services/user.service");
 const clientService = require("../services/client.service");
 const cognitoService = require("../services/cognito.service");
 const joiSchemas = require("../validation/user.schemas");
-const { COGNITO_GROUPS, USER_ROLES } = require("../constants/user");
+const { USER_ROLES, COGNITO_GROUPS } = require("../constants/user");
 
 module.exports.user_signup = async (req, res) => {
   try {
@@ -20,8 +20,6 @@ module.exports.user_signup = async (req, res) => {
       cognito_id: results.cognito_id,
       role: USER_ROLES.PRIMARY_USER,
     });
-
-    await cognitoService.addUserToGroup(results.email, COGNITO_GROUPS.PRIMARY_USERS);
 
     await clientService.createClient({
       first_name: results.client_first_name,
@@ -46,6 +44,8 @@ module.exports.user_login = async (req, res) => {
     if (!user) {
       return res.fail("User not found");
     }
+
+    await cognitoService.addUserToGroup(user.email, COGNITO_GROUPS.PRIMARY_USERS);
 
     const updatedUser = await userService.updateUser(user.id, {
       email_verified: true,
