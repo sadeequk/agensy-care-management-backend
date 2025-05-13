@@ -38,16 +38,13 @@ module.exports.user_signup = async (req, res) => {
 
 module.exports.user_login = async (req, res) => {
   try {
-    const results = await joiSchemas.local_login_post.validateAsync(req.body);
-
-    const user = await userService.getUserByCognitoId(results.cognito_id);
-    if (!user) {
+    if (!req.user) {
       return res.fail("User not found");
     }
 
-    await cognitoService.addUserToGroup(user.email, COGNITO_GROUPS.PRIMARY_USERS);
+    await cognitoService.addUserToGroup(req.user.email, COGNITO_GROUPS.PRIMARY_USERS);
 
-    const updatedUser = await userService.updateUser(user.id, {
+    const updatedUser = await userService.updateUser(req.user.id, {
       email_verified: true,
       last_login: new Date(),
     });
@@ -59,50 +56,12 @@ module.exports.user_login = async (req, res) => {
   }
 };
 
-module.exports.user_get = async (req, res) => {
-  try {
-    const { id } = await joiSchemas.single_user_get.validateAsync(req.params);
-    const user = await userService.getUserById(id);
-    if (!user) {
-      return res.fail("User not found");
-    }
-    res.success(user);
-  } catch (error) {
-    console.error("UserController [getUserById] Error:", error);
-    res.serverError(error);
-  }
-};
-
-module.exports.user_put = async (req, res) => {
-  try {
-    const { id } = await joiSchemas.single_user_get.validateAsync(req.params);
-    const user = await userService.updateUser(id, req.body);
-    res.success(user);
-  } catch (error) {
-    console.error("UserController [updateUser] Error:", error);
-    res.serverError(error);
-  }
-};
-
-module.exports.user_delete = async (req, res) => {
-  try {
-    const { id } = await joiSchemas.single_user_delete.validateAsync(req.params);
-    await userService.deleteUser(id);
-    res.success({ message: "User deleted successfully" });
-  } catch (error) {
-    console.error("UserController [deleteUser] Error:", error);
-    res.serverError(error);
-  }
-};
-
 module.exports.me_get = async (req, res) => {
   try {
-    const cognito_id = req.user.sub;
-    const user = await userService.getUserByCognitoId(cognito_id);
-    if (!user) {
+    if (!req.user) {
       return res.fail("User not found");
     }
-    res.success(user);
+    res.success(req.user);
   } catch (error) {
     console.error("UserController [me] Error:", error);
     res.serverError(error);

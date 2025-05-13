@@ -49,21 +49,6 @@ module.exports.updateUser = (id, userData) =>
     }
   });
 
-module.exports.deleteUser = (id) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const user = await User.findByPk(id);
-      if (!user) {
-        return reject(new Error("User not found"));
-      }
-      await user.destroy();
-      resolve(true);
-    } catch (error) {
-      console.error("UserService [deleteUser] Error:", error);
-      reject(error);
-    }
-  });
-
 module.exports.getAllUsers = (page = 1, limit = 10) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -79,15 +64,6 @@ module.exports.getAllUsers = (page = 1, limit = 10) =>
       reject(error);
     }
   });
-
-module.exports.validatePassword = async (user, password) => {
-  try {
-    return await user.isValidPassword(password);
-  } catch (error) {
-    console.error("UserService [validatePassword] Error:", error);
-    throw error;
-  }
-};
 
 module.exports.getUserByCognitoId = (cognito_id) =>
   new Promise(async (resolve, reject) => {

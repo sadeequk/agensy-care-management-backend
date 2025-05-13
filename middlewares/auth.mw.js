@@ -1,54 +1,6 @@
-// const jwt = require('jsonwebtoken');
-// const UserService = require('../services/user.service');
-
-// module.exports.ensureAuthenticated = async (req, res, next) => {
-//   const token = req.headers.authorization;
-
-//   if (!token) return res.fail('Unauthorized');
-
-//   try {
-//     const decoded = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
-
-//     const user = await UserService.readById(decoded.id);
-
-//     if (!user) return res.fail('Unauthorized');
-
-//     req.user = user;
-//     return next();
-//   } catch (err) {
-//     console.log(err);
-//     return res.fail('Unauthorized');
-//   }
-// };
-// const jwt = require("jsonwebtoken");
-// const jwksClient = require("jwks-rsa");
-
-// // Replace with your Cognito user pool region and id
-// const client = jwksClient({
-//   jwksUri: "https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_RXGHY5qLr/.well-known/jwks.json",
-// });
-
-// function getKey(header, callback) {
-//   client.getSigningKey(header.kid, function (err, key) {
-//     const signingKey = key.publicKey || key.rsaPublicKey;
-//     callback(null, signingKey);
-//   });
-// }
-
-// module.exports = function verifyCognitoToken(req, res, next) {
-//   const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
-//   if (!token) return res.status(401).json({ error: "No token provided" });
-
-//   jwt.verify(token, getKey, {}, (err, decoded) => {
-//     if (err) return res.status(401).json({ error: "Invalid token" });
-//     req.user = decoded;
-//     next();
-//   });
-// };
-
 const jwt = require("jsonwebtoken");
 const jwksClient = require("jwks-rsa");
-
+const userService = require("../services/user.service");
 const client = jwksClient({
   jwksUri: `https://cognito-idp.${process.env.AWS_REGION}.amazonaws.com/${process.env.USER_POOL_ID}/.well-known/jwks.json`,
 });
@@ -72,9 +24,16 @@ module.exports = function verifyCognitoToken(req, res, next) {
     token = token.slice(7);
   }
 
-  jwt.verify(token, getKey, {}, (err, decoded) => {
+  jwt.verify(token, getKey, {}, async (err, decoded) => {
     if (err) return res.fail("Invalid token");
-    req.user = decoded;
+    // req.user = decoded;
+    // console.log(decoded);
+    const user = await userService.getUserByCognitoId(decoded.username);
+    if (user) {
+      req.user = user;
+    } else {
+      return res.fail("User Not found");
+    }
     next();
   });
 };
