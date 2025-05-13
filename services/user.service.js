@@ -49,21 +49,6 @@ module.exports.updateUser = (id, userData) =>
     }
   });
 
-module.exports.getAllUsers = (page = 1, limit = 10) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const offset = (page - 1) * limit;
-      const users = await User.findAndCountAll({
-        limit,
-        offset,
-        order: [["createdAt", "DESC"]],
-      });
-      resolve(users);
-    } catch (error) {
-      console.error("UserService [getAllUsers] Error:", error);
-      reject(error);
-    }
-  });
 
 module.exports.getUserByCognitoId = (cognito_id) =>
   new Promise(async (resolve, reject) => {

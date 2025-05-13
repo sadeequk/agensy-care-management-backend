@@ -35,12 +35,9 @@ module.exports = (sequelize) =>
         type: DataTypes.STRING(20),
       },
       role: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.ENUM(...Object.values(USER_ROLES)),
         allowNull: false,
         defaultValue: USER_ROLES.PRIMARY_USER,
-        validate: {
-          isIn: [Object.values(USER_ROLES)],
-        },
       },
       email_verified: {
         type: DataTypes.BOOLEAN,

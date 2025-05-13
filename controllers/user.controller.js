@@ -1,5 +1,4 @@
 const userService = require("../services/user.service");
-const clientService = require("../services/client.service");
 const cognitoService = require("../services/cognito.service");
 const joiSchemas = require("../validation/user.schemas");
 const { USER_ROLES, COGNITO_GROUPS } = require("../constants/user");
@@ -19,14 +18,6 @@ module.exports.user_signup = async (req, res) => {
       email: results.email,
       cognito_id: results.cognito_id,
       role: USER_ROLES.PRIMARY_USER,
-    });
-
-    await clientService.createClient({
-      first_name: results.client_first_name,
-      last_name: results.client_last_name,
-      relation: results.relation_with_client,
-      date_of_birth: results.client_dob,
-      primary_user_id: newUser.id,
     });
 
     return res.success(newUser);
