@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const { CONTACT_TYPES } = require("../constants/index");
 
-module.exports.create_client_contact_post = Joi.object({
+module.exports.contact_post = Joi.object({
   contact_type: Joi.string().valid(CONTACT_TYPES.PRIMARY, CONTACT_TYPES.SECONDARY, CONTACT_TYPES.EMERGENCY).required(),
   first_name: Joi.string().required(),
   last_name: Joi.string().required(),
@@ -12,7 +12,7 @@ module.exports.create_client_contact_post = Joi.object({
   notes: Joi.string(),
 });
 
-module.exports.update_client_contact_put = Joi.object({
+module.exports.contact_put = Joi.object({
   contact_type: Joi.string().valid(CONTACT_TYPES.PRIMARY, CONTACT_TYPES.SECONDARY, CONTACT_TYPES.EMERGENCY),
   first_name: Joi.string(),
   last_name: Joi.string(),

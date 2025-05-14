@@ -31,7 +31,7 @@ exports.client_contacts_get = async (req, res) => {
 exports.contact_post = async (req, res) => {
   try {
     const { id } = req.params;
-    const results = await joiSchemas.create_client_contact_post.validateAsync(req.body);
+    const results = await joiSchemas.contact_post.validateAsync(req.body);
 
     const client = await clientService.getClientById(req.user.id, id);
     if (!client) {
@@ -53,7 +53,7 @@ exports.contact_post = async (req, res) => {
 exports.contact_put = async (req, res) => {
   try {
     const { id } = req.params;
-    const validatedData = await joiSchemas.update_client_contact_put.validateAsync(req.body);
+    const validatedData = await joiSchemas.contact_put.validateAsync(req.body);
 
     const contact = await clientContactService.updateClientContact(id, validatedData);
     return res.success(contact);
