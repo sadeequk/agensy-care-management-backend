@@ -10,3 +10,7 @@ router.get("/:id", verifyCognitoToken, clientController.client_get);
 router.get("/", verifyCognitoToken, clientController.clients_get);
 
 module.exports = router;
+// module.exports = router;
+// module.exports = router;
+// module.exports = router;
+// module.exports = router;
