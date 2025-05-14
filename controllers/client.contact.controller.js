@@ -2,7 +2,6 @@ const clientContactService = require("../services/client.contact.service");
 const clientService = require("../services/client.service");
 const joiSchemas = require("../validation/client.contact.schemas");
 
-// Get a single contact by contact ID
 exports.contact_get = async (req, res) => {
   try {
     const { id } = req.params;
@@ -14,7 +13,6 @@ exports.contact_get = async (req, res) => {
   }
 };
 
-// Get all contacts for a specific client
 exports.client_contacts_get = async (req, res) => {
   try {
     const { id } = req.params;

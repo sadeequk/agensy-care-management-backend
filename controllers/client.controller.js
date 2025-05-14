@@ -3,7 +3,7 @@ const joiSchemas = require("../validation/client.schemas");
 
 exports.client_post = async (req, res) => {
   try {
-    const results = await joiSchemas.createClientSchema.validateAsync(req.body);
+    const results = await joiSchemas.client_post.validateAsync(req.body);
     const client = await clientService.createClient(req.user.id, results);
     return res.success(client);
   } catch (error) {

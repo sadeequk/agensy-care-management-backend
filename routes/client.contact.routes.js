@@ -7,7 +7,7 @@ router.post("/:id", verifyCognitoToken, clientContactController.contact_post); /
 router.get("/single/:id", verifyCognitoToken, clientContactController.contact_get); //contact id
 router.get("/all/:id", verifyCognitoToken, clientContactController.client_contacts_get); //client id
 router.put("/:id", verifyCognitoToken, clientContactController.contact_put); //contact id
-router.put("/status/:id", verifyCognitoToken, clientContactController.status_put); //contact id
-router.delete("/:id", verifyCognitoToken, clientContactController.contact_delete); //contact id
+// router.put("/status/:id", verifyCognitoToken, clientContactController.status_put); //contact id
+// router.delete("/:id", verifyCognitoToken, clientContactController.contact_delete); //contact id
 
 module.exports = router;
