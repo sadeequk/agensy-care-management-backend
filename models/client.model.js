@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const { GENDER_TYPES, MARITAL_STATUS, LIVING_SITUATION } = require("../constants/index");
 
 module.exports = (sequelize) =>
   sequelize.define(
@@ -51,16 +52,19 @@ module.exports = (sequelize) =>
         type: DataTypes.STRING(20),
       },
       gender: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.ENUM(...Object.values(GENDER_TYPES)),
+        allowNull: false,
       },
       marital_status: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.ENUM(...Object.values(MARITAL_STATUS)),
+        allowNull: false,
       },
       language: {
         type: DataTypes.STRING(50),
       },
       living_situation: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.ENUM(...Object.values(LIVING_SITUATION)),
+        allowNull: false,
       },
       code_status: {
         type: DataTypes.STRING(50),

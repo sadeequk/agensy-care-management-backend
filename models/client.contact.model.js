@@ -1,27 +1,26 @@
 const { DataTypes } = require("sequelize");
-const { USER_ROLES } = require("../constants/index");
+const { CONTACT_TYPES } = require("../constants/index");
 
 module.exports = (sequelize) =>
   sequelize.define(
-    "User",
+    "ClientContact",
     {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      email: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-        unique: true,
+      client_id: {
+        type: DataTypes.UUID,
+        references: {
+          model: "clients",
+          key: "id",
+        },
+        onDelete: "CASCADE",
       },
-      // password: {
-      //   type: DataTypes.STRING(255),
-      //   allowNull: false,
-      // },
-      cognito_id: {
-        type: DataTypes.STRING(255),
-        unique: true,
+      contact_type: {
+        type: DataTypes.ENUM(...Object.values(CONTACT_TYPES)),
+        allowNull: false,
       },
       first_name: {
         type: DataTypes.STRING(100),
@@ -31,23 +30,20 @@ module.exports = (sequelize) =>
         type: DataTypes.STRING(100),
         allowNull: false,
       },
+      relationship: {
+        type: DataTypes.STRING(100),
+      },
       phone: {
         type: DataTypes.STRING(20),
       },
-      role: {
-        type: DataTypes.ENUM(...Object.values(USER_ROLES)),
-        allowNull: false,
-        defaultValue: USER_ROLES.PRIMARY_USER,
-      },
-      email_verified: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
-      profile_image_url: {
+      email: {
         type: DataTypes.STRING(255),
       },
-      last_login: {
-        type: DataTypes.DATE,
+      address: {
+        type: DataTypes.STRING(255),
+      },
+      notes: {
+        type: DataTypes.TEXT,
       },
       active: {
         type: DataTypes.BOOLEAN,
@@ -55,7 +51,7 @@ module.exports = (sequelize) =>
       },
     },
     {
-      tableName: "users",
+      tableName: "client_contacts",
       timestamps: true,
       underscored: true,
     }

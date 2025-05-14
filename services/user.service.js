@@ -11,17 +11,6 @@ module.exports.createUser = (userData) =>
     }
   });
 
-module.exports.getUserById = (id) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const user = await User.findByPk(id);
-      resolve(user);
-    } catch (error) {
-      console.error("UserService [getUserById] Error:", error);
-      reject(error);
-    }
-  });
-
 module.exports.getUserByEmail = (email) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -48,7 +37,6 @@ module.exports.updateUser = (id, userData) =>
       reject(error);
     }
   });
-
 
 module.exports.getUserByCognitoId = (cognito_id) =>
   new Promise(async (resolve, reject) => {

@@ -1,7 +1,7 @@
 const userService = require("../services/user.service");
 const cognitoService = require("../services/cognito.service");
 const joiSchemas = require("../validation/user.schemas");
-const { USER_ROLES, COGNITO_GROUPS } = require("../constants/user");
+const { USER_ROLES, COGNITO_GROUPS } = require("../constants/index");
 
 module.exports.user_signup = async (req, res) => {
   try {

@@ -12,11 +12,11 @@ const testConnection = async () => {
 
     await sequelize.authenticate();
     console.log("Successfully connected to PostgreSQL database.");
-
     // await sequelize.sync({ alter: true });
     // await sequelize.sync({ force: true });
     await sequelize.sync();
-    console.log("Database synchronized successfully.");
+    // await sequelize.sync({ alter: true }); // Alter sync to add new tables/columns without dropping existing data
+    console.log("Database synchronized successfully - existing data preserved.");
   } catch (error) {
     console.error("Unable to connect to PostgreSQL database.");
     console.error("Error message:", error.message);
