@@ -8,7 +8,7 @@ const contactSchema = Joi.object({
 });
 
 // Schema for creating a new client
-exports.createClientSchema = Joi.object({
+exports.client_post = Joi.object({
   first_name: Joi.string().required().min(2).max(50),
   last_name: Joi.string().required().min(2).max(50),
   date_of_birth: Joi.string()

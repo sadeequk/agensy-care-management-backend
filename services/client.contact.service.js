@@ -92,10 +92,19 @@ module.exports.updateContactStatus = (contactId, status) =>
     }
   });
 
-module.exports.getAllContacts = () =>
+module.exports.getAllContacts = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
+      const whereClause = clientId ? { client_id: clientId } : {};
       const contacts = await ClientContact.findAll({
+        where: whereClause,
+        include: [
+          {
+            model: require("../models").Client,
+            as: "client",
+            attributes: ["id", "first_name", "last_name"],
+          },
+        ],
         order: [["created_at", "DESC"]],
       });
       resolve(contacts);

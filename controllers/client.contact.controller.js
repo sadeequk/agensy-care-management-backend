@@ -2,19 +2,30 @@ const clientContactService = require("../services/client.contact.service");
 const clientService = require("../services/client.service");
 const joiSchemas = require("../validation/client.contact.schemas");
 
-exports.contacts_get = async (req, res) => {
+// Get a single contact by contact ID
+exports.contact_get = async (req, res) => {
   try {
     const { id } = req.params;
+    const contact = await clientContactService.getClientContactById(id);
+    return res.success(contact);
+  } catch (error) {
+    console.error("ClientContactController [contact_get] Error:", error);
+    return res.serverError(error);
+  }
+};
 
+// Get all contacts for a specific client
+exports.client_contacts_get = async (req, res) => {
+  try {
+    const { id } = req.params;
     const client = await clientService.getClientById(req.user.id, id);
     if (!client) {
       return res.fail("Client not found or you don't have permission to view contacts");
     }
-
     const contacts = await clientContactService.getClientContacts(id);
     return res.success(contacts);
   } catch (error) {
-    console.error("ClientContactController [contacts_get] Error:", error);
+    console.error("ClientContactController [client_contacts_get] Error:", error);
     return res.serverError(error);
   }
 };
