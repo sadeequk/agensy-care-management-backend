@@ -29,6 +29,10 @@ module.exports = (sequelize) =>
           key: "id",
         },
       },
+      is_edited: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       tableName: "notes",

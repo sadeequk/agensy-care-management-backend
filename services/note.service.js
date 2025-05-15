@@ -76,6 +76,7 @@ module.exports.updateNote = (userId, noteId, text) =>
       if (!note) return reject(new Error("Note not found"));
       if (note.user_id !== userId) return reject(new Error("You do not have permission to edit this note."));
       note.text = text;
+      note.is_edited = true;
       await note.save();
       resolve(note);
     } catch (error) {
