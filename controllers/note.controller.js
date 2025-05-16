@@ -67,7 +67,7 @@ exports.note_put = async (req, res) => {
       return res.fail("Note not found");
     }
 
-    await note.update(validatedData);
+    await note.update({ ...validatedData, is_edited: true });
     return res.success(note);
   } catch (error) {
     if (error.name === "ValidationError") {
