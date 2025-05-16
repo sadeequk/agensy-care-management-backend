@@ -10,15 +10,16 @@ module.exports = (sequelize) =>
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
+      primary_user_id: {
+        type: DataTypes.UUID,
+        required: false,
+        defaultValue: null,
+      },
       email: {
         type: DataTypes.STRING(255),
         allowNull: false,
         unique: true,
       },
-      // password: {
-      //   type: DataTypes.STRING(255),
-      //   allowNull: false,
-      // },
       cognito_id: {
         type: DataTypes.STRING(255),
         unique: true,

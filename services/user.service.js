@@ -48,3 +48,14 @@ module.exports.getUserByCognitoId = (cognito_id) =>
       reject(error);
     }
   });
+
+module.exports.getUserById = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findByPk(id);
+      resolve(user);
+    } catch (error) {
+      console.error("UserService [getUserById] Error:", error);
+      reject(error);
+    }
+  });

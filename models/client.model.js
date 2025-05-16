@@ -10,14 +10,6 @@ module.exports = (sequelize) =>
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      primary_user_id: {
-        type: DataTypes.UUID,
-        references: {
-          model: "users",
-          key: "id",
-        },
-        onDelete: "SET NULL",
-      },
       first_name: {
         type: DataTypes.STRING(100),
         allowNull: false,

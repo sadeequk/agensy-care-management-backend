@@ -12,11 +12,6 @@ module.exports = (sequelize) =>
       },
       client_id: {
         type: DataTypes.UUID,
-        references: {
-          model: "clients",
-          key: "id",
-        },
-        onDelete: "CASCADE",
       },
       contact_type: {
         type: DataTypes.ENUM(...Object.values(CONTACT_TYPES)),

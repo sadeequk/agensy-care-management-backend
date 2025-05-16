@@ -16,13 +16,16 @@ exports.contact_get = async (req, res) => {
 exports.client_contacts_get = async (req, res) => {
   try {
     const { id } = req.params;
-    const client = await clientService.getClientById(req.user.id, id);
+    const client = await clientService.getClientWithAccessCheck(req.user.id, id);
     if (!client) {
       return res.fail("Client not found or you don't have permission to view contacts");
     }
     const contacts = await clientContactService.getClientContacts(id);
     return res.success(contacts);
   } catch (error) {
+    if (error.message === "Client not found or user doesn't have access") {
+      return res.fail(error.message);
+    }
     console.error("ClientContactController [client_contacts_get] Error:", error);
     return res.serverError(error);
   }
@@ -31,20 +34,23 @@ exports.client_contacts_get = async (req, res) => {
 exports.contact_post = async (req, res) => {
   try {
     const { id } = req.params;
-    const results = await joiSchemas.contact_post.validateAsync(req.body);
+    const contactData = await joiSchemas.contact_post.validateAsync(req.body);
 
-    const client = await clientService.getClientById(req.user.id, id);
+    const client = await clientService.getClientWithAccessCheck(req.user.id, id);
     if (!client) {
       return res.fail("Client not found or you don't have permission to add contacts");
     }
 
-    const contact = await clientContactService.createClientContact({
-      ...results,
-      client_id: id,
-    });
+    const contact = await clientContactService.createClientContact(client, { ...contactData });
 
     return res.success(contact);
   } catch (error) {
+    if (error.message === "Client not found or user doesn't have access") {
+      return res.fail(error.message);
+    }
+    if (error.name === "ValidationError") {
+      return res.fail(error.message);
+    }
     console.error("ClientContactController [contact_post] Error:", error);
     return res.serverError(error);
   }

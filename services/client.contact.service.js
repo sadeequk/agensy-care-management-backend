@@ -1,9 +1,10 @@
-const { ClientContact } = require("../models");
+const { Client, ClientContact } = require("../models");
 
-module.exports.createClientContact = (contactData) =>
+module.exports.createClientContact = (client, contactData) =>
   new Promise(async (resolve, reject) => {
     try {
       const contact = await ClientContact.create(contactData);
+      await client.addContact(contact);
       resolve(contact);
     } catch (error) {
       console.error("ClientContactService [createClientContact] Error:", error);
@@ -15,7 +16,6 @@ module.exports.updateClientContact = (contactId, contactData) =>
   new Promise(async (resolve, reject) => {
     try {
       const contact = await ClientContact.findByPk(contactId);
-
       if (!contact) {
         return reject(new Error("Contact not found"));
       }
@@ -31,11 +31,15 @@ module.exports.updateClientContact = (contactId, contactData) =>
 module.exports.getClientContacts = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
-      const contacts = await ClientContact.findAll({
-        where: { client_id: clientId },
-        order: [["created_at", "DESC"]],
+      const client = await Client.findByPk(clientId, {
+        include: [
+          {
+            model: ClientContact,
+            as: "contacts",
+          },
+        ],
       });
-      resolve(contacts);
+      resolve(client.contacts);
     } catch (error) {
       console.error("ClientContactService [getClientContacts] Error:", error);
       reject(error);
@@ -61,10 +65,21 @@ module.exports.getClientContactById = (contactId) =>
 module.exports.deleteClientContact = (contactId) =>
   new Promise(async (resolve, reject) => {
     try {
-      const contact = await ClientContact.findByPk(contactId);
+      const contact = await ClientContact.findByPk(contactId, {
+        include: [
+          {
+            model: Client,
+            as: "client",
+          },
+        ],
+      });
 
       if (!contact) {
         return reject(new Error("Contact not found"));
+      }
+
+      if (!contact.client) {
+        return reject(new Error("Associated client not found"));
       }
 
       await contact.destroy();
@@ -78,10 +93,21 @@ module.exports.deleteClientContact = (contactId) =>
 module.exports.updateContactStatus = (contactId, status) =>
   new Promise(async (resolve, reject) => {
     try {
-      const contact = await ClientContact.findByPk(contactId);
+      const contact = await ClientContact.findByPk(contactId, {
+        include: [
+          {
+            model: Client,
+            as: "client",
+          },
+        ],
+      });
 
       if (!contact) {
         return reject(new Error("Contact not found"));
+      }
+
+      if (!contact.client) {
+        return reject(new Error("Associated client not found"));
       }
 
       await contact.update({ active: status });
@@ -95,18 +121,11 @@ module.exports.updateContactStatus = (contactId, status) =>
 module.exports.getAllContacts = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
-      const whereClause = clientId ? { client_id: clientId } : {};
-      const contacts = await ClientContact.findAll({
-        where: whereClause,
-        include: [
-          {
-            model: require("../models").Client,
-            as: "client",
-            attributes: ["id", "first_name", "last_name"],
-          },
-        ],
-        order: [["created_at", "DESC"]],
-      });
+      const client = await Client.findByPk(clientId);
+      if (!client) {
+        return reject(new Error("Client not found"));
+      }
+      const contacts = await client.getContacts();
       resolve(contacts);
     } catch (error) {
       console.error("ClientContactService [getAllContacts] Error:", error);
