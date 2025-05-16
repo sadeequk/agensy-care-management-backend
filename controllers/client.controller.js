@@ -28,7 +28,7 @@ exports.client_put = async (req, res) => {
 exports.client_get = async (req, res) => {
   try {
     const { id } = req.params;
-    const client = await clientService.getClientById(req.user.id, id);
+    const client = await clientService.getClientById(id);
     return res.success(client);
   } catch (error) {
     if (error.message === "Client not found or user doesn't have access") {
