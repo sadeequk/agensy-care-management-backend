@@ -1,4 +1,4 @@
-const { Note, Client } = require("../models");
+const { ClientNote, Client } = require("../models");
 
 module.exports.createNote = (userId, clientId, text) =>
   new Promise(async (resolve, reject) => {

@@ -19,7 +19,7 @@ module.exports.createClient = (userId, clientData) =>
     }
   });
 
-module.exports.updateClient = (userId, clientId, clientData) =>
+module.exports.updateClient = (clientId, clientData) =>
   new Promise(async (resolve, reject) => {
     try {
       const client = await Client.findByPk(clientId);

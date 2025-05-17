@@ -3,6 +3,7 @@ const User = require("./user.model")(sequelize);
 const Client = require("./client.model")(sequelize);
 const ClientContact = require("./client.contact.model")(sequelize);
 const ClientNote = require("./note.model")(sequelize);
+const ClientMedication = require("./client.medication.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -20,10 +21,15 @@ ClientContact.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 Client.hasMany(ClientNote, { foreignKey: "client_id", as: "clientNotes", onDelete: "CASCADE" });
 ClientNote.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
+//^ Client to ClientMedication Relation (One-To-Many)
+Client.hasMany(ClientMedication, { foreignKey: "client_id", as: "medications", onDelete: "CASCADE" });
+ClientMedication.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+
 module.exports = {
   sequelize,
   User,
   Client,
   ClientContact,
   ClientNote,
+  ClientMedication,
 };
