@@ -1,4 +1,4 @@
-const { Client, ClientContact, User } = require("../models");
+const { Client, ClientContact, User, ClientNote, ClientMedication, HealthcareProvider } = require("../models");
 const clientContactService = require("./client.contact.service");
 const userService = require("./user.service");
 
@@ -9,7 +9,7 @@ module.exports.createClient = (userId, clientData) =>
       if (!user) {
         return reject(new Error("User not found"));
       }
-      const client = await Client.create(clientData); // added this  because  addClient expects an existing client instance
+      const client = await Client.create(clientData);
       await user.addClient(client);
 
       resolve(client);
@@ -39,7 +39,26 @@ module.exports.updateClient = (clientId, clientData) =>
 module.exports.getClientById = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
-      const client = await Client.findByPk(clientId);
+      const client = await Client.findByPk(clientId, {
+        include: [
+          {
+            model: ClientContact,
+            as: "contacts",
+          },
+          {
+            model: ClientNote,
+            as: "clientNotes",
+          },
+          {
+            model: ClientMedication,
+            as: "medications",
+          },
+          {
+            model: HealthcareProvider,
+            as: "healthcareProviders",
+          },
+        ],
+      });
       resolve(client);
     } catch (error) {
       console.error("ClientService [getClientById] Error:", error);
@@ -56,6 +75,24 @@ module.exports.getUserClients = (userId) =>
           {
             model: Client,
             through: { attributes: [] },
+            include: [
+              {
+                model: ClientContact,
+                as: "contacts",
+              },
+              {
+                model: ClientNote,
+                as: "clientNotes",
+              },
+              {
+                model: ClientMedication,
+                as: "medications",
+              },
+              {
+                model: HealthcareProvider,
+                as: "healthcareProviders",
+              },
+            ],
           },
         ],
       });
@@ -98,7 +135,23 @@ module.exports.getClientWithAccessCheck = (userId, clientId) =>
           {
             model: User,
             where: { id: userId },
-            through: { attributes: [] }, // Using UserClients conjunction table
+            through: { attributes: [] },
+          },
+          {
+            model: ClientContact,
+            as: "contacts",
+          },
+          {
+            model: ClientNote,
+            as: "clientNotes",
+          },
+          {
+            model: ClientMedication,
+            as: "medications",
+          },
+          {
+            model: HealthcareProvider,
+            as: "healthcareProviders",
           },
         ],
       });

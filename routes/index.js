@@ -6,5 +6,6 @@ router.use("/client", require("./client.routes"));
 router.use("/client-contact", require("./client.contact.routes"));
 router.use("/notes", require("./note.routes"));
 router.use("/client-medications", require("./client.medication.routes"));
+router.use("/healthcare-provider", require("./healthcare.provider.routes"));
 
 module.exports = router;
