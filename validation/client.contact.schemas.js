@@ -9,7 +9,7 @@ module.exports.contact_post = Joi.object({
   phone: Joi.string().required(),
   email: Joi.string().email(),
   address: Joi.string(),
-  notes: Joi.string(),
+  notes: Joi.string().allow(""),
 });
 
 module.exports.contact_put = Joi.object({
@@ -20,5 +20,5 @@ module.exports.contact_put = Joi.object({
   phone: Joi.string(),
   email: Joi.string().email(),
   address: Joi.string(),
-  notes: Joi.string(),
+  notes: Joi.string().allow(""),
 });

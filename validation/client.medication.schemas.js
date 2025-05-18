@@ -9,7 +9,7 @@ exports.medication_post = Joi.object({
   start_date: Joi.date().iso().required(),
   end_date: Joi.date().iso().required(),
   refill_due: Joi.date().iso().required(),
-  notes: Joi.string(),
+  notes: Joi.string().allow(""),
   active: Joi.boolean().default(true),
 });
 
@@ -22,7 +22,7 @@ exports.medication_put = Joi.object({
   start_date: Joi.date().iso().required(),
   end_date: Joi.date().iso().required(),
   refill_due: Joi.date().iso().required(),
-  notes: Joi.string(),
+  notes: Joi.string().allow(""),
   active: Joi.boolean().default(true),
 });
 
