@@ -1,4 +1,12 @@
-const { Client, ClientContact, User, ClientNote, ClientMedication, HealthcareProvider } = require("../models");
+const {
+  Client,
+  ClientContact,
+  User,
+  ClientNote,
+  ClientMedication,
+  HealthcareProvider,
+  ClientMedical,
+} = require("../models");
 const clientContactService = require("./client.contact.service");
 const userService = require("./user.service");
 
@@ -51,6 +59,10 @@ module.exports.getClientById = (clientId) =>
             model: HealthcareProvider,
             as: "healthcareProviders",
           },
+          {
+            model: ClientMedical,
+            as: "medical",
+          },
         ],
       });
       resolve(client);
@@ -96,6 +108,10 @@ module.exports.getUserClients = (userId) =>
               {
                 model: HealthcareProvider,
                 as: "healthcareProviders",
+              },
+              {
+                model: ClientMedical,
+                as: "medical",
               },
             ],
           },
