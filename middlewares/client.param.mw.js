@@ -2,13 +2,6 @@ const clientService = require("../services/client.service");
 
 const setClientId = async (req, res, next, id) => {
   try {
-    // UUID validation regex
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-    if (!uuidRegex.test(id)) {
-      return res.fail("Invalid client ID format");
-    }
-
     const client = await clientService.readClient(id);
 
     if (!client) {
