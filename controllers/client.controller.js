@@ -14,10 +14,10 @@ exports.client_post = async (req, res) => {
 
 exports.client_put = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { clientId } = req.params;
     const results = await joiSchemas.updateClientSchema.validateAsync(req.body);
 
-    const client = await clientService.updateClient(id, results);
+    const client = await clientService.updateClient(clientId, results);
     return res.success(client);
   } catch (error) {
     console.error("ClientController [client_put] Error:", error);
@@ -27,8 +27,8 @@ exports.client_put = async (req, res) => {
 
 exports.client_get = async (req, res) => {
   try {
-    const { id } = req.params;
-    const client = await clientService.getClientById(id);
+    const { clientId } = req.params;
+    const client = await clientService.getClientById(clientId);
     return res.success(client);
   } catch (error) {
     console.error("ClientController [client_get] Error:", error);
@@ -48,10 +48,10 @@ exports.clients_get = async (req, res) => {
 
 exports.status_put = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { clientId } = req.params;
     const { status } = await joiSchemas.updateClientStatusSchema.validateAsync(req.body);
 
-    const client = await clientService.updateClientStatus(id, status);
+    const client = await clientService.updateClientStatus(clientId, status);
     return res.success(client);
   } catch (error) {
     console.error("ClientController [status_put] Error:", error);

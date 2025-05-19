@@ -4,8 +4,8 @@ const joiSchemas = require("../validation/client.contact.schemas");
 
 exports.contact_get = async (req, res) => {
   try {
-    const { id } = req.params;
-    const contact = await clientContactService.getClientContactById(id);
+    const { contactId } = req.params;
+    const contact = await clientContactService.getClientContactById(contactId);
     return res.success(contact);
   } catch (error) {
     console.error("ClientContactController [contact_get] Error:", error);
@@ -15,8 +15,8 @@ exports.contact_get = async (req, res) => {
 
 exports.client_contacts_get = async (req, res) => {
   try {
-    const { id } = req.params;
-    const contacts = await clientContactService.getClientContacts(id);
+    const clientId = req.clientId;
+    const contacts = await clientContactService.getClientContacts(clientId);
     return res.success(contacts);
   } catch (error) {
     console.error("ClientContactController [client_contacts_get] Error:", error);
@@ -26,24 +26,19 @@ exports.client_contacts_get = async (req, res) => {
 
 exports.contact_post = async (req, res) => {
   try {
-    const { id } = req.params;
-    const contactData = await joiSchemas.contact_post.validateAsync(req.body);
+    const clientId = req.clientId;
 
-    const client = await clientService.getClientWithAccessCheck(req.user.id, id);
+    const results = await joiSchemas.contact_post.validateAsync(req.body);
+
+    const client = await clientService.getClientWithAccessCheck(req.user.id, clientId);
     if (!client) {
       return res.fail("Client not found or you don't have permission to add contacts");
     }
 
-    const contact = await clientContactService.createClientContact(client, { ...contactData });
+    const contact = await clientContactService.createClientContact(client, { ...results });
 
     return res.success(contact);
   } catch (error) {
-    if (error.message === "Client not found or user doesn't have access") {
-      return res.fail(error.message);
-    }
-    if (error.name === "ValidationError") {
-      return res.fail(error.message);
-    }
     console.error("ClientContactController [contact_post] Error:", error);
     return res.serverError(error);
   }
@@ -51,10 +46,10 @@ exports.contact_post = async (req, res) => {
 
 exports.contact_put = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { contactId } = req.params;
     const validatedData = await joiSchemas.contact_put.validateAsync(req.body);
 
-    const contact = await clientContactService.updateClientContact(id, validatedData);
+    const contact = await clientContactService.updateClientContact(contactId, validatedData);
     return res.success(contact);
   } catch (error) {
     console.error("ClientContactController [contact_put] Error:", error);
@@ -64,10 +59,10 @@ exports.contact_put = async (req, res) => {
 
 exports.status_put = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { contactId } = req.params;
     const { status } = await joiSchemas.updateContactStatusSchema.validateAsync(req.body);
 
-    const contact = await clientContactService.updateContactStatus(id, status);
+    const contact = await clientContactService.updateContactStatus(contactId, status);
     return res.success(contact);
   } catch (error) {
     console.error("ClientContactController [status_put] Error:", error);
@@ -77,8 +72,8 @@ exports.status_put = async (req, res) => {
 
 exports.contact_delete = async (req, res) => {
   try {
-    const { id } = req.params;
-    await clientContactService.deleteClientContact(id);
+    const { contactId } = req.params;
+    await clientContactService.deleteClientContact(contactId);
     return res.success({ message: "Contact deleted successfully" });
   } catch (error) {
     console.error("ClientContactController [contact_delete] Error:", error);

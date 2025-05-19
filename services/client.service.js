@@ -6,10 +6,8 @@ module.exports.createClient = (userId, clientData) =>
   new Promise(async (resolve, reject) => {
     try {
       const user = await userService.getUserById(userId);
-      if (!user) {
-        return reject(new Error("User not found"));
-      }
-      const client = await Client.create(clientData);
+
+      const client = await Client.create(clientData); // added this  because  addClient expects an existing client instance
       await user.addClient(client);
 
       resolve(client);
@@ -23,10 +21,6 @@ module.exports.updateClient = (clientId, clientData) =>
   new Promise(async (resolve, reject) => {
     try {
       const client = await Client.findByPk(clientId);
-
-      if (!client) {
-        return reject(new Error("Client not found"));
-      }
 
       await client.update(clientData);
       resolve(client);
@@ -66,6 +60,17 @@ module.exports.getClientById = (clientId) =>
     }
   });
 
+module.exports.readClient = (clientId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const client = await Client.findByPk(clientId);
+      resolve(client);
+    } catch (error) {
+      console.error("ClientService [getClientById] Error:", error);
+      reject(error);
+    }
+  });
+
 module.exports.getUserClients = (userId) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -97,10 +102,6 @@ module.exports.getUserClients = (userId) =>
         ],
       });
 
-      if (!user) {
-        return reject(new Error("User not found"));
-      }
-
       resolve(user.Clients);
     } catch (error) {
       console.error("ClientService [getUserClients] Error:", error);
@@ -112,10 +113,6 @@ module.exports.updateClientStatus = (clientId, status) =>
   new Promise(async (resolve, reject) => {
     try {
       const client = await Client.findByPk(clientId);
-
-      if (!client) {
-        return reject(new Error("Client not found"));
-      }
 
       await client.update({ active: status });
       resolve(client);
@@ -135,30 +132,10 @@ module.exports.getClientWithAccessCheck = (userId, clientId) =>
           {
             model: User,
             where: { id: userId },
-            through: { attributes: [] },
-          },
-          {
-            model: ClientContact,
-            as: "contacts",
-          },
-          {
-            model: ClientNote,
-            as: "clientNotes",
-          },
-          {
-            model: ClientMedication,
-            as: "medications",
-          },
-          {
-            model: HealthcareProvider,
-            as: "healthcareProviders",
+            through: { attributes: [] }, // Using UserClients conjunction table
           },
         ],
       });
-
-      if (!client) {
-        return reject(new Error("Client not found or user doesn't have access"));
-      }
 
       resolve(client);
     } catch (error) {

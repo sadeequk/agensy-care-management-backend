@@ -5,6 +5,7 @@ const ClientContact = require("./client.contact.model")(sequelize);
 const ClientNote = require("./note.model")(sequelize);
 const ClientMedication = require("./client.medication.model")(sequelize);
 const HealthcareProvider = require("./healthcare.provider.model")(sequelize);
+const ClientMedical = require("./client.medical.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -30,6 +31,10 @@ ClientMedication.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 Client.hasMany(HealthcareProvider, { foreignKey: "client_id", as: "healthcareProviders", onDelete: "CASCADE" });
 HealthcareProvider.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
+//^ Client to ClientMedical Relation (One-To-One)
+Client.hasOne(ClientMedical, { foreignKey: "client_id", as: "medical", onDelete: "CASCADE" });
+ClientMedical.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+
 module.exports = {
   sequelize,
   User,
@@ -38,4 +43,5 @@ module.exports = {
   ClientNote,
   ClientMedication,
   HealthcareProvider,
+  ClientMedical,
 };

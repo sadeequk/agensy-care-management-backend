@@ -39,6 +39,11 @@ module.exports.getClientContacts = (clientId) =>
           },
         ],
       });
+
+      if (!client) {
+        return reject(new Error("Client not found"));
+      }
+
       resolve(client.contacts);
     } catch (error) {
       console.error("ClientContactService [getClientContacts] Error:", error);
@@ -74,14 +79,6 @@ module.exports.deleteClientContact = (contactId) =>
         ],
       });
 
-      if (!contact) {
-        return reject(new Error("Contact not found"));
-      }
-
-      if (!contact.client) {
-        return reject(new Error("Associated client not found"));
-      }
-
       await contact.destroy();
       resolve(true);
     } catch (error) {
@@ -101,14 +98,6 @@ module.exports.updateContactStatus = (contactId, status) =>
           },
         ],
       });
-
-      if (!contact) {
-        return reject(new Error("Contact not found"));
-      }
-
-      if (!contact.client) {
-        return reject(new Error("Associated client not found"));
-      }
 
       await contact.update({ active: status });
       resolve(contact);

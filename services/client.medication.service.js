@@ -1,5 +1,5 @@
 const { ClientMedication, Client } = require("../models");
-//
+
 exports.createMedication = (medicationData) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -32,7 +32,7 @@ exports.getAllMedications = (query = {}) => {
     }
   });
 };
-//
+
 exports.getMedicationsByClientId = (clientId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -46,14 +46,11 @@ exports.getMedicationsByClientId = (clientId) => {
     }
   });
 };
-//
+
 exports.getMedicationById = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
       const medication = await ClientMedication.findOne({ where: { id } });
-      if (!medication) {
-        reject(new Error("Medication not found"));
-      }
       resolve(medication);
     } catch (error) {
       reject(error);
@@ -65,9 +62,7 @@ exports.updateMedication = (id, medicationData) => {
   return new Promise(async (resolve, reject) => {
     try {
       const medication = await ClientMedication.findByPk(id);
-      if (!medication) {
-        reject(new Error("Medication not found"));
-      }
+
       const updated = await medication.update(medicationData);
       resolve(updated);
     } catch (error) {
@@ -80,9 +75,7 @@ exports.deleteMedication = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
       const medication = await ClientMedication.findByPk(id);
-      if (!medication) {
-        reject(new Error("Medication not found"));
-      }
+
       await medication.destroy();
       resolve({ message: "Medication deleted successfully" });
     } catch (error) {
@@ -91,13 +84,10 @@ exports.deleteMedication = (id) => {
   });
 };
 
-exports.toggleMedicationActive = (id, active) => {
+exports.toggleMedicationActive = (medicationId, active) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const medication = await ClientMedication.findByPk(id);
-      if (!medication) {
-        reject(new Error("Medication not found"));
-      }
+      const medication = await ClientMedication.findByPk(medicationId);
       medication.active = active;
       await medication.save();
       resolve(medication);

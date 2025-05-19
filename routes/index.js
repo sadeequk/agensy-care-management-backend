@@ -1,11 +1,25 @@
 const express = require("express");
 const router = express.Router();
+const verifyCognitoToken = require("../middlewares/auth.mw");
+const setClientId = require("../middlewares/client.param.mw");
+router.param("clientId", setClientId);
 
-router.use("/user", require("./user.routes"));
-router.use("/client", require("./client.routes"));
-router.use("/client-contact", require("./client.contact.routes"));
-router.use("/notes", require("./note.routes"));
-router.use("/client-medications", require("./client.medication.routes"));
-router.use("/healthcare-provider", require("./healthcare.provider.routes"));
+// router.param("clientId", (req, res, next, id) => {
+//   req.clientId = id;
+//   next();
+// });
+
+router.use("/users", require("./user.routes"));
+router.use("/clients", verifyCognitoToken, require("./client.routes"));
+// Parent Routes that needs clientId
+router.use("/client/:clientId/contacts", verifyCognitoToken, require("./client.contact.routes"));
+router.use("/client/:clientId/notes", verifyCognitoToken, require("./note.routes"));
+router.use("/client/:clientId/medications", verifyCognitoToken, require("./client.medication.routes"));
+router.use(
+  "/client/:clientId/healthcare-providers",
+  verifyCognitoToken,
+  require("./client.healthcare.provider.routes")
+);
+router.use("/client/:clientId/medical", verifyCognitoToken, require("./client.medical.routes")); //singular
 
 module.exports = router;

@@ -22,11 +22,6 @@ module.exports.getNote = (userId, noteId, clientId) =>
           primary_user_id: userId,
         },
       });
-
-      if (!client) {
-        return reject(new Error("Client not found or does not belong to you."));
-      }
-
       const note = await Note.findOne({
         where: {
           id: noteId,
@@ -89,7 +84,6 @@ module.exports.deleteNote = (userId, noteId) =>
   new Promise(async (resolve, reject) => {
     try {
       const note = await Note.findByPk(noteId);
-      if (!note) return reject(new Error("Note not found"));
       if (note.user_id !== userId) return reject(new Error("You do not have permission to delete this note."));
       await note.destroy();
       resolve(true);
