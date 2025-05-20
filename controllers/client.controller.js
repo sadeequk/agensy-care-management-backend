@@ -15,7 +15,7 @@ exports.client_post = async (req, res) => {
 exports.client_put = async (req, res) => {
   try {
     const { clientId } = req.params;
-    const results = await joiSchemas.updateClientSchema.validateAsync(req.body);
+    const results = await joiSchemas.client_put.validateAsync(req.body);
 
     const client = await clientService.updateClient(clientId, results);
     return res.success(client);
