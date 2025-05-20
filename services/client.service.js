@@ -68,12 +68,10 @@ module.exports.getClientById = (clientId) =>
           {
             model: Document,
             as: "documents",
-            include: [
-              {
-                model: DocumentCategory,
-                as: "category",
-              },
-            ],
+          },
+          {
+            model: DocumentCategory,
+            as: "documentCategories",
           },
         ],
       });
@@ -128,12 +126,10 @@ module.exports.getUserClients = (userId) =>
               {
                 model: Document,
                 as: "documents",
-                include: [
-                  {
-                    model: DocumentCategory,
-                    as: "category",
-                  },
-                ],
+              },
+              {
+                model: DocumentCategory,
+                as: "documentCategories",
               },
             ],
           },
