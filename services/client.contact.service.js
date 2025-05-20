@@ -16,9 +16,6 @@ module.exports.updateClientContact = (contactId, contactData) =>
   new Promise(async (resolve, reject) => {
     try {
       const contact = await ClientContact.findByPk(contactId);
-      if (!contact) {
-        return reject(new Error("Contact not found"));
-      }
 
       await contact.update(contactData);
       resolve(contact);
@@ -40,10 +37,6 @@ module.exports.getClientContacts = (clientId) =>
         ],
       });
 
-      if (!client) {
-        return reject(new Error("Client not found"));
-      }
-
       resolve(client.contacts);
     } catch (error) {
       console.error("ClientContactService [getClientContacts] Error:", error);
@@ -55,10 +48,6 @@ module.exports.getClientContactById = (contactId) =>
   new Promise(async (resolve, reject) => {
     try {
       const contact = await ClientContact.findByPk(contactId);
-
-      if (!contact) {
-        return reject(new Error("Contact not found"));
-      }
 
       resolve(contact);
     } catch (error) {
@@ -111,9 +100,6 @@ module.exports.getAllContacts = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
       const client = await Client.findByPk(clientId);
-      if (!client) {
-        return reject(new Error("Client not found"));
-      }
       const contacts = await client.getContacts();
       resolve(contacts);
     } catch (error) {

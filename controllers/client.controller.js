@@ -58,3 +58,16 @@ exports.status_put = async (req, res) => {
     return res.serverError(error);
   }
 };
+
+exports.hospital_pharmacy_put = async (req, res) => {
+  try {
+    const { clientId } = req.params;
+    const results = await joiSchemas.hospital_pharmacy_put.validateAsync(req.body);
+
+    const client = await clientService.updateClient(clientId, results);
+    return res.success(client);
+  } catch (error) {
+    console.error("ClientController [updateHospitalPharmacy] Error:", error);
+    return res.serverError(error);
+  }
+};
