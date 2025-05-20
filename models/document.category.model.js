@@ -9,12 +9,21 @@ module.exports = (sequelize) =>
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
+      client_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: {
+          model: "clients",
+          key: "id",
+        },
+      },
       name: {
         type: DataTypes.STRING(100),
         allowNull: false,
       },
       description: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING(255),
+        allowNull: true,
       },
       default_access_level: {
         type: DataTypes.STRING(50),

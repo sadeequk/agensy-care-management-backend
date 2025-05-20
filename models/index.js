@@ -37,6 +37,10 @@ HealthcareProvider.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 Client.hasOne(ClientMedical, { foreignKey: "client_id", as: "medical", onDelete: "CASCADE" });
 ClientMedical.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
+//^ Client to DocumentCategory Relation (One-To-Many)
+Client.hasMany(DocumentCategory, { foreignKey: "client_id", as: "categories", onDelete: "CASCADE" });
+DocumentCategory.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+
 //^ Client to Document Relation (One-To-Many)
 Client.hasMany(Document, { foreignKey: "client_id", as: "documents", onDelete: "CASCADE" });
 Document.belongsTo(Client, { foreignKey: "client_id", as: "client" });
@@ -44,20 +48,6 @@ Document.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 //^ DocumentCategory to Document Relation (One-To-Many)
 DocumentCategory.hasMany(Document, { foreignKey: "category_id", as: "documents", onDelete: "SET NULL" });
 Document.belongsTo(DocumentCategory, { foreignKey: "category_id", as: "category" });
-
-//^ Client to DocumentCategory Relation (Many-To-Many through Document)
-Client.belongsToMany(DocumentCategory, {
-  through: Document,
-  foreignKey: "client_id",
-  otherKey: "category_id",
-  as: "documentCategories",
-});
-DocumentCategory.belongsToMany(Client, {
-  through: Document,
-  foreignKey: "category_id",
-  otherKey: "client_id",
-  as: "clients",
-});
 
 module.exports = {
   sequelize,

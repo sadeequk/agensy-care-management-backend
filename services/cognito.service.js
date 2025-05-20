@@ -60,7 +60,7 @@ const cognito = new CognitoIdentityProviderClient({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
-///vrfrerf
+
 const USER_POOL_ID = process.env.USER_POOL_ID;
 
 module.exports.addUserToGroup = async (username, groupName) => {

@@ -11,7 +11,7 @@ exports.document_post = Joi.object({
   //   s3_key: Joi.string().max(255),
   file_size: Joi.number().integer().required(),
   file_type: Joi.string().max(50).required(),
-  file_url: Joi.string().max(2559999),
+  file_url: Joi.string().max(2048),
   version: Joi.number().integer().default(1),
   active: Joi.boolean().default(true),
 });
@@ -25,7 +25,7 @@ exports.document_put = Joi.object({
   //   s3_key: Joi.string().max(255),
   file_size: Joi.number().integer(),
   file_type: Joi.string().max(50),
-  file_url: Joi.string().max(2559999),
+  file_url: Joi.string().max(2048),
   version: Joi.number().integer(),
   active: Joi.boolean(),
 });

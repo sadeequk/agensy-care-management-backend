@@ -32,11 +32,16 @@ exports.document_put = async (req, res) => {
     const { documentId } = req.params;
     const data = {
       ...req.body,
-      s3_bucket: req.file ? process.env.AWS_S3_BUCKET : req.body.s3_bucket,
-      file_size: req.file ? req.file.size : req.body.file_size,
-      file_type: req.file ? req.file.mimetype : req.body.file_type,
+      title: req.body.title,
+      description: req.body.description,
+      document_type: req.body.document_type,
+      category_id: req.body.category_id,
+      // File information is already set by updateFile middleware
       file_url: req.body.file_url,
-      category_id: req.params.categoryId,
+      file_size: req.body.file_size,
+      file_type: req.body.file_type,
+      s3_bucket: req.body.s3_bucket,
+      version: req.body.version ? req.body.version + 1 : 1,
     };
 
     const validatedData = await joiSchemas.document_put.validateAsync(data);

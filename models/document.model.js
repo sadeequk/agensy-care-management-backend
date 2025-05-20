@@ -12,24 +12,14 @@ module.exports = (sequelize) =>
       client_id: {
         type: DataTypes.UUID,
         allowNull: true,
-        references: {
-          model: "clients",
-          key: "id",
-        },
       },
       uploaded_by: {
         type: DataTypes.UUID,
-        references: {
-          model: "users",
-          key: "id",
-        },
+        allowNull: true,
       },
       category_id: {
         type: DataTypes.UUID,
-        references: {
-          model: "document_categories",
-          key: "id",
-        },
+        allowNull: true,
       },
       document_type: {
         type: DataTypes.STRING(100),
@@ -48,13 +38,9 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       file_url: {
-        type: DataTypes.STRING(2048), // or a large enough length
+        type: DataTypes.STRING(2048),
         allowNull: true,
       },
-      //   s3_key: {
-      //     type: DataTypes.STRING(255),
-      //     allowNull: true,
-      //   },
       file_size: {
         type: DataTypes.INTEGER,
         allowNull: false,

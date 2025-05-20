@@ -58,23 +58,68 @@ exports.uploadFile = [
   },
 ];
 
+exports.updateFile = [
+  upload.single("file"),
+  async (req, res, next) => {
+    if (!req.file) return next();
+
+    try {
+      const document = await Document.findByPk(req.params.documentId);
+      if (!document) {
+        return res.fail("Document not found");
+      }
+
+      if (document.file_url) {
+        const oldKey = document.file_url.split(".com/")[1];
+        try {
+          const deleteCommand = new DeleteObjectCommand({
+            Bucket: process.env.AWS_S3_BUCKET,
+            Key: oldKey,
+          });
+          await s3.send(deleteCommand);
+          console.log("Successfully deleted old file from S3:", oldKey);
+        } catch (s3Error) {
+          console.error("Error deleting old file from S3:", s3Error);
+          return res.serverError("Failed to delete old file from S3");
+        }
+      }
+
+      const originalName = req.file.originalname.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9._-]/g, "");
+      const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}-${originalName}`;
+
+      const putCommand = new PutObjectCommand({
+        Bucket: process.env.AWS_S3_BUCKET,
+        Key: fileName,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
+      });
+
+      await s3.send(putCommand);
+
+      req.body.file_url = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+      req.body.file_size = req.file.size;
+      req.body.file_type = req.file.mimetype;
+      req.body.s3_bucket = process.env.AWS_S3_BUCKET;
+
+      next();
+    } catch (error) {
+      console.error("S3 update error:", error);
+      return res.serverError(error);
+    }
+  },
+];
+
 exports.deleteFile = async (req, res, next) => {
   try {
     const { documentId } = req.params;
-    console.log("Attempting to delete document with ID:", documentId);
-
     const document = await Document.findByPk(documentId);
-    console.log("Found document:", document ? "Yes" : "No");
 
     if (!document) {
-      console.log("Document not found, skipping S3 deletion");
       return res.fail("Document not found");
     }
 
     if (document.file_url) {
-      console.log("Document has file_url:", document.file_url);
       try {
-        // Extract the key from the file_url
         const fileUrl = document.file_url;
         const key = fileUrl.split(".com/")[1];
         console.log("Attempting to delete S3 file with key:", key);
@@ -85,7 +130,6 @@ exports.deleteFile = async (req, res, next) => {
         });
 
         await s3.send(deleteCommand);
-        console.log("Successfully deleted file from S3:", key);
       } catch (s3Error) {
         console.error("Error deleting file from S3:", s3Error);
         console.error("S3 Error details:", {
@@ -94,8 +138,6 @@ exports.deleteFile = async (req, res, next) => {
           requestId: s3Error.$metadata?.requestId,
         });
       }
-    } else {
-      console.log("Document has no file_url, skipping S3 deletion");
     }
     next();
   } catch (error) {
@@ -103,5 +145,3 @@ exports.deleteFile = async (req, res, next) => {
     return res.serverError(error);
   }
 };
-
-exports.generateSignedUrl = (req, res, next) => next();
