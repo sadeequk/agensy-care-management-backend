@@ -72,6 +72,7 @@ module.exports.getClientById = (clientId) =>
           {
             model: DocumentCategory,
             as: "documentCategories",
+            through: { attributes: [] },
           },
         ],
       });
@@ -130,6 +131,7 @@ module.exports.getUserClients = (userId) =>
               {
                 model: DocumentCategory,
                 as: "documentCategories",
+                through: { attributes: [] },
               },
             ],
           },

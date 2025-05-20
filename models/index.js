@@ -45,6 +45,20 @@ Document.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 DocumentCategory.hasMany(Document, { foreignKey: "category_id", as: "documents", onDelete: "SET NULL" });
 Document.belongsTo(DocumentCategory, { foreignKey: "category_id", as: "category" });
 
+//^ Client to DocumentCategory Relation (Many-To-Many through Document)
+Client.belongsToMany(DocumentCategory, {
+  through: Document,
+  foreignKey: "client_id",
+  otherKey: "category_id",
+  as: "documentCategories",
+});
+DocumentCategory.belongsToMany(Client, {
+  through: Document,
+  foreignKey: "category_id",
+  otherKey: "client_id",
+  as: "clients",
+});
+
 module.exports = {
   sequelize,
   User,
