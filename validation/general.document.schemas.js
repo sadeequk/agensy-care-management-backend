@@ -6,7 +6,6 @@ exports.document_post = Joi.object({
   document_type: Joi.string().max(100).required(),
   title: Joi.string().max(255).required(),
   description: Joi.string().allow(""),
-  s3_bucket: Joi.string().max(255).required(),
   file_size: Joi.number().integer(),
   file_type: Joi.string().max(100).valid("application/pdf", "image/jpeg", "image/png", "image/gif").messages({
     "any.only": "Invalid file type: {#value}. Only PDF and image files (JPEG, PNG, GIF) are allowed.",
@@ -21,7 +20,6 @@ exports.document_put = Joi.object({
   document_type: Joi.string().max(100),
   title: Joi.string().max(255),
   description: Joi.string().allow(""),
-  s3_bucket: Joi.string().max(255),
   file_size: Joi.number().integer(),
   file_type: Joi.string().max(100).valid("application/pdf", "image/jpeg", "image/png", "image/gif").messages({
     "any.only": "Invalid file type: {#value}. Only PDF and image files (JPEG, PNG, GIF) are allowed.",

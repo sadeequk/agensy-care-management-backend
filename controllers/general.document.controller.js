@@ -7,7 +7,6 @@ exports.document_post = async (req, res) => {
     const data = {
       ...req.body,
       uploaded_by: req.user.id,
-      s3_bucket: process.env.AWS_S3_BUCKET,
       category_id: null,
       file_size: req.file.size,
       file_type: req.file.mimetype,

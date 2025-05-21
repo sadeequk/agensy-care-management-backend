@@ -33,10 +33,6 @@ module.exports = (sequelize) =>
         type: DataTypes.STRING(255),
         allowNull: false,
       },
-      s3_bucket: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-      },
       file_url: {
         type: DataTypes.STRING(2048),
         allowNull: true,
