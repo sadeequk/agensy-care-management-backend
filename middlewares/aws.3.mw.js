@@ -1,5 +1,6 @@
 const multer = require("multer");
-const { S3Client, PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { Document } = require("../models");
 
 const s3 = new S3Client({
@@ -142,6 +143,39 @@ exports.deleteFile = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("File deletion middleware error:", error);
+    return res.serverError(error);
+  }
+};
+
+exports.generateDownloadUrl = async (req, res, next) => {
+  try {
+    const { documentId } = req.params;
+    const document = await Document.findByPk(documentId);
+
+    if (!document) {
+      return res.fail("Document not found");
+    }
+
+    const fileUrl = document.file_url;
+    const key = fileUrl.split(".com/")[1];
+
+    const command = new GetObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: key,
+    });
+
+    // Generate a pre-signed URL that expires in 15 minutes
+    const signedUrl = await getSignedUrl(s3, command, { expiresIn: 900 });
+
+    req.downloadInfo = {
+      downloadUrl: signedUrl,
+      fileName: key.split("-").slice(2).join("-"), // Remove timestamp and random number from filename
+      fileType: document.file_type,
+    };
+
+    next();
+  } catch (error) {
+    console.error("S3 download URL generation error:", error);
     return res.serverError(error);
   }
 };

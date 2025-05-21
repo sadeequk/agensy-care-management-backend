@@ -57,3 +57,12 @@ exports.document_delete = async (req, res) => {
     return res.serverError(error);
   }
 };
+
+exports.document_download = async (req, res) => {
+  try {
+    return res.success(req.downloadInfo);
+  } catch (error) {
+    console.error("DocumentController [document_download] Error:", error);
+    return res.serverError(error);
+  }
+};
