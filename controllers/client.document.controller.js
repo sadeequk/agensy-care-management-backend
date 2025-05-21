@@ -39,7 +39,7 @@ exports.document_get = async (req, res) => {
 exports.documents_get = async (req, res) => {
   try {
     const clientId = req.clientId;
-    const documents = await documentService.getDocumentsByClientId(clientId);
+    const documents = await documentService.getAllDocuments(clientId);
     return res.success(documents);
   } catch (error) {
     console.error("DocumentController [documents_get] Error:", error);

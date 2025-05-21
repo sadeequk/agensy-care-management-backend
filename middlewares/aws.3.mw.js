@@ -17,23 +17,27 @@ const upload = multer({
   storage,
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
   fileFilter: (req, file, cb) => {
-    const allowedTypes = [
-      "application/pdf",
-      "image/jpeg",
-      "image/png",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document", //docx
-    ];
+    const allowedTypes = ["application/pdf", "image/jpeg", "image/png", "image/gif"];
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error("Invalid file type. Only PDF, JPEG, PNG, and Word documents are allowed."));
+      cb(new Error(`Invalid file type: Only PDF and image files (JPEG, PNG, GIF) are allowed.`));
     }
   },
 });
 
+function uploadFileWithErrorHandler(req, res, next) {
+  upload.single("file")(req, res, function (err) {
+    if (err) {
+      return res.fail(err.message);
+    }
+    next();
+  });
+}
+
 exports.uploadFile = [
-  upload.single("file"),
+  // upload.single("file"),
+  uploadFileWithErrorHandler,
   async (req, res, next) => {
     if (!req.file) return next();
 
@@ -46,6 +50,13 @@ exports.uploadFile = [
         Key: fileName,
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
+        //encryption
+        ServerSideEncryption: "AES256", // Enable server-side encryption
+        Metadata: {
+          originalName: originalName,
+          uploadedBy: req.user.id,
+          clientId: req.clientId,
+        },
       });
 
       await s3.send(putCommand);
@@ -93,6 +104,12 @@ exports.updateFile = [
         Key: fileName,
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
+        ServerSideEncryption: "AES256", // Enable server-side encryption
+        Metadata: {
+          originalName: originalName,
+          uploadedBy: req.user.id,
+          clientId: req.clientId,
+        },
       });
 
       await s3.send(putCommand);

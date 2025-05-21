@@ -1,4 +1,4 @@
-const { Document, User } = require("../models");
+const { Document, User, DocumentCategory } = require("../models");
 
 exports.createDocument = (documentData) =>
   new Promise(async (resolve, reject) => {
@@ -39,6 +39,9 @@ exports.getAllDocuments = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
       const whereClause = { active: true };
+      if (clientId) {
+        whereClause.client_id = clientId;
+      }
 
       const documents = await Document.findAll({
         where: whereClause,
@@ -48,7 +51,13 @@ exports.getAllDocuments = (clientId) =>
             as: "uploadedBy",
             attributes: ["id", "first_name", "last_name"],
           },
+          {
+            model: DocumentCategory,
+            as: "category",
+            attributes: ["id", "name", "description"],
+          },
         ],
+        order: [["created_at", "DESC"]],
       });
       resolve(documents);
     } catch (error) {

@@ -9,15 +9,9 @@ exports.document_post = Joi.object({
   description: Joi.string().allow(""),
   s3_bucket: Joi.string().max(255).required(),
   file_size: Joi.number().integer(),
-  file_type: Joi.string()
-    .max(100)
-    .valid(
-      "application/pdf",
-      "image/jpeg",
-      "image/png",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ),
+  file_type: Joi.string().max(100).valid("application/pdf", "image/jpeg", "image/png", "image/gif").messages({
+    "any.only": "Invalid file type: {#value}. Only PDF and image files (JPEG, PNG, GIF) are allowed.",
+  }),
   file_url: Joi.string().max(2048),
   version: Joi.number().integer().default(1),
   active: Joi.boolean().default(true),
@@ -30,15 +24,9 @@ exports.document_put = Joi.object({
   description: Joi.string().allow(""),
   s3_bucket: Joi.string().max(255),
   file_size: Joi.number().integer(),
-  file_type: Joi.string()
-    .max(100)
-    .valid(
-      "application/pdf",
-      "image/jpeg",
-      "image/png",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ),
+  file_type: Joi.string().max(100).valid("application/pdf", "image/jpeg", "image/png", "image/gif").messages({
+    "any.only": "Invalid file type: {#value}. Only PDF and image files (JPEG, PNG, GIF) are allowed.",
+  }),
   file_url: Joi.string().max(2048),
   version: Joi.number().integer(),
   active: Joi.boolean(),
