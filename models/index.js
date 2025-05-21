@@ -4,10 +4,10 @@ const Client = require("./client.model")(sequelize);
 const ClientContact = require("./client.contact.model")(sequelize);
 const ClientNote = require("./note.model")(sequelize);
 const ClientMedication = require("./client.medication.model")(sequelize);
-const HealthcareProvider = require("./healthcare.provider.model")(sequelize);
+const HealthcareProvider = require("./client.healthcare.provider.model")(sequelize);
 const ClientMedical = require("./client.medical.model")(sequelize);
-const DocumentCategory = require("./document.category.model")(sequelize);
-const Document = require("./document.model")(sequelize);
+const DocumentCategory = require("./client.document.category.model")(sequelize);
+const Document = require("./client.document.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user

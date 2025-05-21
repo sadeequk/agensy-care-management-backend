@@ -1,5 +1,5 @@
-const documentService = require("../services/document.service");
-const joiSchemas = require("../validation/document.schemas");
+const documentService = require("../services/client.document.service");
+const joiSchemas = require("../validation/client.document.schemas");
 
 exports.document_post = async (req, res) => {
   try {

@@ -1,11 +1,10 @@
-const categoryService = require("../services/document.category.service");
-const joiSchemas = require("../validation/document.category.schemas");
+const categoryService = require("../services/client.document.category.service");
+const joiSchemas = require("../validation/client.document.category.schemas");
 
 exports.category_post = async (req, res) => {
   try {
     const data = await joiSchemas.category_post.validateAsync(req.body);
     const client_id = req.client.id;
-    console.log("====>", client_id);
     const category = await categoryService.createCategory({ ...data, client_id });
     return res.success(category);
   } catch (error) {

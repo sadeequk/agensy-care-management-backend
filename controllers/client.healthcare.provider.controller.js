@@ -1,6 +1,6 @@
-const healthcareProviderService = require("../services/healthcare.provider.service");
+const healthcareProviderService = require("../services/client.healthcare.provider.service");
 const clientService = require("../services/client.service");
-const joiSchemas = require("../validation/healthcare.provider.schemas");
+const joiSchemas = require("../validation/client.healthcare.provider.schemas");
 
 exports.provider_post = async (req, res) => {
   try {
