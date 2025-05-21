@@ -12,10 +12,6 @@ module.exports = (sequelize) =>
       client_id: {
         type: DataTypes.UUID,
         allowNull: true,
-        references: {
-          model: "clients",
-          key: "id",
-        },
       },
       name: {
         type: DataTypes.STRING(100),

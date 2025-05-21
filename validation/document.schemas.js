@@ -8,9 +8,16 @@ exports.document_post = Joi.object({
   title: Joi.string().max(255).required(),
   description: Joi.string().allow(""),
   s3_bucket: Joi.string().max(255).required(),
-  //   s3_key: Joi.string().max(255),
-  file_size: Joi.number().integer().required(),
-  file_type: Joi.string().max(50).required(),
+  file_size: Joi.number().integer(),
+  file_type: Joi.string()
+    .max(100)
+    .valid(
+      "application/pdf",
+      "image/jpeg",
+      "image/png",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ),
   file_url: Joi.string().max(2048),
   version: Joi.number().integer().default(1),
   active: Joi.boolean().default(true),
@@ -22,9 +29,16 @@ exports.document_put = Joi.object({
   title: Joi.string().max(255),
   description: Joi.string().allow(""),
   s3_bucket: Joi.string().max(255),
-  //   s3_key: Joi.string().max(255),
   file_size: Joi.number().integer(),
-  file_type: Joi.string().max(50),
+  file_type: Joi.string()
+    .max(100)
+    .valid(
+      "application/pdf",
+      "image/jpeg",
+      "image/png",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ),
   file_url: Joi.string().max(2048),
   version: Joi.number().integer(),
   active: Joi.boolean(),

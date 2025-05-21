@@ -49,6 +49,9 @@ Document.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 DocumentCategory.hasMany(Document, { foreignKey: "category_id", as: "documents", onDelete: "SET NULL" });
 Document.belongsTo(DocumentCategory, { foreignKey: "category_id", as: "category" });
 
+//^ Document to User Relation (One-To-One)      # general (used in "document service" for populating user data who upload the document )
+Document.belongsTo(User, { foreignKey: "uploaded_by", as: "uploadedBy" });
+
 module.exports = {
   sequelize,
   User,

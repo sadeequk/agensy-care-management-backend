@@ -14,14 +14,14 @@ const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
   fileFilter: (req, file, cb) => {
     const allowedTypes = [
       "application/pdf",
       "image/jpeg",
       "image/png",
       "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document", //docx
     ];
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
@@ -50,6 +50,7 @@ exports.uploadFile = [
       await s3.send(putCommand);
 
       req.body.file_url = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+      // req.body.file_url = req.file.location;
       next();
     } catch (error) {
       console.error("S3 upload error:", error);

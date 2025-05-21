@@ -1,24 +1,23 @@
-const { Document } = require("../models");
+const { Document, User } = require("../models");
 
 exports.createDocument = (documentData) =>
   new Promise(async (resolve, reject) => {
     try {
       const document = await Document.create(documentData);
-      resolve(document);
+      //  resolve(document);
+
+      const documentWithUser = await Document.findByPk(document.id, {
+        include: [
+          {
+            model: User,
+            as: "uploadedBy",
+            attributes: ["id", "first_name", "last_name"],
+          },
+        ],
+      });
+      resolve(documentWithUser);
     } catch (error) {
       console.error("DocumentService [createDocument] Error:", error);
-      reject(error);
-    }
-  });
-
-exports.updateDocument = (documentId, documentData) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const document = await Document.findByPk(documentId);
-      await document.update(documentData);
-      resolve(document);
-    } catch (error) {
-      console.error("DocumentService [updateDocument] Error:", error);
       reject(error);
     }
   });
@@ -41,7 +40,16 @@ exports.getAllDocuments = (clientId) =>
     try {
       const whereClause = { active: true };
 
-      const documents = await Document.findAll({ where: whereClause });
+      const documents = await Document.findAll({
+        where: whereClause,
+        include: [
+          {
+            model: User,
+            as: "uploadedBy",
+            attributes: ["id", "first_name", "last_name"],
+          },
+        ],
+      });
       resolve(documents);
     } catch (error) {
       console.error("DocumentService [getAllDocuments] Error:", error);
@@ -52,7 +60,15 @@ exports.getAllDocuments = (clientId) =>
 exports.getDocumentById = (documentId) =>
   new Promise(async (resolve, reject) => {
     try {
-      const document = await Document.findByPk(documentId);
+      const document = await Document.findByPk(documentId, {
+        include: [
+          {
+            model: User,
+            as: "uploadedBy",
+            attributes: ["id", "first_name", "last_name"],
+          },
+        ],
+      });
       resolve(document);
     } catch (error) {
       console.error("DocumentService [getDocumentById] Error:", error);

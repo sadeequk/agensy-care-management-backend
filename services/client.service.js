@@ -68,6 +68,13 @@ module.exports.getClientById = (clientId) =>
           {
             model: Document,
             as: "documents",
+            include: [
+              {
+                model: User,
+                as: "uploadedBy",
+                attributes: ["id", "first_name", "last_name"],
+              },
+            ],
           },
           {
             model: DocumentCategory,
@@ -126,6 +133,13 @@ module.exports.getUserClients = (userId) =>
               {
                 model: Document,
                 as: "documents",
+                include: [
+                  {
+                    model: User,
+                    as: "uploadedBy",
+                    attributes: ["id", "first_name", "last_name"],
+                  },
+                ],
               },
               {
                 model: DocumentCategory,
