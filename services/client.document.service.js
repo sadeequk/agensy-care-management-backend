@@ -10,7 +10,7 @@ exports.createDocument = (documentData) =>
         include: [
           {
             model: User,
-            as: "uploadedBy",
+            as: "userInfo",
             attributes: ["id", "first_name", "last_name"],
           },
         ],
@@ -48,7 +48,7 @@ exports.getAllDocuments = (clientId) =>
         include: [
           {
             model: User,
-            as: "uploadedBy",
+            as: "userInfo",
             attributes: ["id", "first_name", "last_name"],
           },
           {
@@ -73,7 +73,7 @@ exports.getDocumentById = (documentId) =>
         include: [
           {
             model: User,
-            as: "uploadedBy",
+            as: "userInfo",
             attributes: ["id", "first_name", "last_name"],
           },
         ],
