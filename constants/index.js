@@ -37,3 +37,10 @@ exports.LIVING_SITUATION = {
   NURSING: "nursing",
   FAMILY: "family",
 };
+
+exports.ALLOWED_FILE_TYPES = {
+  "application/pdf": "PDF",
+  "image/jpeg": "JPEG",
+  "image/png": "PNG",
+  "image/gif": "GIF",
+};

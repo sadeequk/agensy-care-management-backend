@@ -9,10 +9,10 @@ exports.document_post = async (req, res) => {
       client_id: req.clientId,
       uploaded_by: req.user.id,
       s3_bucket: process.env.AWS_S3_BUCKET,
-      category_id: req.params.categoryId,
+      category_id: req.body.category_id,
       file_size: req.file.size,
       file_type: req.file.mimetype,
-      file_url: req.body.file_url,
+      file_url: req.uploadedFile.url,
     };
 
     const validatedData = await joiSchemas.document_post.validateAsync(data);
@@ -54,15 +54,6 @@ exports.document_delete = async (req, res) => {
     return res.success({ message: "Document deleted successfully" });
   } catch (error) {
     console.error("DocumentController [document_delete] Error:", error);
-    return res.serverError(error);
-  }
-};
-
-exports.document_download = async (req, res) => {
-  try {
-    return res.success(req.downloadInfo);
-  } catch (error) {
-    console.error("DocumentController [document_download] Error:", error);
     return res.serverError(error);
   }
 };
