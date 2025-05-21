@@ -9,9 +9,9 @@ module.exports = (sequelize) =>
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      client_id: {
+      primary_user_id: {
         type: DataTypes.UUID,
-        allowNull: true,
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING(100),

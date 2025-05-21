@@ -1,8 +1,18 @@
-const { DocumentCategory } = require("../models");
+const { DocumentCategory, User } = require("../models");
+const { USER_ROLES } = require("../constants/index");
+
+const checkPrimaryUserRole = async (userId) => {
+  const user = await User.findByPk(userId);
+  if (!user || user.role !== USER_ROLES.PRIMARY_USER) {
+    throw new Error("Only primary users can manage document categories");
+  }
+  return user;
+};
 
 exports.createCategory = (categoryData) =>
   new Promise(async (resolve, reject) => {
     try {
+      await checkPrimaryUserRole(categoryData.primary_user_id);
       const category = await DocumentCategory.create(categoryData);
       resolve(category);
     } catch (error) {
@@ -11,13 +21,14 @@ exports.createCategory = (categoryData) =>
     }
   });
 
-exports.updateCategory = (categoryId, categoryData, client_id) =>
+exports.updateCategory = (categoryId, categoryData, primary_user_id) =>
   new Promise(async (resolve, reject) => {
     try {
+      await checkPrimaryUserRole(primary_user_id);
       const category = await DocumentCategory.findOne({
         where: {
           id: categoryId,
-          client_id: client_id,
+          primary_user_id: primary_user_id,
         },
       });
 
@@ -33,12 +44,13 @@ exports.updateCategory = (categoryId, categoryData, client_id) =>
     }
   });
 
-exports.getAllCategories = (client_id) =>
+exports.getAllCategories = (primary_user_id) =>
   new Promise(async (resolve, reject) => {
     try {
+      await checkPrimaryUserRole(primary_user_id);
       const categories = await DocumentCategory.findAll({
         where: {
-          client_id: client_id,
+          primary_user_id: primary_user_id,
         },
       });
       resolve(categories);
@@ -48,13 +60,14 @@ exports.getAllCategories = (client_id) =>
     }
   });
 
-exports.getCategoryById = (categoryId, client_id) =>
+exports.getCategoryById = (categoryId, primary_user_id) =>
   new Promise(async (resolve, reject) => {
     try {
+      await checkPrimaryUserRole(primary_user_id);
       const category = await DocumentCategory.findOne({
         where: {
           id: categoryId,
-          client_id: client_id,
+          primary_user_id: primary_user_id,
         },
       });
 

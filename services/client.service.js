@@ -7,7 +7,6 @@ const {
   HealthcareProvider,
   ClientMedical,
   Document,
-  DocumentCategory,
 } = require("../models");
 const clientContactService = require("./client.contact.service");
 const userService = require("./user.service");
@@ -76,10 +75,6 @@ module.exports.getClientById = (clientId) =>
               },
             ],
           },
-          {
-            model: DocumentCategory,
-            as: "categories",
-          },
         ],
       });
       resolve(client);
@@ -140,10 +135,6 @@ module.exports.getUserClients = (userId) =>
                     attributes: ["id", "first_name", "last_name"],
                   },
                 ],
-              },
-              {
-                model: DocumentCategory,
-                as: "categories",
               },
             ],
           },

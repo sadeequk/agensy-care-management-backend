@@ -6,7 +6,7 @@ const ClientNote = require("./note.model")(sequelize);
 const ClientMedication = require("./client.medication.model")(sequelize);
 const HealthcareProvider = require("./client.healthcare.provider.model")(sequelize);
 const ClientMedical = require("./client.medical.model")(sequelize);
-const DocumentCategory = require("./client.document.category.model")(sequelize);
+const DocumentCategory = require("./document.category.model")(sequelize);
 const Document = require("./client.document.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
@@ -37,9 +37,9 @@ HealthcareProvider.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 Client.hasOne(ClientMedical, { foreignKey: "client_id", as: "medical", onDelete: "CASCADE" });
 ClientMedical.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
-//^ Client to DocumentCategory Relation (One-To-Many)
-Client.hasMany(DocumentCategory, { foreignKey: "client_id", as: "categories", onDelete: "CASCADE" });
-DocumentCategory.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+//^ User to DocumentCategory Relation (One-To-Many)
+User.hasMany(DocumentCategory, { foreignKey: "primary_user_id", as: "categories", onDelete: "CASCADE" });
+DocumentCategory.belongsTo(User, { foreignKey: "primary_user_id", as: "primaryUser" });
 
 //^ Client to Document Relation (One-To-Many)
 Client.hasMany(Document, { foreignKey: "client_id", as: "documents", onDelete: "CASCADE" });
