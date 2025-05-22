@@ -17,8 +17,8 @@ module.exports = (sequelize) =>
         type: DataTypes.UUID,
         allowNull: true,
       },
-      category_id: {
-        type: DataTypes.UUID,
+      category: {
+        type: DataTypes.STRING(100),
         allowNull: true,
       },
       document_type: {

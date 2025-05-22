@@ -1,4 +1,4 @@
-const { Document, User, DocumentCategory } = require("../models");
+const { Document, User } = require("../models");
 
 exports.createDocument = (documentData) =>
   new Promise(async (resolve, reject) => {
@@ -50,11 +50,6 @@ exports.getAllDocuments = (clientId) =>
             model: User,
             as: "userInfo",
             attributes: ["id", "first_name", "last_name"],
-          },
-          {
-            model: DocumentCategory,
-            as: "category",
-            attributes: ["id", "name", "description"],
           },
         ],
         order: [["created_at", "DESC"]],

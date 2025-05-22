@@ -44,3 +44,14 @@ exports.ALLOWED_FILE_TYPES = {
   "image/png": "PNG",
   "image/gif": "GIF",
 };
+
+module.exports.DOCUMENT_CATEGORIES = {
+  MEDICAL_RECORDS: "Medical Records",
+  LEGAL_DOCUMENTS: "Legal Documents",
+  FINANCIAL_RECORDS: "Financial Records",
+  INSURANCE_INFORMATION: "Insurance Information",
+  CARE_PLANS: "Care Plans",
+  ID_CARDS_VITAL: "ID Cards & Vital Documents",
+  NOTES_CORRESPONDENCE: "Notes & Correspondence",
+  MISCELLANEOUS: "Miscellaneous/Other",
+};

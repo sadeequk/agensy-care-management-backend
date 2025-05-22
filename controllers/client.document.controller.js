@@ -8,7 +8,7 @@ exports.document_post = async (req, res) => {
       ...req.body,
       client_id: req.clientId,
       uploaded_by: req.user.id,
-      category_id: req.body.category_id,
+      category: req.body.category,
       file_size: req.file.size,
       file_type: req.file.mimetype,
       file_url: req.uploadedFile.url,

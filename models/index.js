@@ -6,7 +6,6 @@ const ClientNote = require("./note.model")(sequelize);
 const ClientMedication = require("./client.medication.model")(sequelize);
 const HealthcareProvider = require("./client.healthcare.provider.model")(sequelize);
 const ClientMedical = require("./client.medical.model")(sequelize);
-const DocumentCategory = require("./document.category.model")(sequelize);
 const Document = require("./client.document.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
@@ -37,17 +36,9 @@ HealthcareProvider.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 Client.hasOne(ClientMedical, { foreignKey: "client_id", as: "medical", onDelete: "CASCADE" });
 ClientMedical.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
-//^ User to DocumentCategory Relation (One-To-Many)
-User.hasMany(DocumentCategory, { foreignKey: "primary_user_id", as: "categories", onDelete: "CASCADE" });
-DocumentCategory.belongsTo(User, { foreignKey: "primary_user_id", as: "primaryUser" });
-
 //^ Client to Document Relation (One-To-Many)
 Client.hasMany(Document, { foreignKey: "client_id", as: "documents", onDelete: "CASCADE" });
 Document.belongsTo(Client, { foreignKey: "client_id", as: "client" });
-
-//^ DocumentCategory to Document Relation (One-To-Many)
-DocumentCategory.hasMany(Document, { foreignKey: "category_id", as: "documents", onDelete: "SET NULL" });
-Document.belongsTo(DocumentCategory, { foreignKey: "category_id", as: "category" });
 
 //^ Document to User Relation (One-To-One)      # general (used in "document service" for populating user data who upload the document )
 Document.belongsTo(User, { foreignKey: "uploaded_by", as: "userInfo" });
@@ -61,6 +52,5 @@ module.exports = {
   ClientMedication,
   HealthcareProvider,
   ClientMedical,
-  DocumentCategory,
   Document,
 };
