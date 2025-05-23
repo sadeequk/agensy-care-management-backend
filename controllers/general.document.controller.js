@@ -72,7 +72,7 @@ exports.document_delete = async (req, res) => {
 
     // First delete the file from S3
     await deleteFile(req, res, async () => {
-      await documentService.deleteDocument(documentId);
+      await generalDocumentService.deleteDocument(documentId);
       return res.success({ message: "Document deleted successfully" });
     });
   } catch (error) {
