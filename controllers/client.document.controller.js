@@ -9,6 +9,7 @@ exports.document_post = async (req, res) => {
     const data = {
       ...req.body,
       client_id: req.clientId,
+      primary_user_id: req.user.id, //! Will be changed in future
       uploaded_by: req.user.id,
       category: req.body.category,
       file_size: req.file.size,
@@ -21,7 +22,6 @@ exports.document_post = async (req, res) => {
 
     //pre-signed url
     const presignedUrl = await generatePresignedUrl(document.file_name);
-    // console.log("fileName==========>", document.file_name);
 
     const response = document.toJSON();
 

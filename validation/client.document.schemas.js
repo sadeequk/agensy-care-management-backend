@@ -3,6 +3,7 @@ const { DOCUMENT_CATEGORIES, DOCUMENT_UPLOAD_TYPES } = require("../constants");
 
 exports.document_post = Joi.object({
   client_id: Joi.string().uuid().required(),
+  primary_user_id: Joi.string().uuid().required(),
   uploaded_by: Joi.string().uuid().required(),
   upload_type: Joi.string()
     .valid(...Object.values(DOCUMENT_UPLOAD_TYPES))

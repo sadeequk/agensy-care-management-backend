@@ -14,6 +14,10 @@ module.exports = (sequelize) =>
         type: DataTypes.UUID,
         allowNull: true,
       },
+      primary_user_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
       uploaded_by: {
         type: DataTypes.UUID,
         allowNull: true,
