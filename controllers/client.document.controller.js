@@ -9,8 +9,8 @@ exports.document_post = async (req, res) => {
     const data = {
       ...req.body,
       client_id: req.clientId,
-      primary_user_id: req.user.id, //! Will be changed in future
       uploaded_by: req.user.id,
+      primary_user_id: req.user.id, //! Will be changed in future
       category: req.body.category,
       file_size: req.file.size,
       file_type: req.file.mimetype,
@@ -22,12 +22,13 @@ exports.document_post = async (req, res) => {
 
     //pre-signed url
     const presignedUrl = await generatePresignedUrl(document.file_name);
+    // console.log("fileName==========>", document.file_name);
 
     const response = document.toJSON();
 
     return res.success({
       ...response,
-      presigned_url: presignedUrl,
+      file_url: presignedUrl,
     });
   } catch (error) {
     console.error("DocumentController [document_post] Error:", error);
@@ -49,7 +50,7 @@ exports.document_get = async (req, res) => {
 
     return res.success({
       ...response,
-      presigned_url: presignedUrl,
+      file_url: presignedUrl,
     });
   } catch (error) {
     console.error("DocumentController [document_get] Error:", error);

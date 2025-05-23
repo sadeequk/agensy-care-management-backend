@@ -56,7 +56,7 @@ exports.uploadFile = [
         ServerSideEncryption: "AES256",
         Metadata: {
           originalName: originalName,
-          userInfo: req.user.id, //UserInfo
+          uploadedBy: req.user.id, //uploadedBy
           clientId: req.clientId,
         },
       });

@@ -3,13 +3,12 @@ const { Document, User } = require("../models");
 exports.createDocument = (documentData) =>
   new Promise(async (resolve, reject) => {
     try {
-      console.log("Saving document with data:", documentData);
       const document = await Document.create(documentData);
       const documentWithUser = await Document.findByPk(document.id, {
         include: [
           {
             model: User,
-            as: "userInfo",
+            as: "uploadedBy",
             attributes: ["id", "first_name", "last_name"],
           },
         ],
@@ -47,7 +46,7 @@ exports.getAllDocuments = (clientId) =>
         include: [
           {
             model: User,
-            as: "userInfo",
+            as: "uploadedBy",
             attributes: ["id", "first_name", "last_name"],
           },
         ],
@@ -67,7 +66,7 @@ exports.getDocumentById = (documentId) =>
         include: [
           {
             model: User,
-            as: "userInfo",
+            as: "uploadedBy",
             attributes: ["id", "first_name", "last_name"],
           },
         ],

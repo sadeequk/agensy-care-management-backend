@@ -1,4 +1,4 @@
-const { Document, User, DocumentCategory } = require("../models");
+const { Document, User } = require("../models");
 
 exports.createDocument = (documentData) =>
   new Promise(async (resolve, reject) => {
@@ -8,13 +8,8 @@ exports.createDocument = (documentData) =>
         include: [
           {
             model: User,
-            as: "userInfo",
+            as: "uploadedBy",
             attributes: ["id", "first_name", "last_name"],
-          },
-          {
-            model: DocumentCategory,
-            as: "category",
-            attributes: ["id", "name", "description"],
           },
         ],
       });
@@ -36,13 +31,8 @@ exports.getDocumentById = (documentId) =>
         include: [
           {
             model: User,
-            as: "userInfo",
+            as: "uploadedBy",
             attributes: ["id", "first_name", "last_name"],
-          },
-          {
-            model: DocumentCategory,
-            as: "category",
-            attributes: ["id", "name", "description"],
           },
         ],
       });
@@ -64,13 +54,8 @@ exports.getAllDocuments = () =>
         include: [
           {
             model: User,
-            as: "userInfo",
+            as: "uploadedBy",
             attributes: ["id", "first_name", "last_name"],
-          },
-          {
-            model: DocumentCategory,
-            as: "category",
-            attributes: ["id", "name", "description"],
           },
         ],
         order: [["created_at", "DESC"]],
@@ -85,21 +70,12 @@ exports.getAllDocuments = () =>
 exports.deleteDocument = (documentId) =>
   new Promise(async (resolve, reject) => {
     try {
-      const document = await Document.findOne({
-        where: {
-          id: documentId,
-          client_id: null,
-        },
-      });
-
-      if (!document) {
-        throw new Error("Document not found");
-      }
+      const document = await Document.findByPk(documentId);
 
       await document.destroy();
       resolve(true);
     } catch (error) {
-      console.error("GeneralDocumentService [deleteDocument] Error:", error);
+      console.error("DocumentService [deleteDocument] Error:", error);
       reject(error);
     }
   });

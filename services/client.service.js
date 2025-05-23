@@ -70,7 +70,7 @@ module.exports.getClientById = (clientId) =>
             include: [
               {
                 model: User,
-                as: "userInfo",
+                as: "uploadedBy",
                 attributes: ["id", "first_name", "last_name"],
               },
             ],
@@ -131,7 +131,7 @@ module.exports.getUserClients = (userId) =>
                 include: [
                   {
                     model: User,
-                    as: "userInfo",
+                    as: "uploadedBy",
                     attributes: ["id", "first_name", "last_name"],
                   },
                 ],

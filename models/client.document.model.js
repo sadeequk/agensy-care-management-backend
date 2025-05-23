@@ -1,5 +1,4 @@
 const { DataTypes } = require("sequelize");
-const { DOCUMENT_UPLOAD_TYPES } = require("../constants");
 
 module.exports = (sequelize) =>
   sequelize.define(
