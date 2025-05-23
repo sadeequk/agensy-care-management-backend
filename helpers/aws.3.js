@@ -56,12 +56,23 @@ exports.uploadFile = [
         ServerSideEncryption: "AES256",
         Metadata: {
           originalName: originalName,
-          userInfo: req.user.id,
+          userInfo: req.user.id, //UserInfo
           clientId: req.clientId,
         },
       });
 
       await s3.send(putCommand);
+
+      const getCommand = new GetObjectCommand({
+        Bucket: process.env.AWS_S3_BUCKET,
+        Key: fileName,
+        ResponseContentDisposition: `attachment; filename="${originalName}"`,
+        ResponseCacheControl: "no-cache, no-store, must-revalidate",
+      });
+
+      await getSignedUrl(s3, getCommand, {
+        expiresIn: 300,
+      });
 
       req.uploadedFile = {
         url: `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`,
@@ -86,12 +97,11 @@ exports.deleteFile = async (req, res, next) => {
       return res.fail("Document not found");
     }
 
-    if (document.file_url) {
+    if (document.file_name) {
       try {
-        const key = document.file_url.split(".com/")[1];
         const deleteCommand = new DeleteObjectCommand({
           Bucket: process.env.AWS_S3_BUCKET,
-          Key: key,
+          Key: document.file_name,
         });
 
         await s3.send(deleteCommand);
@@ -103,5 +113,27 @@ exports.deleteFile = async (req, res, next) => {
   } catch (error) {
     console.error("File deletion middleware error:", error);
     return res.serverError("Failed to delete file. Please try again.");
+  }
+};
+
+exports.generatePresignedUrl = async (fileName) => {
+  try {
+    const command = new GetObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: fileName,
+      ResponseContentDisposition: "inline",
+      ResponseCacheControl: "no-cache, no-store, must-revalidate",
+    });
+
+    // Generate a pre-signed URL that expires in 5 minutes
+    const presignedUrl = await getSignedUrl(s3, command, {
+      expiresIn: 300, // 5 minutes
+    });
+
+    // console.log("Generated pre-signed URL for:", fileName);
+    return presignedUrl;
+  } catch (error) {
+    console.error("Error generating pre-signed URL:", error);
+    throw error;
   }
 };

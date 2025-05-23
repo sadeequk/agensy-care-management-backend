@@ -45,6 +45,11 @@ exports.ALLOWED_FILE_TYPES = {
   "image/gif": "GIF",
 };
 
+exports.DOCUMENT_UPLOAD_TYPES = {
+  GENERAL: "general",
+  CLIENT: "client",
+};
+
 module.exports.DOCUMENT_CATEGORIES = {
   MEDICAL_RECORDS: "Medical Records",
   LEGAL_DOCUMENTS: "Legal Documents",

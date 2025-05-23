@@ -3,9 +3,8 @@ const { Document, User } = require("../models");
 exports.createDocument = (documentData) =>
   new Promise(async (resolve, reject) => {
     try {
+      console.log("Saving document with data:", documentData);
       const document = await Document.create(documentData);
-      //  resolve(document);
-
       const documentWithUser = await Document.findByPk(document.id, {
         include: [
           {

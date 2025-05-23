@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const { DOCUMENT_UPLOAD_TYPES } = require("../constants");
 
 module.exports = (sequelize) =>
   sequelize.define(
@@ -17,6 +18,10 @@ module.exports = (sequelize) =>
         type: DataTypes.UUID,
         allowNull: true,
       },
+      upload_type: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
       category: {
         type: DataTypes.STRING(100),
         allowNull: true,
@@ -33,7 +38,7 @@ module.exports = (sequelize) =>
         type: DataTypes.STRING(255),
         allowNull: false,
       },
-      file_url: {
+      file_name: {
         type: DataTypes.STRING(2048),
         allowNull: true,
       },
