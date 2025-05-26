@@ -26,7 +26,7 @@ exports.getDocumentById = (documentId) =>
       const document = await Document.findOne({
         where: {
           id: documentId,
-          client_id: null,
+          // client_id: null,
         },
         include: [
           {
