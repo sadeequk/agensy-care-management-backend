@@ -1,5 +1,5 @@
 const { Document, User, Client } = require("../models");
-
+const { Op } = require("sequelize");
 exports.createDocument = (documentData) =>
   new Promise(async (resolve, reject) => {
     try {
