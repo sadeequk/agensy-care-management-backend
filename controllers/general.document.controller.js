@@ -58,7 +58,8 @@ exports.document_get = async (req, res) => {
 
 exports.documents_get = async (req, res) => {
   try {
-    const documents = await generalDocumentService.getAllDocuments();
+    // const documents = await generalDocumentService.getAllDocuments();
+    const documents = await generalDocumentService.getAllDocuments(req.user.id);
     return res.success(documents);
   } catch (error) {
     console.error("GeneralDocumentController [documents_get] Error:", error);

@@ -1,4 +1,4 @@
-const { Document, User } = require("../models");
+const { Document, User, Client } = require("../models");
 
 exports.createDocument = (documentData) =>
   new Promise(async (resolve, reject) => {
@@ -43,13 +43,37 @@ exports.getDocumentById = (documentId) =>
     }
   });
 
-exports.getAllDocuments = () =>
+// exports.getAllDocuments = () =>
+//   new Promise(async (resolve, reject) => {
+//     try {
+//       const documents = await Document.findAll({
+//         where: {
+//           client_id: null,
+//           active: true,
+//         },
+//         include: [
+//           {
+//             model: User,
+//             as: "uploadedBy",
+//             attributes: ["id", "first_name", "last_name"],
+//           },
+//         ],
+//         order: [["created_at", "DESC"]],
+//       });
+//       resolve(documents);
+//     } catch (error) {
+//       console.error("GeneralDocumentService [getAllDocuments] Error:", error);
+//       reject(error);
+//     }
+//   });
+
+//^ may be change in future if user related to primary user have access for this
+exports.getAllDocuments = (userId) =>
   new Promise(async (resolve, reject) => {
     try {
-      const documents = await Document.findAll({
+      const generalDocuments = await Document.findAll({
         where: {
           client_id: null,
-          active: true,
         },
         include: [
           {
@@ -60,7 +84,29 @@ exports.getAllDocuments = () =>
         ],
         order: [["created_at", "DESC"]],
       });
-      resolve(documents);
+
+      const userDocuments = await Document.findAll({
+        where: {
+          active: true,
+          primary_user_id: userId,
+        },
+        include: [
+          {
+            model: User,
+            as: "uploadedBy",
+            attributes: ["id", "first_name", "last_name"],
+          },
+          {
+            model: Client,
+            as: "client",
+            attributes: ["id", "first_name", "last_name"],
+          },
+        ],
+        order: [["created_at", "DESC"]],
+      });
+
+      const allDocuments = [...generalDocuments, ...userDocuments];
+      resolve(allDocuments);
     } catch (error) {
       console.error("GeneralDocumentService [getAllDocuments] Error:", error);
       reject(error);
