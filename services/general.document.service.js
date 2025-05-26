@@ -87,6 +87,9 @@ exports.getAllDocuments = (userId) =>
 
       const userDocuments = await Document.findAll({
         where: {
+          client_id: {
+            [Op.ne]: null,
+          },
           active: true,
           primary_user_id: userId,
         },
