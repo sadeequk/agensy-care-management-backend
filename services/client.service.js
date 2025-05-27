@@ -45,6 +45,19 @@ module.exports.getClientById = (clientId) =>
       const client = await Client.findByPk(clientId, {
         include: [
           {
+            model: User,
+            as: "Users",
+            through: { attributes: [] }, // to exclude  UserClients data
+            attributes: ["id", "first_name", "last_name", "email", "role", "relation"],
+            include: [
+              {
+                model: User,
+                as: "subUsers",
+                attributes: ["id", "first_name", "last_name", "email", "role", "relation"],
+              },
+            ],
+          },
+          {
             model: ClientContact,
             as: "contacts",
           },
@@ -103,8 +116,21 @@ module.exports.getUserClients = (userId) =>
         include: [
           {
             model: Client,
-            through: { attributes: [] },
+            through: { attributes: [] }, // to exclude UserClients data
             include: [
+              {
+                model: User,
+                as: "Users",
+                through: { attributes: [] }, // to exclude UserClients data
+                attributes: ["id", "first_name", "last_name", "email", "role", "relation"],
+                include: [
+                  {
+                    model: User,
+                    as: "subUsers",
+                    attributes: ["id", "first_name", "last_name", "email", "role", "relation"],
+                  },
+                ],
+              },
               {
                 model: ClientContact,
                 as: "contacts",
