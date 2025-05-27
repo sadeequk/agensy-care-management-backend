@@ -1,8 +1,10 @@
 const { SESClient, SendEmailCommand } = require("@aws-sdk/client-ses");
 
 const ses = new SESClient({ region: process.env.AWS_REGION });
+const loginUrl = process.env.LOGIN_URL;
+const sourceEmail = process.env.SES_EMAIL;
 
-function getWelcomeEmailHtml({ first_name, tempPassword, loginUrl }) {
+function getLoginEmailHtml({ first_name, tempPassword, loginUrl }) {
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h1>Welcome, ${first_name}!</h1>
@@ -14,14 +16,14 @@ function getWelcomeEmailHtml({ first_name, tempPassword, loginUrl }) {
   `;
 }
 
-module.exports.sendWelcomeEmail = async (toEmail, { first_name, tempPassword, loginUrl }) => {
+module.exports.sendLoginEmail = async (toEmail, { first_name, tempPassword }) => {
   const params = {
-    Source: process.env.SES_FROM_EMAIL,
+    Source: sourceEmail,
     Destination: { ToAddresses: [toEmail] },
     Message: {
-      Subject: { Data: "Welcome to Our Platform" },
+      Subject: { Data: "Welcome to Agensy Care Management System" },
       Body: {
-        Html: { Data: getWelcomeEmailHtml({ first_name, tempPassword, loginUrl }) },
+        Html: { Data: getLoginEmailHtml({ first_name, tempPassword, loginUrl }) },
       },
     },
   };

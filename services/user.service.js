@@ -1,6 +1,6 @@
 const { User } = require("../models/index");
 const cognitoService = require("./cognito.service");
-const { sendWelcomeEmail } = require("../helpers/login.email.templete");
+const { sendLoginEmail } = require("../helpers/login.email.templete");
 const { COGNITO_GROUPS, USER_ROLES } = require("../constants/index");
 
 module.exports.createUser = (userData) =>
@@ -66,7 +66,6 @@ module.exports.getUserById = (id) =>
 module.exports.createSubuser = (primaryUserId, subuserData) =>
   new Promise(async (resolve, reject) => {
     try {
-      // 1. Create user in Cognito with email_verified true
       const cognitoUser = await cognitoService.createCognitoUser({
         email: subuserData.email,
         first_name: subuserData.first_name,
@@ -74,7 +73,6 @@ module.exports.createSubuser = (primaryUserId, subuserData) =>
         email_verified: true,
       });
 
-      // 2. Set permanent password from frontend (no temp password)
       if (subuserData.password) {
         await cognitoService.setPermanentPassword({
           email: subuserData.email,
@@ -82,22 +80,15 @@ module.exports.createSubuser = (primaryUserId, subuserData) =>
         });
       }
 
-      // 3. Determine group name and fromName based on role
       let groupName;
       if (subuserData.role === USER_ROLES.FAMILY_MEMBER) {
         groupName = COGNITO_GROUPS.FAMILY_MEMBERS;
       } else if (subuserData.role === USER_ROLES.CAREGIVER) {
         groupName = COGNITO_GROUPS.CAREGIVERS;
-      } else if (subuserData.role === USER_ROLES.ADMIN) {
-        groupName = COGNITO_GROUPS.ADMINS;
-      } else {
-        groupName = COGNITO_GROUPS.FAMILY_MEMBERS;
       }
 
-      // 4. Add user to Cognito group (create if not exists)
       await cognitoService.addUserToGroup(subuserData.email, groupName);
 
-      // 5. Create user in DB
       const user = await User.create({
         primary_user_id: primaryUserId,
         email: subuserData.email,
@@ -111,18 +102,11 @@ module.exports.createSubuser = (primaryUserId, subuserData) =>
         active: true,
       });
 
-      // 6. Output credentials for testing
-      // console.log("Subuser created:", {
-      //   email: subuserData.email,
-      //   loginUrl: process.env.LOGIN_URL,
-      // });
-
-      // 7. Send welcome email
-      // await sendWelcomeEmail(subuserData.email, {
+      // Send welcome email
+      // await sendLoginEmail(subuserData.email, {
       //   first_name: subuserData.first_name,
-      //   loginUrl: process.env.LOGIN_URL,
+      //   tempPassword: subuserData.password,
       // });
-      // console.log("Welcome email sent to", subuserData.email);
 
       resolve(user);
     } catch (error) {
