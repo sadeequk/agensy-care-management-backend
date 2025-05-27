@@ -106,6 +106,7 @@ module.exports.createSubuser = (primaryUserId, subuserData) =>
         last_name: subuserData.last_name,
         role: subuserData.role,
         email_verified: true,
+        relation: subuserData.relation,
         active: true,
       });
 
