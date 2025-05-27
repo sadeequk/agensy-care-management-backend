@@ -5,6 +5,7 @@ const {
   AdminAddUserToGroupCommand,
   AdminCreateUserCommand,
   AdminSetUserPasswordCommand,
+  AdminDeleteUserCommand,
 } = require("@aws-sdk/client-cognito-identity-provider");
 
 const cognito = new CognitoIdentityProviderClient({
@@ -89,6 +90,21 @@ module.exports.setPermanentPassword = async ({ email, password }) => {
     return true;
   } catch (error) {
     console.error("CognitoService [setPermanentPassword] Error:", error);
+    throw error;
+  }
+};
+
+module.exports.deleteCognitoUser = async (email) => {
+  try {
+    await cognito.send(
+      new AdminDeleteUserCommand({
+        UserPoolId: USER_POOL_ID,
+        Username: email,
+      })
+    );
+    return true;
+  } catch (error) {
+    console.error("CognitoService [deleteCognitoUser] Error:", error);
     throw error;
   }
 };

@@ -73,3 +73,15 @@ module.exports.subuser_Post = async (req, res) => {
     return res.serverError(error);
   }
 };
+
+module.exports.subuser_delete = async (req, res) => {
+  try {
+    const primaryUserId = req.user.id;
+    const subuserId = req.params.subuserId;
+    await userService.deleteSubuser(primaryUserId, subuserId);
+    res.success({ message: "Subuser deleted successfully" });
+  } catch (error) {
+    console.error("UserController [delete_subuser] Error:", error);
+    res.serverError(error);
+  }
+};

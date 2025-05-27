@@ -129,3 +129,24 @@ module.exports.createSubuser = (primaryUserId, subuserData) =>
       reject(error);
     }
   });
+
+module.exports.deleteSubuser = async (primaryUserId, subuserId) => {
+  try {
+    const subuser = await User.findOne({
+      where: {
+        id: subuserId,
+        primary_user_id: primaryUserId,
+      },
+    });
+
+    await cognitoService.deleteCognitoUser(subuser.email);
+
+    //will add related tables in future
+    await subuser.destroy();
+
+    return true;
+  } catch (error) {
+    console.error("UserService [deleteSubuser] Error:", error);
+    throw error;
+  }
+};
