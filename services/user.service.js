@@ -1,6 +1,6 @@
 const { User } = require("../models/index");
 const cognitoService = require("./cognito.service");
-const { sendWelcomeEmail } = require("../helpers/welcomeEmailTemplate");
+const { sendWelcomeEmail } = require("../helpers/login.email.templete");
 const { COGNITO_GROUPS, USER_ROLES } = require("../constants/index");
 
 module.exports.createUser = (userData) =>
@@ -107,6 +107,7 @@ module.exports.createSubuser = (primaryUserId, subuserData) =>
         role: subuserData.role,
         email_verified: true,
         relation: subuserData.relation,
+        phone: subuserData.phone,
         active: true,
       });
 

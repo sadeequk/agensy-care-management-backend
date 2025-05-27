@@ -17,6 +17,7 @@ module.exports.subuser_post = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
   relation: Joi.string().required(),
+  phone: Joi.string().optional(),
   role: Joi.string()
     .valid(USER_ROLES.PRIMARY_USER, USER_ROLES.FAMILY_MEMBER, USER_ROLES.CAREGIVER, USER_ROLES.ADMIN)
     .default(USER_ROLES.FAMILY_MEMBER),
