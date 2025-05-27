@@ -20,6 +20,8 @@ module.exports.user_signup = async (req, res) => {
       role: USER_ROLES.PRIMARY_USER,
     });
 
+    await cognitoService.addUserToGroup(req.user.email, COGNITO_GROUPS.PRIMARY_USERS);
+
     return res.success(newUser);
   } catch (error) {
     console.error("UserController [createUser] Error:", error);
@@ -33,7 +35,7 @@ module.exports.user_login = async (req, res) => {
       return res.fail("User not found");
     }
 
-    await cognitoService.addUserToGroup(req.user.email, COGNITO_GROUPS.PRIMARY_USERS);
+    // await cognitoService.addUserToGroup(req.user.email, COGNITO_GROUPS.PRIMARY_USERS);
 
     const updatedUser = await userService.updateUser(req.user.id, {
       email_verified: true,
@@ -56,5 +58,18 @@ module.exports.me_get = async (req, res) => {
   } catch (error) {
     console.error("UserController [me] Error:", error);
     res.serverError(error);
+  }
+};
+
+module.exports.subuser_Post = async (req, res) => {
+  try {
+    const results = await joiSchemas.subuser_post.validateAsync(req.body);
+    let foundUser = await userService.getUserByEmail(results.email);
+    if (foundUser) return res.fail("User with this email already exists");
+    const newUser = await userService.createSubuser(req.user.id, results);
+    return res.success(newUser);
+  } catch (error) {
+    console.error("UserController [create_subuser] Error:", error);
+    return res.serverError(error);
   }
 };

@@ -3,6 +3,8 @@ const {
   ListGroupsCommand,
   CreateGroupCommand,
   AdminAddUserToGroupCommand,
+  AdminCreateUserCommand,
+  AdminSetUserPasswordCommand,
 } = require("@aws-sdk/client-cognito-identity-provider");
 
 const cognito = new CognitoIdentityProviderClient({
@@ -48,6 +50,45 @@ module.exports.addUserToGroup = async (username, groupName) => {
     return true;
   } catch (error) {
     console.error("CognitoService [addUserToGroup] Error:", error);
+    throw error;
+  }
+};
+
+module.exports.createCognitoUser = async ({ email, first_name, last_name, email_verified }) => {
+  try {
+    const params = {
+      UserPoolId: USER_POOL_ID,
+      Username: email,
+      UserAttributes: [
+        { Name: "email", Value: email },
+        { Name: "given_name", Value: first_name },
+        { Name: "family_name", Value: last_name },
+      ],
+      MessageAction: "SUPPRESS", // We'll send our own email
+    };
+    if (email_verified !== undefined) {
+      params.UserAttributes.push({ Name: "email_verified", Value: email_verified ? "true" : "false" });
+    }
+    const result = await cognito.send(new AdminCreateUserCommand(params));
+    return result.User || result;
+  } catch (error) {
+    console.error("CognitoService [createCognitoUser] Error:", error);
+    throw error;
+  }
+};
+
+module.exports.setPermanentPassword = async ({ email, password }) => {
+  try {
+    const params = {
+      UserPoolId: USER_POOL_ID,
+      Username: email,
+      Password: password,
+      Permanent: true,
+    };
+    await cognito.send(new AdminSetUserPasswordCommand(params));
+    return true;
+  } catch (error) {
+    console.error("CognitoService [setPermanentPassword] Error:", error);
     throw error;
   }
 };
