@@ -47,15 +47,7 @@ module.exports.getClientById = (clientId) =>
           {
             model: User,
             as: "Users",
-            through: { attributes: [] }, // to exclude  UserClients data
-            attributes: ["id", "first_name", "last_name", "email", "role", "relation", "phone", "createdAt"],
-            include: [
-              {
-                model: User,
-                as: "subUsers",
-                attributes: ["id", "first_name", "last_name", "email", "role", "relation", "phone", "createdAt"],
-              },
-            ],
+            through: { attributes: [] }, // to exclude UserClients data
           },
           {
             model: ClientContact,
@@ -122,14 +114,6 @@ module.exports.getUserClients = (userId) =>
                 model: User,
                 as: "Users",
                 through: { attributes: [] }, // to exclude UserClients data
-                attributes: ["id", "first_name", "last_name", "email", "role", "relation", "phone", "createdAt"],
-                include: [
-                  {
-                    model: User,
-                    as: "subUsers",
-                    attributes: ["id", "first_name", "last_name", "email", "role", "relation", "phone", "createdAt"],
-                  },
-                ],
               },
               {
                 model: ClientContact,

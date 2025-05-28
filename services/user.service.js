@@ -1,7 +1,9 @@
 const { User } = require("../models/index");
 const cognitoService = require("./cognito.service");
+const clientService = require("./client.service");
 const { sendLoginEmail } = require("../helpers/login.email.templete");
 const { COGNITO_GROUPS, USER_ROLES } = require("../constants/index");
+const { Client } = require("../models/index");
 
 module.exports.createUser = (userData) =>
   new Promise(async (resolve, reject) => {
@@ -63,9 +65,10 @@ module.exports.getUserById = (id) =>
     }
   });
 
-module.exports.createSubuser = (primaryUserId, subuserData) =>
+module.exports.createSubuser = ({ primaryUserId, clientId, subuserData }) =>
   new Promise(async (resolve, reject) => {
     try {
+      // Create User on AWS Cognito
       const cognitoUser = await cognitoService.createCognitoUser({
         email: subuserData.email,
         first_name: subuserData.first_name,
@@ -73,22 +76,18 @@ module.exports.createSubuser = (primaryUserId, subuserData) =>
         email_verified: true,
       });
 
-      if (subuserData.password) {
-        await cognitoService.setPermanentPassword({
-          email: subuserData.email,
-          password: subuserData.password,
-        });
-      }
+      // Set a password for Cognito User
+      await cognitoService.setPermanentPassword({
+        email: subuserData.email,
+        password: subuserData.password,
+      });
 
-      let groupName;
-      if (subuserData.role === USER_ROLES.FAMILY_MEMBER) {
-        groupName = COGNITO_GROUPS.FAMILY_MEMBERS;
-      } else if (subuserData.role === USER_ROLES.CAREGIVER) {
-        groupName = COGNITO_GROUPS.CAREGIVERS;
-      }
-
+      // Assign Cognito group to user
+      const groupName =
+        subuserData.role === USER_ROLES.FAMILY_MEMBER ? COGNITO_GROUPS.FAMILY_MEMBERS : COGNITO_GROUPS.CAREGIVERS;
       await cognitoService.addUserToGroup(subuserData.email, groupName);
 
+      // Create User on DB
       const user = await User.create({
         primary_user_id: primaryUserId,
         email: subuserData.email,
@@ -101,6 +100,11 @@ module.exports.createSubuser = (primaryUserId, subuserData) =>
         phone: subuserData.phone,
         active: true,
       });
+      const client = await clientService.getClientById(clientId);
+
+      // Add User to Client and Client to User
+      await user.addClient(client);
+      await client.addUser(user);
 
       // Send welcome email
       // await sendLoginEmail(subuserData.email, {
@@ -135,3 +139,27 @@ module.exports.deleteSubuser = async (primaryUserId, subuserId) => {
     throw error;
   }
 };
+
+module.exports.checkUserEmailForClient = (email, clientId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findOne({
+        include: [
+          {
+            model: Client,
+            where: { id: clientId },
+            through: { attributes: [] }, // Don't include junction table attributes
+          },
+        ],
+        where: { email },
+      });
+
+      if (user) {
+        return resolve(true);
+      }
+      resolve(false);
+    } catch (error) {
+      console.error("UserService [checkUserEmailForClient] Error:", error);
+      reject(error);
+    }
+  });

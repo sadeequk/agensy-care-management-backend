@@ -21,6 +21,7 @@ router.use(
 );
 router.use("/client/:clientId/medical", verifyCognitoToken, require("./client.medical.routes")); //singular
 router.use("/client/:clientId/documents", verifyCognitoToken, require("./client.document.routes"));
+router.use("/client/:clientId/users", verifyCognitoToken, require("./client.users.routes"));
 router.use("/general-documents", verifyCognitoToken, require("./general.document.routes"));
 
 module.exports = router;

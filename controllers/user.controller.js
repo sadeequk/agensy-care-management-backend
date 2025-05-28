@@ -61,12 +61,24 @@ module.exports.me_get = async (req, res) => {
   }
 };
 
-module.exports.subuser_Post = async (req, res) => {
+module.exports.subuser_post = async (req, res) => {
   try {
     const results = await joiSchemas.subuser_post.validateAsync(req.body);
-    let foundUser = await userService.getUserByEmail(results.email);
-    if (foundUser) return res.fail("User with this email already exists");
-    const newUser = await userService.createSubuser(req.user.id, results);
+
+    // let foundUser = await userService.getUserByEmail(results.email);
+    // if (foundUser) return res.fail("User with this email already exists");
+
+    const exists = await userService.checkUserEmailForClient(results.email, req.clientId);
+    if (exists) {
+      return res.fail("User with this email is already associated with this client");
+    }
+
+    const newUser = await userService.createSubuser({
+      primaryUserId: req.user.id,
+      clientId: req.clientId,
+      subuserData: results,
+    });
+
     return res.success(newUser);
   } catch (error) {
     console.error("UserController [create_subuser] Error:", error);
