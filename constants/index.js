@@ -61,4 +61,10 @@ module.exports.DOCUMENT_CATEGORIES = {
   MISCELLANEOUS: "Miscellaneous/Other",
 };
 
-exports.APPOINTMENT_TYPES = ["regular checkup", "dental", "therapy", "laboratory", "vision"];
+module.exports.APPOINTMENT_TYPES = {
+  REGULAR_CHECKUP: "regular checkup",
+  DENTAL: "dental",
+  THERAPHY: "therapy",
+  LABORATORY: "laboratory",
+  VISION: "vision",
+};

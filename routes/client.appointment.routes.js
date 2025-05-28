@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-const appointmentController = require("../controllers/appointment.controller");
+const clientAppointmentController = require("../controllers/client.appointment.controller");
 
-router.post("/", appointmentController.appointment_post);
-router.get("/", appointmentController.appointments_get);
-router.get("/:appointmentId", appointmentController.appointment_get);
-router.put("/:appointmentId", appointmentController.appointment_put);
-router.delete("/:appointmentId", appointmentController.appointment_delete);
+router.post("/", clientAppointmentController.appointment_post);
+router.get("/", clientAppointmentController.appointments_get);
+router.get("/:appointmentId", clientAppointmentController.appointment_get);
+router.put("/:appointmentId", clientAppointmentController.appointment_put);
+router.delete("/:appointmentId", clientAppointmentController.appointment_delete);
 
 module.exports = router;

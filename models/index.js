@@ -7,7 +7,7 @@ const ClientMedication = require("./client.medication.model")(sequelize);
 const HealthcareProvider = require("./client.healthcare.provider.model")(sequelize);
 const ClientMedical = require("./client.medical.model")(sequelize);
 const Document = require("./client.document.model")(sequelize);
-const Appointment = require("./appointment.model")(sequelize);
+const ClientAppointment = require("./client.appointment.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -45,12 +45,12 @@ Document.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 Document.belongsTo(User, { foreignKey: "uploaded_by", as: "uploadedBy" });
 
 //^ Appointment to User Relation (Many-To-One)
-Appointment.belongsTo(User, { foreignKey: "created_by", as: "creator" });
-User.hasMany(Appointment, { foreignKey: "created_by", as: "createdAppointments" });
+ClientAppointment.belongsTo(User, { foreignKey: "created_by", as: "creator" });
+User.hasMany(ClientAppointment, { foreignKey: "created_by", as: "createdAppointments" });
 
 //^ Appointment to Client Relation (Many-To-One)
-Appointment.belongsTo(Client, { foreignKey: "client_id", as: "client" });
-Client.hasMany(Appointment, { foreignKey: "client_id", as: "appointments", onDelete: "CASCADE" });
+ClientAppointment.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+Client.hasMany(ClientAppointment, { foreignKey: "client_id", as: "appointments", onDelete: "CASCADE" });
 
 module.exports = {
   sequelize,
@@ -62,5 +62,5 @@ module.exports = {
   HealthcareProvider,
   ClientMedical,
   Document,
-  Appointment,
+  ClientAppointment,
 };

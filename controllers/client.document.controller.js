@@ -1,6 +1,6 @@
 const documentService = require("../services/client.document.service");
 const joiSchemas = require("../validation/client.document.schemas");
-const { generatePresignedUrl, deleteFile } = require("../helpers/aws.3");
+const { generatePresignedUrl, deleteFile } = require("../helpers/aws.s3");
 
 exports.document_post = async (req, res) => {
   try {
