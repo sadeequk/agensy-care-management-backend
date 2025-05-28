@@ -60,3 +60,5 @@ module.exports.DOCUMENT_CATEGORIES = {
   NOTES_CORRESPONDENCE: "Notes & Correspondence",
   MISCELLANEOUS: "Miscellaneous/Other",
 };
+
+exports.APPOINTMENT_TYPES = ["regular checkup", "dental", "therapy", "laboratory", "vision"];
