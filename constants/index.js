@@ -67,4 +67,5 @@ module.exports.APPOINTMENT_TYPES = {
   THERAPHY: "therapy",
   LABORATORY: "laboratory",
   VISION: "vision",
+  OTHER: "other",
 };

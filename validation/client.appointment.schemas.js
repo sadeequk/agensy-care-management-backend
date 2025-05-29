@@ -11,7 +11,7 @@ exports.appointment_post = Joi.object({
   end_time: Joi.date().required(),
   notes: Joi.string().allow(""),
   healthcare_provider_id: Joi.string().uuid().required(),
-  post_appointment_notes: Joi.string().allow(null, ""),
+  post_appointment_notes: Joi.string().allow(""),
 });
 
 exports.appointment_put = Joi.object({
@@ -24,7 +24,7 @@ exports.appointment_put = Joi.object({
   end_time: Joi.date(),
   notes: Joi.string().allow(""),
   healthcare_provider_id: Joi.string().uuid().required(),
-  post_appointment_notes: Joi.string().allow(null, ""),
+  post_appointment_notes: Joi.string().allow(""),
   active: Joi.boolean(),
 });
 

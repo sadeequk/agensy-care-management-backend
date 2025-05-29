@@ -1,5 +1,5 @@
 const clientAppointmentService = require("../services/client.appointment.service");
-const joiSchemas = require("../validation/appointment.schemas");
+const joiSchemas = require("../validation/client.appointment.schemas");
 
 exports.appointment_post = async (req, res) => {
   try {

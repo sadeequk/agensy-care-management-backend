@@ -96,10 +96,10 @@ module.exports.getAppointmentsOfAllClients = (userId) =>
             include: [
               {
                 model: User,
-                through: { attributes: [] }, //junction table
+                through: { attributes: [] }, //no field in response, from junction table
                 required: true, //to ensure that the user is associated with the client
                 where: { id: userId },
-                attributes: [], // exclude userdata from response
+                attributes: [], // no field in repsonse ,from user table
               },
             ],
           },
