@@ -92,7 +92,7 @@ module.exports.getAppointmentsOfAllClients = (userId) =>
           {
             model: Client,
             as: "client",
-            attributes: ["id", "first_name", "last_name", "email"],
+            attributes: ["id", "first_name", "last_name"],
             include: [
               {
                 model: User,
