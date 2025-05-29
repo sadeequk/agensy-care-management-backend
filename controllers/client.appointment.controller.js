@@ -58,3 +58,16 @@ exports.appointment_delete = async (req, res) => {
     return res.fail(error.message);
   }
 };
+
+exports.appointment_status_put = async (req, res) => {
+  try {
+    const { appointmentId } = req.params;
+    const { active } = await joiSchemas.appointment_status_put.validateAsync(req.body);
+
+    const appointment = await clientAppointmentService.appointmentToggle(appointmentId, active);
+    return res.success(appointment);
+  } catch (error) {
+    console.error("AppointmentController [appointment_status_put] Error:", error);
+    return res.fail(error.message);
+  }
+};

@@ -52,6 +52,17 @@ User.hasMany(ClientAppointment, { foreignKey: "created_by", as: "createdAppointm
 ClientAppointment.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 Client.hasMany(ClientAppointment, { foreignKey: "client_id", as: "appointments", onDelete: "CASCADE" });
 
+//^ Appointment to HealthcareProvider Relation (Many-To-One)
+ClientAppointment.belongsTo(HealthcareProvider, {
+  foreignKey: "healthcare_provider_id",
+  as: "provider",
+  onDelete: "SET NULL",
+});
+HealthcareProvider.hasMany(ClientAppointment, {
+  foreignKey: "healthcare_provider_id",
+  as: "appointments",
+});
+
 module.exports = {
   sequelize,
   User,

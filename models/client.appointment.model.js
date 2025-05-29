@@ -17,6 +17,10 @@ module.exports = (sequelize) =>
         type: DataTypes.UUID,
         allowNull: true,
       },
+      healthcare_provider_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
+      },
       title: {
         type: DataTypes.STRING(255),
         allowNull: false,
@@ -38,6 +42,10 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       notes: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      post_appointment_notes: {
         type: DataTypes.TEXT,
         allowNull: true,
       },

@@ -69,3 +69,16 @@ module.exports.deleteAppointment = (appointmentId) =>
       reject(error);
     }
   });
+
+module.exports.appointmentToggle = (appointmentId, active) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const appointment = await ClientAppointment.findByPk(appointmentId);
+      if (!appointment) return reject(new Error("Appointment not found"));
+      await appointment.update({ active });
+      resolve(appointment);
+    } catch (error) {
+      console.error("AppointmentService [appointmentToggle] Error:", error);
+      reject(error);
+    }
+  });
