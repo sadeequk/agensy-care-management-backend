@@ -1,4 +1,4 @@
-const { ClientAppointment, Client, User } = require("../models");
+const { ClientAppointment, Client, User, HealthcareProvider } = require("../models");
 
 module.exports.createAppointment = (userId, clientId, data) =>
   new Promise(async (resolve, reject) => {
@@ -79,6 +79,37 @@ module.exports.appointmentToggle = (appointmentId, active) =>
       resolve(appointment);
     } catch (error) {
       console.error("AppointmentService [appointmentToggle] Error:", error);
+      reject(error);
+    }
+  });
+
+//may this function can be change in future....
+module.exports.getAppointmentsOfAllClients = (userId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const appointments = await ClientAppointment.findAll({
+        include: [
+          {
+            model: Client,
+            as: "client",
+            include: [
+              {
+                model: User,
+                through: { attributes: [] }, //junction table
+                required: true, //to ensure that the user is associated with the client
+                where: { id: userId },
+                attributes: [], // exclude userdata from response
+              },
+            ],
+          },
+          { model: User, as: "createdBy" },
+          { model: HealthcareProvider, as: "healthCareProvider" },
+        ],
+        order: [["start_time", "DESC"]],
+      });
+      resolve(appointments);
+    } catch (error) {
+      console.error("AppointmentService [getAppointmentsOfAllClients] Error:", error);
       reject(error);
     }
   });

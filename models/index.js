@@ -45,7 +45,7 @@ Document.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 Document.belongsTo(User, { foreignKey: "uploaded_by", as: "uploadedBy" });
 
 //^ Appointment to User Relation (Many-To-One)
-ClientAppointment.belongsTo(User, { foreignKey: "created_by", as: "creator" });
+ClientAppointment.belongsTo(User, { foreignKey: "created_by", as: "createdBy" });
 User.hasMany(ClientAppointment, { foreignKey: "created_by", as: "createdAppointments" });
 
 //^ Appointment to Client Relation (Many-To-One)
@@ -55,7 +55,7 @@ Client.hasMany(ClientAppointment, { foreignKey: "client_id", as: "appointments",
 //^ Appointment to HealthcareProvider Relation (Many-To-One)
 ClientAppointment.belongsTo(HealthcareProvider, {
   foreignKey: "healthcare_provider_id",
-  as: "provider",
+  as: "healthCareProvider",
   onDelete: "SET NULL",
 });
 HealthcareProvider.hasMany(ClientAppointment, {

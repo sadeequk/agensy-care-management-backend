@@ -71,3 +71,14 @@ exports.appointment_status_put = async (req, res) => {
     return res.fail(error.message);
   }
 };
+
+exports.clients_appointments_get = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const appointments = await clientAppointmentService.getAppointmentsOfAllClients(userId);
+    return res.success(appointments);
+  } catch (error) {
+    console.error("AppointmentController [clients_appointments_get] Error:", error);
+    return res.fail(error.message);
+  }
+};
