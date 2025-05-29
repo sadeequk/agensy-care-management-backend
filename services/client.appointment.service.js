@@ -92,6 +92,7 @@ module.exports.getAppointmentsOfAllClients = (userId) =>
           {
             model: Client,
             as: "client",
+            attributes: ["id", "first_name", "last_name", "email"],
             include: [
               {
                 model: User,
@@ -102,8 +103,11 @@ module.exports.getAppointmentsOfAllClients = (userId) =>
               },
             ],
           },
-          { model: User, as: "createdBy" },
-          { model: HealthcareProvider, as: "healthCareProvider" },
+          {
+            model: User,
+            as: "createdBy",
+            attributes: ["id", "first_name", "last_name", "email"],
+          },
         ],
         order: [["start_time", "DESC"]],
       });
