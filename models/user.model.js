@@ -44,8 +44,9 @@ module.exports = (sequelize) =>
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-      profile_image_url: {
+      avatar: {
         type: DataTypes.STRING(255),
+        allowNull: true,
       },
       last_login: {
         type: DataTypes.DATE,

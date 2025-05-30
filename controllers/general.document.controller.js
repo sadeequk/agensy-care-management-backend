@@ -1,6 +1,7 @@
 const generalDocumentService = require("../services/general.document.service");
 const joiSchemas = require("../validation/general.document.schemas");
 const { generatePresignedUrl, deleteFile } = require("../helpers/aws.s3");
+const { USER_ROLES } = require("../constants");
 
 exports.document_post = async (req, res) => {
   try {
@@ -9,7 +10,7 @@ exports.document_post = async (req, res) => {
       ...req.body,
       client_id: null,
       uploaded_by: req.user.id,
-      primary_user_id: req.user.id, //! Will be changed in future
+      primary_user_id: req.user.role == USER_ROLES.PRIMARY_USER ? req.user.id : req.user.primary_user_id,
       category: req.body.category,
       file_size: req.file.size,
       file_type: req.file.mimetype,
@@ -58,8 +59,9 @@ exports.document_get = async (req, res) => {
 
 exports.documents_get = async (req, res) => {
   try {
-    // const documents = await generalDocumentService.getAllDocuments();
-    const documents = await generalDocumentService.getAllDocuments(req.user.id);
+    const userId = req.user.id;
+    const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? userId : req.user.primary_user_id;
+    const documents = await generalDocumentService.getAllDocuments(primaryUserId);
     return res.success(documents);
   } catch (error) {
     console.error("GeneralDocumentController [documents_get] Error:", error);

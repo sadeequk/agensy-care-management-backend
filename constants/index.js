@@ -69,3 +69,9 @@ module.exports.APPOINTMENT_TYPES = {
   VISION: "vision",
   OTHER: "other",
 };
+exports.ALLOWED_AVATAR_TYPES = {
+  "image/jpeg": "JPEG",
+  "image/png": "PNG",
+  "image/gif": "GIF",
+  "image/webp": "WEBP",
+};

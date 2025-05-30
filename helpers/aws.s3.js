@@ -2,7 +2,7 @@ const multer = require("multer");
 const { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { Document } = require("../models");
-const { ALLOWED_FILE_TYPES } = require("../constants");
+const { ALLOWED_FILE_TYPES, ALLOWED_AVATAR_TYPES } = require("../constants");
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
@@ -134,6 +134,86 @@ exports.generatePresignedUrl = async (fileName) => {
     return presignedUrl;
   } catch (error) {
     console.error("Error generating pre-signed URL:", error);
+    throw error;
+  }
+};
+
+// Avatar related functions
+const avatar = multer({
+  storage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
+  fileFilter: (req, file, cb) => {
+    if (ALLOWED_AVATAR_TYPES[file.mimetype]) {
+      cb(null, true);
+    } else {
+      const allowedTypes = Object.values(ALLOWED_AVATAR_TYPES).join(", ");
+      cb(new Error(`Invalid file type. Allowed types are: ${allowedTypes}`));
+    }
+  },
+});
+
+function uploadAvatarWithErrorHandler(req, res, next) {
+  avatar.single("file")(req, res, function (err) {
+    if (err) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.fail("Avatar size should not exceed 5MB");
+      }
+      return res.fail(err.message);
+    }
+    next();
+  });
+}
+
+exports.uploadAvatar = [
+  uploadAvatarWithErrorHandler,
+  async (req, res, next) => {
+    try {
+      if (!req.file) {
+        return res.fail("Please upload an avatar file");
+      }
+
+      const originalName = req.file.originalname.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9._-]/g, "");
+      const fileName = `avatars/${Date.now()}-${Math.round(Math.random() * 1e9)}-${originalName}`;
+
+      const putCommand = new PutObjectCommand({
+        Bucket: "agensy-assets",
+        Key: fileName,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
+        Metadata: {
+          originalName: originalName,
+          uploadedBy: req.user.id,
+          fileType: ALLOWED_AVATAR_TYPES[req.file.mimetype],
+        },
+      });
+
+      await s3.send(putCommand);
+
+      req.uploadedAvatar = `https://agensy-assets.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+      next();
+    } catch (error) {
+      console.error("S3 avatar upload error:", error);
+      return res.serverError("Failed to upload avatar. Please try again.");
+    }
+  },
+];
+
+exports.deleteAvatar = async (key) => {
+  try {
+    if (!key) return;
+
+    // Extract just the filename from the full URL
+    const filename = key.split("/").pop();
+    const avatarKey = `avatars/${filename}`;
+
+    const deleteCommand = new DeleteObjectCommand({
+      Bucket: "agensy-assets",
+      Key: avatarKey,
+    });
+
+    await s3.send(deleteCommand);
+  } catch (error) {
+    console.error("Error deleting avatar from S3:", error);
     throw error;
   }
 };

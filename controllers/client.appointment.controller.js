@@ -1,12 +1,14 @@
 const clientAppointmentService = require("../services/client.appointment.service");
 const joiSchemas = require("../validation/client.appointment.schemas");
+const { USER_ROLES } = require("../constants/index");
 
 exports.appointment_post = async (req, res) => {
   try {
     const userId = req.user.id;
     const clientId = req.clientId;
+    const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? userId : req.user.primary_user_id;
     const results = await joiSchemas.appointment_post.validateAsync(req.body);
-    const appointment = await clientAppointmentService.createAppointment(userId, clientId, results);
+    const appointment = await clientAppointmentService.createAppointment(userId, clientId, primaryUserId, results);
     return res.success(appointment);
   } catch (error) {
     console.error("AppointmentController [appointment_post ] Error:", error);
@@ -75,7 +77,8 @@ exports.appointment_status_put = async (req, res) => {
 exports.clients_appointments_get = async (req, res) => {
   try {
     const userId = req.user.id;
-    const appointments = await clientAppointmentService.getAppointmentsOfAllClients(userId);
+    const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? userId : req.user.primary_user_id;
+    const appointments = await clientAppointmentService.getAppointmentsOfAllClients(primaryUserId);
     return res.success(appointments);
   } catch (error) {
     console.error("AppointmentController [clients_appointments_get] Error:", error);

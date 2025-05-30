@@ -8,15 +8,14 @@ const {
   ClientMedical,
   Document,
 } = require("../models");
-const clientContactService = require("./client.contact.service");
 const userService = require("./user.service");
 
-module.exports.createClient = (userId, clientData) =>
+module.exports.createClient = (userId, primaryUserId, clientData) =>
   new Promise(async (resolve, reject) => {
     try {
       const user = await userService.getUserById(userId);
 
-      const client = await Client.create(clientData); // added this  because  addClient expects an existing client instance
+      const client = await Client.create({ ...clientData, primary_user_id: primaryUserId });
       await user.addClient(client);
 
       resolve(client);

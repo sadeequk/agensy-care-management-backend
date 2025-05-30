@@ -1,6 +1,7 @@
 const documentService = require("../services/client.document.service");
 const joiSchemas = require("../validation/client.document.schemas");
 const { generatePresignedUrl, deleteFile } = require("../helpers/aws.s3");
+const { USER_ROLES } = require("../constants");
 
 exports.document_post = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ exports.document_post = async (req, res) => {
       ...req.body,
       client_id: req.clientId,
       uploaded_by: req.user.id,
-      primary_user_id: req.user.id, //! Will be changed in future
+      primary_user_id: req.user.role == USER_ROLES.PRIMARY_USER ? req.user.id : req.user.primary_user_id,
       category: req.body.category,
       file_size: req.file.size,
       file_type: req.file.mimetype,

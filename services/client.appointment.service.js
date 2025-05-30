@@ -1,10 +1,14 @@
 const { ClientAppointment, Client, User, HealthcareProvider } = require("../models");
 
-module.exports.createAppointment = (userId, clientId, data) =>
+module.exports.createAppointment = (userId, clientId, primaryUserId, data) =>
   new Promise(async (resolve, reject) => {
     try {
-      //will add user permission for creating appoiitnment in future or it will be managed by frontend
-      const appointment = await ClientAppointment.create({ ...data, created_by: userId, client_id: clientId });
+      const appointment = await ClientAppointment.create({
+        ...data,
+        created_by: userId,
+        client_id: clientId,
+        primary_user_id: primaryUserId,
+      });
       resolve(appointment);
     } catch (error) {
       console.error("AppointmentService [createAppointment] Error:", error);
@@ -83,7 +87,6 @@ module.exports.appointmentToggle = (appointmentId, active) =>
     }
   });
 
-//may this function can be change in future....
 module.exports.getAppointmentsOfAllClients = (userId) =>
   new Promise(async (resolve, reject) => {
     try {

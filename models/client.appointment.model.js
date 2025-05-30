@@ -15,11 +15,15 @@ module.exports = (sequelize) =>
       },
       created_by: {
         type: DataTypes.UUID,
-        allowNull: true,
+        allowNull: false,
+      },
+      primary_user_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
       },
       healthcare_provider_id: {
         type: DataTypes.UUID,
-        allowNull: true,
+        allowNull: false,
       },
       title: {
         type: DataTypes.STRING(255),

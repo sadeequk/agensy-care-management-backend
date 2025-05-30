@@ -1,5 +1,4 @@
 const { Document, User, Client } = require("../models");
-const { Op } = require("sequelize");
 exports.createDocument = (documentData) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -43,54 +42,11 @@ exports.getDocumentById = (documentId) =>
     }
   });
 
-// exports.getAllDocuments = () =>
-//   new Promise(async (resolve, reject) => {
-//     try {
-//       const documents = await Document.findAll({
-//         where: {
-//           client_id: null,
-//           active: true,
-//         },
-//         include: [
-//           {
-//             model: User,
-//             as: "uploadedBy",
-//             attributes: ["id", "first_name", "last_name"],
-//           },
-//         ],
-//         order: [["created_at", "DESC"]],
-//       });
-//       resolve(documents);
-//     } catch (error) {
-//       console.error("GeneralDocumentService [getAllDocuments] Error:", error);
-//       reject(error);
-//     }
-//   });
-
-//^ may be change in future if user related to primary user have access for this
 exports.getAllDocuments = (userId) =>
   new Promise(async (resolve, reject) => {
     try {
-      const generalDocuments = await Document.findAll({
+      const docs = await Document.findAll({
         where: {
-          client_id: null,
-        },
-        include: [
-          {
-            model: User,
-            as: "uploadedBy",
-            attributes: ["id", "first_name", "last_name"],
-          },
-        ],
-        order: [["created_at", "DESC"]],
-      });
-
-      const userDocuments = await Document.findAll({
-        where: {
-          client_id: {
-            [Op.ne]: null,
-          },
-          active: true,
           primary_user_id: userId,
         },
         include: [
@@ -108,8 +64,7 @@ exports.getAllDocuments = (userId) =>
         order: [["created_at", "DESC"]],
       });
 
-      const allDocuments = [...generalDocuments, ...userDocuments];
-      resolve(allDocuments);
+      resolve(docs);
     } catch (error) {
       console.error("GeneralDocumentService [getAllDocuments] Error:", error);
       reject(error);
