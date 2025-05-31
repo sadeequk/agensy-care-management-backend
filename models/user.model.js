@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const { USER_ROLES } = require("../constants/index");
+const { USER_ROLES, SUBSCRIPTION_STATUS } = require("../constants/index");
 
 module.exports = (sequelize) =>
   sequelize.define(
@@ -58,6 +58,14 @@ module.exports = (sequelize) =>
       relation: {
         type: DataTypes.STRING(100),
         allowNull: true,
+      },
+      stripe_customer_id: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
+      subscription_status: {
+        type: DataTypes.ENUM(...Object.values(SUBSCRIPTION_STATUS)),
+        defaultValue: SUBSCRIPTION_STATUS.INACTIVE,
       },
     },
     {

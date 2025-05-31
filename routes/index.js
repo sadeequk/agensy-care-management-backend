@@ -26,5 +26,11 @@ router.use("/client/:clientId/users", verifyCognitoToken, require("./client.user
 router.use("/client/:clientId/appointments", verifyCognitoToken, require("./client.appointment.routes"));
 router.use("/appointments", verifyCognitoToken, require("./all.clients.appointments.route"));
 router.use("/general-documents", verifyCognitoToken, require("./general.document.routes"));
+router.use(
+  "/stripe/webhook",
+  verifyCognitoToken,
+  express.raw({ type: "application/json" }),
+  require("./stripe.routes")
+);
 
 module.exports = router;

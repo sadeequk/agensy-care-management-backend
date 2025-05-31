@@ -16,7 +16,10 @@ var app = express();
 app.use(responseMiddleware);
 
 sequelizeConnection();
-
+//
+// Stripe webhook endpoint needs raw body
+app.use("/api/v1/stripe/webhook", express.raw({ type: "application/json" }));
+//
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "200mb" }));
 

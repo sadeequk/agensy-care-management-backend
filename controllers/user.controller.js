@@ -1,7 +1,9 @@
 const userService = require("../services/user.service");
 const cognitoService = require("../services/cognito.service");
 const joiSchemas = require("../validation/user.schemas");
-const { USER_ROLES, COGNITO_GROUPS } = require("../constants/index");
+const { USER_ROLES, COGNITO_GROUPS, SUBSCRIPTION_STATUS } = require("../constants/index");
+//
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 module.exports.user_signup = async (req, res) => {
   try {
@@ -12,15 +14,29 @@ module.exports.user_signup = async (req, res) => {
       return res.fail("User with this email already exists");
     }
 
+    //
+    const customer = await stripe.customers.create({
+      email: results.email,
+      name: `${results.first_name} ${results.last_name}`,
+      metadata: {
+        source: "agensy-app",
+      },
+    });
+
+    //
     const newUser = await userService.createUser({
       first_name: results.first_name,
       last_name: results.last_name,
       email: results.email,
       cognito_id: results.cognito_id,
       role: USER_ROLES.PRIMARY_USER,
+      //
+      stripe_customer_id: customer.id,
+      subscription_status: SUBSCRIPTION_STATUS.INACTIVE,
+      //
     });
 
-    await cognitoService.addUserToGroup(req.user.email, COGNITO_GROUPS.PRIMARY_USERS);
+    await cognitoService.addUserToGroup(results.email, COGNITO_GROUPS.PRIMARY_USERS);
 
     return res.success(newUser);
   } catch (error) {
