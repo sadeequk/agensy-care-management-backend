@@ -1,36 +1,10 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { User } = require("../models");
-const userService = require("../services/user.service");
 const { SUBSCRIPTION_STATUS } = require("../constants");
 
-// Create a Stripe customer when user signs up
-exports.createStripeCustomer = async (req, res) => {
-  try {
-    const { email, first_name, last_name } = req.body;
+//TODO: WILL CONVERT THE WHOLE CODE TO PROPER FORMATE ONCE IT STARTED WORING ON TEST MOOD
 
-    // Create a customer in Stripe
-    const customer = await stripe.customers.create({
-      email,
-      name: `${first_name} ${last_name}`,
-      metadata: {
-        source: "agensy-app",
-      },
-    });
-
-    // Update user with Stripe customer ID
-    const user = await userService.updateUser(req.user.id, {
-      stripe_customer_id: customer.id,
-    });
-
-    return res.success(user);
-  } catch (error) {
-    console.error("StripeController [createStripeCustomer] Error:", error);
-    return res.serverError(error);
-  }
-};
-
-// Create a checkout session for subscription
-exports.createCheckoutSession = async (req, res) => {
+exports.checkout_session_post = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
 
@@ -42,7 +16,7 @@ exports.createCheckoutSession = async (req, res) => {
       customer: user.stripe_customer_id,
       line_items: [
         {
-          price: process.env.STRIPE_PRICE_ID, // Your monthly subscription price ID
+          price: process.env.STRIPE_PRICE_ID,
           quantity: 1,
         },
       ],
@@ -58,7 +32,6 @@ exports.createCheckoutSession = async (req, res) => {
   }
 };
 
-// Handle Stripe webhooks
 exports.handleWebhook = async (req, res) => {
   const sig = req.headers["stripe-signature"];
   let event;
@@ -67,7 +40,7 @@ exports.handleWebhook = async (req, res) => {
     event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error("Webhook signature verification failed:", err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
+    return res.fail("Webhook signature verification failed");
   }
 
   try {
@@ -115,10 +88,20 @@ exports.handleWebhook = async (req, res) => {
         }
         break;
     }
-
-    return res.json({ received: true });
+    return res.success({ received: true });
   } catch (error) {
     console.error("Error processing webhook:", error);
-    return res.status(500).json({ error: "Webhook processing failed" });
+    return res.serverError(error);
+  }
+};
+
+exports.session_details_get = async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    return res.success(session);
+  } catch (error) {
+    console.error("StripeController [getSessionDetails] Error:", error);
+    return res.serverError(error);
   }
 };

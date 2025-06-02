@@ -1,14 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const verifyCognitoToken = require("../middlewares/auth.mw");
 const stripeController = require("../controllers/stripe.controller");
 
-// Create Stripe customer
-router.post("/create-customer", stripeController.createStripeCustomer);
-
-// Create checkout session
-router.post("/create-checkout-session", stripeController.createCheckoutSession);
-
-// Webhook endpoint - no authentication needed as it's called by Stripe
-router.post("/webhook", express.raw({ type: "application/json" }), stripeController.handleWebhook);
+router.post("/checkout-session", verifyCognitoToken, stripeController.checkout_session_post);
+router.post("/webhook", stripeController.handleWebhook);
+router.get("/session/:sessionId", verifyCognitoToken, stripeController.session_details_get);
 
 module.exports = router;

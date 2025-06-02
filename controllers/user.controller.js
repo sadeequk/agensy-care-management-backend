@@ -51,8 +51,6 @@ module.exports.user_login = async (req, res) => {
       return res.fail("User not found");
     }
 
-    // await cognitoService.addUserToGroup(req.user.email, COGNITO_GROUPS.PRIMARY_USERS);
-
     const updatedUser = await userService.updateUser(req.user.id, {
       email_verified: true,
       last_login: new Date(),
