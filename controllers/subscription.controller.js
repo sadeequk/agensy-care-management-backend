@@ -109,128 +109,37 @@ exports.session_details_get = async (req, res) => {
 
 exports.download_invoice_get = async (req, res) => {
   try {
-    const { invoiceId } = req.params;
+    const { subscriptionId } = req.params;
+    const user = await User.findByPk(req.user.id);
 
-    const invoice = await stripe.invoices.retrieve(invoiceId);
-    const user = await User.findOne({ where: { stripe_customer_id: invoice.customer } });
+    if (!user.stripe_customer_id) {
+      return res.fail("Stripe customer not found");
+    }
 
-    const pdf = await stripe.invoices.retrievePdf(invoiceId);
+    // Get the subscription to verify it belongs to the user
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    if (subscription.customer !== user.stripe_customer_id) {
+      return res.fail("Subscription not found");
+    }
 
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `attachment; filename="invoice-${invoiceId}.pdf"`);
+    // Get the latest invoice for this subscription
+    const invoice = await stripe.invoices.retrieve(subscription.latest_invoice);
 
-    res.send(pdf);
+    // Get the PDF URL
+    const pdfUrl = invoice.invoice_pdf;
+
+    if (!pdfUrl) {
+      return res.fail("Invoice PDF not available");
+    }
+
+    return res.success({
+      download_url: pdfUrl,
+    });
   } catch (error) {
-    console.error("StripeController [downloadInvoice] Error:", error);
+    console.error("Error getting invoice URL:", error);
     return res.serverError(error);
   }
 };
-
-// exports.subscription_details_get = async (req, res) => {
-//   try {
-//     const user = await User.findByPk(req.user.id);
-
-//     if (!user.stripe_customer_id) {
-//       return res.fail("Stripe customer not found");
-//     }
-
-//     const subscriptions = await stripe.subscriptions.list({
-//       customer: user.stripe_customer_id,
-//       status: "active",
-//       expand: ["data.default_payment_method"],
-//     });
-
-//     if (!subscriptions.data.length) {
-//       return res.fail("No active subscription found");
-//     }
-
-//     const subscription = subscriptions.data[0];
-
-//     const upcomingInvoice = await stripe.invoices.retrieveUpcoming({
-//       customer: user.stripe_customer_id,
-//       subscription: subscription.id,
-//     });
-
-//     const subscriptionDetails = {
-//       id: subscription.id,
-//       status: subscription.status,
-//       current_period_start: new Date(subscription.current_period_start * 1000),
-//       current_period_end: new Date(subscription.current_period_end * 1000),
-//       cancel_at_period_end: subscription.cancel_at_period_end,
-//       next_billing_date: new Date(upcomingInvoice.next_payment_attempt * 1000),
-//       amount: subscription.items.data[0].price.unit_amount / 100,
-//       currency: subscription.currency,
-//       payment_method: subscription.default_payment_method
-//         ? {
-//             type: subscription.default_payment_method.type,
-//             last4: subscription.default_payment_method.card.last4,
-//             brand: subscription.default_payment_method.card.brand,
-//             exp_month: subscription.default_payment_method.card.exp_month,
-//             exp_year: subscription.default_payment_method.card.exp_year,
-//           }
-//         : null,
-//     };
-
-//     return res.success(subscriptionDetails);
-//   } catch (error) {
-//     console.error("StripeController [getSubscriptionDetails] Error:", error);
-//     return res.serverError(error);
-//   }
-// };
-
-// exports.payment_history_get = async (req, res) => {
-//   try {
-//     const user = await User.findByPk(req.user.id);
-
-//     if (!user.stripe_customer_id) {
-//       return res.fail("Stripe customer not found");
-//     }
-
-//     const charges = await stripe.charges.list({
-//       customer: user.stripe_customer_id,
-//       limit: 10,
-//       status: "succeeded",
-//     });
-
-//     const invoices = await stripe.invoices.list({
-//       customer: user.stripe_customer_id,
-//       limit: 10,
-//       status: "paid",
-//     });
-
-//     const paymentHistory = {
-//       charges: charges.data.map((charge) => ({
-//         id: charge.id,
-//         amount: charge.amount / 100,
-//         currency: charge.currency,
-//         status: charge.status,
-//         created: new Date(charge.created * 1000),
-//         payment_method: charge.payment_method_details?.card
-//           ? {
-//               brand: charge.payment_method_details.card.brand,
-//               last4: charge.payment_method_details.card.last4,
-//             }
-//           : null,
-//       })),
-//       invoices: invoices.data.map((invoice) => ({
-//         id: invoice.id,
-//         number: invoice.number,
-//         amount_paid: invoice.amount_paid / 100,
-//         currency: invoice.currency,
-//         status: invoice.status,
-//         created: new Date(invoice.created * 1000),
-//         period_start: new Date(invoice.period_start * 1000),
-//         period_end: new Date(invoice.period_end * 1000),
-//         pdf_url: invoice.invoice_pdf,
-//       })),
-//     };
-
-//     return res.success(paymentHistory);
-//   } catch (error) {
-//     console.error("StripeController [getPaymentHistory] Error:", error);
-//     return res.serverError(error);
-//   }
-// };
 
 exports.cancel_subscription_post = async (req, res) => {
   try {
@@ -250,6 +159,69 @@ exports.cancel_subscription_post = async (req, res) => {
     });
   } catch (error) {
     console.error("Error canceling subscription:", error);
+    return res.serverError(error);
+  }
+};
+
+exports.subscription_history_get = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+
+    const subscriptions = await stripe.subscriptions.list({
+      customer: user.stripe_customer_id,
+      status: "all",
+      expand: ["data.default_payment_method"],
+      limit: 100,
+    });
+
+    // Get detailed information for each subscription
+    const subscriptionHistory = await Promise.all(
+      subscriptions.data.map(async (sub) => {
+        // Get full subscription details
+        const subscription = await stripe.subscriptions.retrieve(sub.id, {
+          expand: ["default_payment_method"],
+        });
+
+        let paymentMethod = null;
+        if (subscription.default_payment_method && subscription.default_payment_method.card) {
+          paymentMethod = {
+            type: subscription.default_payment_method.type,
+            last4: subscription.default_payment_method.card.last4,
+            brand: subscription.default_payment_method.card.brand,
+            exp_month: subscription.default_payment_method.card.exp_month,
+            exp_year: subscription.default_payment_method.card.exp_year,
+          };
+        }
+
+        return {
+          id: subscription.id,
+          status: subscription.status,
+          current_period_start: subscription.items.data[0].current_period_start
+            ? new Date(subscription.items.data[0].current_period_start * 1000).toISOString()
+            : null,
+          current_period_end: subscription.items.data[0].current_period_end
+            ? new Date(subscription.items.data[0].current_period_end * 1000).toISOString()
+            : null,
+          cancel_at_period_end: subscription.cancel_at_period_end,
+          amount: subscription.items.data[0].price.unit_amount / 100,
+          currency: subscription.currency,
+          payment_method: subscription.default_payment_method
+            ? {
+                type: subscription.default_payment_method.type,
+                last4: subscription.default_payment_method.card.last4,
+                brand: subscription.default_payment_method.card.brand,
+                exp_month: subscription.default_payment_method.card.exp_month,
+                exp_year: subscription.default_payment_method.card.exp_year,
+              }
+            : null,
+          latest_invoice: subscription.latest_invoice,
+        };
+      })
+    );
+
+    return res.success(subscriptionHistory);
+  } catch (error) {
+    console.error("Error getting subscription history:", error);
     return res.serverError(error);
   }
 };
