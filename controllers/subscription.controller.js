@@ -22,8 +22,8 @@ exports.checkout_session_post = async (req, res) => {
         },
       ],
       mode: "subscription",
-      success_url: `${process.env.FRONTEND_URL}/subscription/payment-status/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_URL}/subscription/payment-status/cancel`,
+      success_url: `${process.env.FRONTEND_URL}/subscription/payment-status/?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL}/subscription/payment-status/`,
     });
 
     return res.success({ url: session.url });
