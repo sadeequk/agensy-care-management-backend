@@ -28,6 +28,6 @@ router.use("/appointments", verifyCognitoToken, require("./all.clients.appointme
 router.use("/general-documents", verifyCognitoToken, require("./general.document.routes"));
 
 //stripe routes (testing)
-router.use("/stripe", require("./stripe.routes"));
+router.use("/subscription", require("./subscription.routes"));
 
 module.exports = router;
