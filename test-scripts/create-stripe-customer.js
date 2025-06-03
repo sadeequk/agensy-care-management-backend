@@ -16,7 +16,6 @@ async function createStripeCustomer() {
       name: `${user.first_name} ${user.last_name}`,
       metadata: {
         source: "agensy-app",
-        userId: user.id,
       },
     });
     await user.update({

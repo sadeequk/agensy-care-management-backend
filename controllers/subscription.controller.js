@@ -22,8 +22,8 @@ exports.checkout_session_post = async (req, res) => {
         },
       ],
       mode: "subscription",
-      success_url: `${process.env.FRONTEND_URL}/subscription/payment-status/?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_URL}/subscription/payment-status/`,
+      success_url: `${process.env.FRONTEND_URL}/billing/payment-status/?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL}/billing/payment-status/`,
     });
 
     return res.success({ url: session.url });
@@ -231,3 +231,25 @@ exports.download_invoice_get = async (req, res) => {
 //     return res.serverError(error);
 //   }
 // };
+
+exports.cancel_subscription_post = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+
+    if (!user) {
+      return res.fail("User not found");
+    }
+
+    await user.update({
+      subscription_status: SUBSCRIPTION_STATUS.INACTIVE,
+    });
+
+    return res.success({
+      message: "Subscription canceled successfully",
+      subscription_status: user.subscription_status,
+    });
+  } catch (error) {
+    console.error("Error canceling subscription:", error);
+    return res.serverError(error);
+  }
+};

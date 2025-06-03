@@ -7,7 +7,8 @@ router.post("/checkout-session", verifyCognitoToken, subscriptionController.chec
 router.post("/webhook", subscriptionController.handleWebhook);
 router.get("/session/:sessionId", verifyCognitoToken, subscriptionController.session_details_get);
 router.get("/invoice/:invoiceId", verifyCognitoToken, subscriptionController.download_invoice_get);
-// router.get("/subscription", verifyCognitoToken, subscriptionController.subscription_details_get);
+// router.get("/", verifyCognitoToken, subscriptionController.subscription_details_get);
 // router.get("/payments", verifyCognitoToken, subscriptionController.payment_history_get);
+router.post("/cancel", verifyCognitoToken, subscriptionController.cancel_subscription_post);
 
 module.exports = router;
