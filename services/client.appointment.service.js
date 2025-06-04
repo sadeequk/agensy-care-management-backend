@@ -120,3 +120,37 @@ module.exports.getAppointmentsOfAllClients = (userId) =>
       reject(error);
     }
   });
+
+module.exports.getSubUserClientsAppointments = (userId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const appointments = await ClientAppointment.findAll({
+        include: [
+          {
+            model: Client,
+            as: "client",
+            attributes: ["id", "first_name", "last_name"],
+            include: [
+              {
+                model: User,
+                through: { attributes: [] }, // no field in response, from junction table
+                required: true, // to ensure that the user is associated with the client
+                where: { id: userId },
+                attributes: [], // no field in response, from user table
+              },
+            ],
+          },
+          {
+            model: User,
+            as: "createdBy",
+            attributes: ["id", "first_name", "last_name", "email"],
+          },
+        ],
+        order: [["start_time", "DESC"]],
+      });
+      resolve(appointments);
+    } catch (error) {
+      console.error("AppointmentService [getSubUserClientsAppointments] Error:", error);
+      reject(error);
+    }
+  });

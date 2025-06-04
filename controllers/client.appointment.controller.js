@@ -78,7 +78,12 @@ exports.clients_appointments_get = async (req, res) => {
   try {
     const userId = req.user.id;
     const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? userId : req.user.primary_user_id;
-    const appointments = await clientAppointmentService.getAppointmentsOfAllClients(primaryUserId);
+    let appointments;
+    if (req.user.role == USER_ROLES.PRIMARY_USER) {
+      appointments = await clientAppointmentService.getAppointmentsOfAllClients(primaryUserId);
+    } else {
+      appointments = await clientAppointmentService.getSubUserClientsAppointments(userId);
+    }
     return res.success(appointments);
   } catch (error) {
     console.error("AppointmentController [clients_appointments_get] Error:", error);

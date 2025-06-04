@@ -11,7 +11,7 @@ router.param("clientId", setClientId);
 
 router.use("/users", require("./user.routes"));
 router.use("/user-profile", verifyCognitoToken, require("./user.profile.routes"));
-router.use("/clients", verifyCognitoToken, require("./client.routes"));
+router.use("/clients", verifyCognitoToken, require("./client.routes")); //
 router.use("/client/:clientId/contacts", verifyCognitoToken, require("./client.contact.routes"));
 router.use("/client/:clientId/notes", verifyCognitoToken, require("./note.routes"));
 router.use("/client/:clientId/medications", verifyCognitoToken, require("./client.medication.routes"));
