@@ -133,10 +133,11 @@ module.exports.getSubUserClientsAppointments = (userId) =>
             include: [
               {
                 model: User,
-                through: { attributes: [] }, // no field in response, from junction table
-                required: true, // to ensure that the user is associated with the client
+                as: "Users",
+                through: { attributes: [] },
+                required: true,
                 where: { id: userId },
-                attributes: [], // no field in response, from user table
+                attributes: [],
               },
             ],
           },
