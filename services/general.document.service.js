@@ -60,6 +60,12 @@ exports.getAllDocuments = (userId) =>
             as: "client",
             attributes: ["id", "first_name", "last_name"],
           },
+          {
+            model: User,
+            as: "primaryUser",
+            attributes: ["id", "subscription_status"],
+            where: { id: userId },
+          },
         ],
         order: [["created_at", "DESC"]],
       });
@@ -95,12 +101,18 @@ exports.getSubUserClientDocuments = (userId) =>
             through: { attributes: [] },
             attributes: ["id"],
           },
+          {
+            model: User,
+            as: "primaryUser",
+            attributes: ["id", "subscription_status"],
+          },
         ],
       });
 
       if (!user || !user.Clients || user.Clients.length === 0) {
         return resolve([]);
       }
+
       const clientIds = user.Clients.map((client) => client.id);
       const documents = await Document.findAll({
         where: {
@@ -117,6 +129,12 @@ exports.getSubUserClientDocuments = (userId) =>
             model: Client,
             as: "client",
             attributes: ["id", "first_name", "last_name"],
+          },
+          {
+            model: User,
+            as: "primaryUser",
+            attributes: ["id", "subscription_status"],
+            where: { id: user.primaryUser.id },
           },
         ],
         order: [["created_at", "DESC"]],
