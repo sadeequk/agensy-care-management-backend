@@ -56,6 +56,13 @@ module.exports.user_login = async (req, res) => {
       last_login: new Date(),
     });
 
+    if (updatedUser.role != USER_ROLES.PRIMARY_USER) {
+      const primaryUser = await userService.getUserById(updatedUser.primary_user_id);
+      if (primaryUser) {
+        updatedUser.dataValues.subscription_status = primaryUser.subscription_status;
+      }
+    }
+
     res.success(updatedUser);
   } catch (error) {
     console.error("UserController [login] Error:", error);
@@ -68,6 +75,14 @@ module.exports.me_get = async (req, res) => {
     if (!req.user) {
       return res.fail("User not found");
     }
+
+    if (req.user.role != USER_ROLES.PRIMARY_USER) {
+      const primaryUser = await userService.getUserById(req.user.primary_user_id);
+      if (primaryUser) {
+        req.user.dataValues.subscription_status = primaryUser.subscription_status;
+      }
+    }
+
     res.success(req.user);
   } catch (error) {
     console.error("UserController [me] Error:", error);
@@ -90,6 +105,7 @@ module.exports.subuser_post = async (req, res) => {
     const newUser = await userService.createSubuser({
       primaryUserId: req.user.id,
       clientId: req.clientId,
+      subscription_status: null,
       subuserData: results,
     });
 
