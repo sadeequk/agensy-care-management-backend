@@ -61,7 +61,13 @@ exports.documents_get = async (req, res) => {
   try {
     const userId = req.user.id;
     const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? userId : req.user.primary_user_id;
-    const documents = await generalDocumentService.getAllDocuments(primaryUserId);
+
+    let documents;
+    if (req.user.role == USER_ROLES.PRIMARY_USER) {
+      documents = await generalDocumentService.getAllDocuments(primaryUserId);
+    } else {
+      documents = await generalDocumentService.getSubUserClientDocuments(userId);
+    }
     return res.success(documents);
   } catch (error) {
     console.error("GeneralDocumentController [documents_get] Error:", error);

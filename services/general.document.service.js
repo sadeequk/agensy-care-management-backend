@@ -83,3 +83,48 @@ exports.deleteDocument = (documentId) =>
       reject(error);
     }
   });
+
+exports.getSubUserClientDocuments = (userId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findOne({
+        where: { id: userId },
+        include: [
+          {
+            model: Client,
+            through: { attributes: [] },
+            attributes: ["id"],
+          },
+        ],
+      });
+
+      if (!user || !user.Clients || user.Clients.length === 0) {
+        return resolve([]);
+      }
+      const clientIds = user.Clients.map((client) => client.id);
+      const documents = await Document.findAll({
+        where: {
+          client_id: clientIds,
+          active: true,
+        },
+        include: [
+          {
+            model: User,
+            as: "uploadedBy",
+            attributes: ["id", "first_name", "last_name"],
+          },
+          {
+            model: Client,
+            as: "client",
+            attributes: ["id", "first_name", "last_name"],
+          },
+        ],
+        order: [["created_at", "DESC"]],
+      });
+
+      resolve(documents);
+    } catch (error) {
+      console.error("GeneralDocumentService [getSubUserClientDocuments] Error:", error);
+      reject(error);
+    }
+  });
