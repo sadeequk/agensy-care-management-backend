@@ -20,3 +20,11 @@ module.exports.subuser_post = Joi.object({
   phone: Joi.string().optional(),
   role: Joi.string().valid(USER_ROLES.FAMILY_MEMBER, USER_ROLES.CAREGIVER).required(),
 });
+
+module.exports.subuser_put = Joi.object({
+  first_name: Joi.string().optional(),
+  last_name: Joi.string().optional(),
+  relation: Joi.string().optional(),
+  phone: Joi.string().optional(),
+  role: Joi.string().valid(USER_ROLES.FAMILY_MEMBER, USER_ROLES.CAREGIVER).required(),
+});

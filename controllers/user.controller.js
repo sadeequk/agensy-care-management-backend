@@ -127,3 +127,23 @@ module.exports.subuser_delete = async (req, res) => {
     res.serverError(error);
   }
 };
+
+module.exports.subuser_put = async (req, res) => {
+  try {
+    const results = await joiSchemas.subuser_put.validateAsync(req.body);
+    const subuserId = req.params.subuserId;
+
+    const updatedSubuser = await userService.updateUser(subuserId, {
+      first_name: results.first_name,
+      last_name: results.last_name,
+      relation: results.relation,
+      role: results.role,
+      phone: results.phone,
+    });
+
+    res.success(updatedSubuser);
+  } catch (error) {
+    console.error("UserController [edit_subuser] Error:", error);
+    res.serverError(error);
+  }
+};
