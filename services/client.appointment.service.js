@@ -22,7 +22,7 @@ module.exports.getAppointment = (appointmentId) =>
       const appointment = await ClientAppointment.findByPk(appointmentId, {
         include: [
           { model: Client, as: "client" },
-          { model: User, as: "creator" },
+          { model: User, as: "createdBy" },
         ],
       });
       if (!appointment) return reject(new Error("Appointment not found"));
@@ -38,7 +38,7 @@ module.exports.getAppointmentsForClient = (clientId) =>
     try {
       const appointments = await ClientAppointment.findAll({
         where: { client_id: clientId },
-        include: [{ model: User, as: "creator" }],
+        include: [{ model: User, as: "createdBy" }],
         order: [["start_time", "DESC"]],
       });
       resolve(appointments);
