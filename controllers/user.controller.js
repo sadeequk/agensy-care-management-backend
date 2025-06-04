@@ -105,7 +105,7 @@ module.exports.subuser_post = async (req, res) => {
     const newUser = await userService.createSubuser({
       primaryUserId: req.user.id,
       clientId: req.clientId,
-      subscription_status: null,
+      subscription_status: SUBSCRIPTION_STATUS.INACTIVE,
       subuserData: results,
     });
 
