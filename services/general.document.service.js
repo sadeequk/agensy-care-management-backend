@@ -41,7 +41,6 @@ exports.getDocumentById = (documentId) =>
       reject(error);
     }
   });
-
 exports.getAllDocuments = (userId) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -59,12 +58,6 @@ exports.getAllDocuments = (userId) =>
             model: Client,
             as: "client",
             attributes: ["id", "first_name", "last_name"],
-          },
-          {
-            model: User,
-            as: "primaryUser",
-            attributes: ["id", "subscription_status"],
-            where: { id: userId },
           },
         ],
         order: [["created_at", "DESC"]],

@@ -43,6 +43,7 @@ Document.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
 //^ Document to User Relation (One-To-One)      # general (used in "document service" for populating user data who upload the document )
 Document.belongsTo(User, { foreignKey: "uploaded_by", as: "uploadedBy" });
+Document.belongsTo(User, { foreignKey: "primary_user_id", as: "primaryUser" });
 
 //^ Appointment to User Relation (Many-To-One)
 ClientAppointment.belongsTo(User, { foreignKey: "created_by", as: "createdBy" });
