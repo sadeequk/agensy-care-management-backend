@@ -124,22 +124,29 @@ module.exports.getAppointmentsOfAllClients = (userId) =>
 module.exports.getSubUserClientsAppointments = (userId) =>
   new Promise(async (resolve, reject) => {
     try {
+      const user = await User.findOne({
+        where: { id: userId },
+        include: [
+          {
+            model: Client,
+            through: { attributes: [] },
+            attributes: ["id"],
+          },
+        ],
+      });
+      if (!user || !user.Clients || user.Clients.length === 0) {
+        return resolve([]);
+      }
+      const clientIds = user.Clients.map((client) => client.id);
       const appointments = await ClientAppointment.findAll({
+        where: {
+          client_id: clientIds,
+        },
         include: [
           {
             model: Client,
             as: "client",
             attributes: ["id", "first_name", "last_name"],
-            include: [
-              {
-                model: User,
-                as: "Users",
-                through: { attributes: [] },
-                required: true,
-                where: { id: userId },
-                attributes: [],
-              },
-            ],
           },
           {
             model: User,

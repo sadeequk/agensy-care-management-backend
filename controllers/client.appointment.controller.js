@@ -84,6 +84,7 @@ exports.clients_appointments_get = async (req, res) => {
     } else {
       appointments = await clientAppointmentService.getSubUserClientsAppointments(userId);
     }
+    console.log(req.user.role);
     return res.success(appointments);
   } catch (error) {
     console.error("AppointmentController [clients_appointments_get] Error:", error);
