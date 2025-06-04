@@ -41,9 +41,15 @@ exports.client_get = async (req, res) => {
 exports.clients_get = async (req, res) => {
   try {
     const userId = req.user.id;
-    const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? userId : req.user.primary_user_id;
-    const clients = await clientService.getUserClients(primaryUserId);
-    return res.success(clients);
+    // const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? userId : req.user.primary_user_id;
+    // const clients = await clientService.getUserClients(primaryUserId);
+    if (req.user.role == USER_ROLES.PRIMARY_USER) {
+      const clients = await clientService.getUserClients(userId);
+      return res.success(clients);
+    } else {
+      const clients = await clientService.getSubUserClients(userId);
+      return res.success(clients);
+    }
   } catch (error) {
     console.error("ClientController [clients_get] Error:", error);
     return res.serverError(error);

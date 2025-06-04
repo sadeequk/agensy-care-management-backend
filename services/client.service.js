@@ -191,3 +191,60 @@ module.exports.getClientWithAccessCheck = (userId, clientId) =>
       reject(error);
     }
   });
+
+module.exports.getSubUserClients = (userId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findOne({
+        where: { id: userId },
+        include: [
+          {
+            model: Client,
+            through: { attributes: [] },
+            include: [
+              {
+                model: User,
+                as: "Users",
+                through: { attributes: [] },
+              },
+              {
+                model: ClientContact,
+                as: "contacts",
+              },
+              {
+                model: ClientNote,
+                as: "clientNotes",
+              },
+              {
+                model: ClientMedication,
+                as: "medications",
+              },
+              {
+                model: HealthcareProvider,
+                as: "healthcareProviders",
+              },
+              {
+                model: ClientMedical,
+                as: "medical",
+              },
+              {
+                model: Document,
+                as: "documents",
+                include: [
+                  {
+                    model: User,
+                    as: "uploadedBy",
+                    attributes: ["id", "first_name", "last_name"],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+      resolve(user.Clients);
+    } catch (error) {
+      console.error("ClientService [getSubUserClients] Error:", error);
+      reject(error);
+    }
+  });
