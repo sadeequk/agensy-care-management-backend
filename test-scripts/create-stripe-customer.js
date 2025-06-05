@@ -2,7 +2,8 @@ require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { User } = require("../models");
 
-const email = "bw8051116@gmail.com";
+// const email = "bw8051116@gmail.com";
+const email = "hinivo1852@besibali.com";
 
 async function createStripeCustomer() {
   try {

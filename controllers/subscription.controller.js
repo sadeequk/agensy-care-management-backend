@@ -2,8 +2,6 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { User } = require("../models");
 const { SUBSCRIPTION_STATUS } = require("../constants");
 
-//TODO: WILL CONVERT THE WHOLE CODE TO PROPER FORMATE ONCE IT STARTED WORING ON TEST MOOD
-
 exports.checkout_session_post = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id);
@@ -85,7 +83,7 @@ exports.handleWebhook = async (req, res) => {
         const deletedUser = await User.findOne({ where: { stripe_customer_id: deletedCustomer.id } });
 
         if (deletedUser) {
-          await deletedUser.update({ subscription_status: SUBSCRIPTION_STATUS.CANCELED });
+          await deletedUser.update({ subscription_status: SUBSCRIPTION_STATUS.INACTIVE });
         }
         break;
     }
@@ -149,13 +147,26 @@ exports.cancel_subscription_post = async (req, res) => {
       return res.fail("User not found");
     }
 
-    await user.update({
-      subscription_status: SUBSCRIPTION_STATUS.INACTIVE,
+    if (!user.stripe_customer_id) {
+      return res.fail("Stripe customer not found");
+    }
+
+    const subscriptions = await stripe.subscriptions.list({
+      customer: user.stripe_customer_id,
+      status: "active",
+      limit: 1,
     });
 
+    if (!subscriptions.data.length) {
+      return res.fail("No active subscription found");
+    }
+
+    const subscriptionId = subscriptions.data[0].id;
+
+    await stripe.subscriptions.del(subscriptionId);
+
     return res.success({
-      message: "Subscription canceled successfully",
-      subscription_status: user.subscription_status,
+      message: "Subscription canceled successfully.",
     });
   } catch (error) {
     console.error("Error canceling subscription:", error);

@@ -27,7 +27,6 @@ router.use("/client/:clientId/appointments", verifyCognitoToken, require("./clie
 router.use("/appointments", verifyCognitoToken, require("./all.clients.appointments.route"));
 router.use("/general-documents", verifyCognitoToken, require("./general.document.routes"));
 
-//stripe routes (testing)
 router.use("/subscription", require("./subscription.routes"));
 
 module.exports = router;
