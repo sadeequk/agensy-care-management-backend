@@ -82,8 +82,3 @@ exports.SUBSCRIPTION_STATUS = {
   INACTIVE: "inactive",
   CANCELED: "canceled",
 };
-
-exports.SUBSCRIPTION_TYPE = {
-  FREE: "free",
-  PRO: "pro",
-};
