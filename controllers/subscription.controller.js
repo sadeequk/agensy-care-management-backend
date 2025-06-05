@@ -163,7 +163,7 @@ exports.cancel_subscription_post = async (req, res) => {
 
     const subscriptionId = subscriptions.data[0].id;
 
-    await stripe.subscriptions.del(subscriptionId);
+    await stripe.subscriptions.cancel(subscriptionId);
 
     return res.success({
       message: "Subscription canceled successfully.",
