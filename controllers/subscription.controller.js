@@ -79,8 +79,8 @@ exports.handleWebhook = async (req, res) => {
 
       case "customer.subscription.deleted":
         const deletedSubscription = event.data.object;
-        const deletedCustomer = await stripe.customers.retrieve(deletedSubscription.customer);
-        const deletedUser = await User.findOne({ where: { stripe_customer_id: deletedCustomer.id } });
+        // const deletedCustomer = await stripe.customers.retrieve(deletedSubscription.customer);
+        const deletedUser = await User.findOne({ where: { stripe_customer_id: deletedSubscription.customer } });
 
         if (deletedUser) {
           await deletedUser.update({ subscription_status: SUBSCRIPTION_STATUS.INACTIVE });
