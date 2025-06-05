@@ -146,7 +146,7 @@ exports.cancel_subscription_post = async (req, res) => {
     if (!user) {
       return res.fail("User not found");
     }
-
+    ////
     if (!user.stripe_customer_id) {
       return res.fail("Stripe customer not found");
     }
