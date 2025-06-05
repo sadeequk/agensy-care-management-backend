@@ -6,8 +6,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/agensy-care-management",
-    "dev": "nodemon ./bin/agensy-care-management",
-    "stripe": "node ./test-scripts/create-stripe-customer.js"
+    "dev": "nodemon ./bin/agensy-care-management"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.812.0",
