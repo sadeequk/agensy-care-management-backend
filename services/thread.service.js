@@ -23,17 +23,17 @@ exports.createThread = (data, primaryUserId, createdBy) => {
             model: User,
             as: "participants",
             through: { attributes: [] },
-            attributes: ["id", "first_name", "last_name", "avatar"],
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
           },
           {
             model: User,
             as: "primaryUser",
-            attributes: ["id", "first_name", "last_name", "avatar"],
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
           },
           {
             model: User,
             as: "creator",
-            attributes: ["id", "first_name", "last_name", "avatar"],
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
           },
           {
             model: Client,
@@ -47,7 +47,7 @@ exports.createThread = (data, primaryUserId, createdBy) => {
               {
                 model: User,
                 as: "sender",
-                attributes: ["id", "first_name", "last_name", "avatar"],
+                attributes: ["id", "first_name", "last_name", "role", "avatar"],
               },
             ],
             order: [["sent_at", "ASC"]],
@@ -73,17 +73,17 @@ exports.getUserThreads = (userId) => {
             model: User,
             as: "participants",
             through: { attributes: [] },
-            attributes: ["id", "first_name", "last_name", "avatar"],
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
           },
           {
             model: User,
             as: "primaryUser",
-            attributes: ["id", "first_name", "last_name", "avatar"],
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
           },
           {
             model: User,
             as: "creator",
-            attributes: ["id", "first_name", "last_name", "avatar"],
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
           },
           {
             model: Client,
@@ -97,7 +97,7 @@ exports.getUserThreads = (userId) => {
               {
                 model: User,
                 as: "sender",
-                attributes: ["id", "first_name", "last_name", "avatar"],
+                attributes: ["id", "first_name", "last_name", "role", "avatar"],
               },
             ],
             order: [["sent_at", "ASC"]],
@@ -122,13 +122,13 @@ exports.getThreadById = (threadId) => {
           {
             model: User,
             as: "participants",
-            attributes: ["id", "first_name", "last_name", "avatar"],
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
             through: { attributes: [] },
           },
           {
             model: User,
             as: "creator",
-            attributes: ["id", "first_name", "last_name", "avatar"],
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
           },
           {
             model: Message,
@@ -137,7 +137,7 @@ exports.getThreadById = (threadId) => {
               {
                 model: User,
                 as: "sender",
-                attributes: ["id", "first_name", "last_name", "avatar"],
+                attributes: ["id", "first_name", "last_name", "role", "avatar"],
               },
             ],
             order: [["sent_at", "ASC"]],
@@ -183,7 +183,7 @@ module.exports.addParticipant = (threadId, userIdToAdd) =>
           {
             model: User,
             as: "participants",
-            attributes: ["id", "first_name", "last_name", "avatar"],
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
             through: { attributes: [] },
           },
         ],
@@ -192,10 +192,10 @@ module.exports.addParticipant = (threadId, userIdToAdd) =>
       // Get additional relations separately
       const [primaryUser, creator, client] = await Promise.all([
         User.findByPk(thread.primary_user_id, {
-          attributes: ["id", "first_name", "last_name", "avatar"],
+          attributes: ["id", "first_name", "last_name", "role", "avatar"],
         }),
         User.findByPk(thread.created_by, {
-          attributes: ["id", "first_name", "last_name", "avatar"],
+          attributes: ["id", "first_name", "last_name", "role", "avatar"],
         }),
         thread.client_id
           ? Client.findByPk(thread.client_id, {
