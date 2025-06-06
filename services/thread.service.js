@@ -64,10 +64,84 @@ exports.createThread = (data, primaryUserId, createdBy) => {
   });
 };
 
+// exports.getUserThreads = (userId) => {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       const threads = await Thread.findAll({
+//         include: [
+//           {
+//             model: User,
+//             as: "participants",
+//             attributes: ["id", "first_name", "last_name", "role", "avatar"],
+//             through: { attributes: [] },
+//           },
+//           {
+//             model: User,
+//             as: "creator",
+//             attributes: ["id", "first_name", "last_name", "role", "avatar"],
+//           },
+//           {
+//             model: User,
+//             as: "primaryUser",
+//             attributes: ["id", "first_name", "last_name", "role", "avatar"],
+//           },
+//           {
+//             model: Client,
+//             as: "client",
+//             attributes: ["id", "first_name", "last_name"],
+//           },
+//           {
+//             model: Message,
+//             as: "messages",
+//             include: [
+//               {
+//                 model: User,
+//                 as: "sender",
+//                 attributes: ["id", "first_name", "last_name", "role", "avatar"],
+//               },
+//             ],
+//             order: [["createdAt", "DESC"]],
+//             limit: 50,
+//           },
+//         ],
+//         where: {
+//           [Op.or]: [{ primary_user_id: userId }, { created_by: userId }],
+//         },
+//       });
+//       resolve(threads);
+//     } catch (error) {
+//       reject(error);
+//     }
+//   });
+// };
+
 exports.getUserThreads = (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
+      // First find all thread IDs where user is a participant
+      const userThreads = await Thread.findAll({
+        include: [
+          {
+            model: User,
+            as: "participants",
+            attributes: ["id"],
+            through: { attributes: [] },
+            required: true,
+            where: { id: userId },
+          },
+        ],
+        attributes: ["id"],
+      });
+
+      const threadIds = userThreads.map((thread) => thread.id);
+
+      // Then get complete details for these threads
       const threads = await Thread.findAll({
+        where: {
+          id: {
+            [Op.in]: threadIds,
+          },
+        },
         include: [
           {
             model: User,
@@ -104,17 +178,14 @@ exports.getUserThreads = (userId) => {
             limit: 50,
           },
         ],
-        where: {
-          [Op.or]: [{ primary_user_id: userId }, { created_by: userId }],
-        },
       });
+
       resolve(threads);
     } catch (error) {
       reject(error);
     }
   });
 };
-
 exports.getThreadById = (threadId) => {
   return new Promise(async (resolve, reject) => {
     try {
