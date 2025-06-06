@@ -5,6 +5,40 @@ const { THREAD_TYPES } = require("../constants");
 exports.createThread = (data, primaryUserId, createdBy) => {
   return new Promise(async (resolve, reject) => {
     try {
+      //--------------------------------------------------------------------------------------------------
+      // ^ Will change the logic when we shifted to groups
+      const existingThread = await Thread.findOne({
+        include: [
+          {
+            model: User,
+            as: "participants",
+            through: { attributes: [] },
+            where: {
+              [Op.or]: [{ id: createdBy }, { id: data.participant_id }],
+            },
+          },
+        ],
+        where: {
+          type: data.type,
+          sub_type: data.sub_type,
+        },
+      });
+
+      if (existingThread) {
+        // Get all participants of existing thread
+        const participants = await existingThread.getParticipants();
+        const participantIds = participants.map((p) => p.id);
+
+        // Check if both users are already participants
+        if (participantIds.includes(createdBy) && participantIds.includes(data.participant_id)) {
+          return resolve(
+            "A thread already exists between these users"
+            // existingThread,
+          );
+        }
+      }
+      //--------------------------------------------------------------------------------------------------
+      // If no existing thread, create new one
       const thread = await Thread.create({
         primary_user_id: primaryUserId,
         client_id: data.client_id,
