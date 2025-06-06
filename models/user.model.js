@@ -51,6 +51,10 @@ module.exports = (sequelize) =>
       last_login: {
         type: DataTypes.DATE,
       },
+      socket_id: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

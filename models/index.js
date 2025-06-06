@@ -8,6 +8,8 @@ const HealthcareProvider = require("./client.healthcare.provider.model")(sequeli
 const ClientMedical = require("./client.medical.model")(sequelize);
 const Document = require("./client.document.model")(sequelize);
 const ClientAppointment = require("./client.appointment.model")(sequelize);
+const Thread = require("./thread.model")(sequelize);
+const Message = require("./message.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -64,6 +66,52 @@ HealthcareProvider.hasMany(ClientAppointment, {
   as: "appointments",
 });
 
+//^ Thread-User (Many-to-Many)
+Thread.belongsToMany(User, {
+  through: "threadParticipants",
+  foreignKey: "thread_id",
+  as: "participants",
+});
+User.belongsToMany(Thread, {
+  through: "threadParticipants",
+  foreignKey: "user_id",
+  as: "threads",
+});
+
+//^ Thread-Message (One-to-Many)
+Thread.hasMany(Message, {
+  foreignKey: "thread_id",
+  as: "messages",
+});
+Message.belongsTo(Thread, {
+  foreignKey: "thread_id",
+  as: "thread",
+});
+
+//^ Message-User (Many-To-One)
+Message.belongsTo(User, {
+  foreignKey: "sender_id",
+  as: "sender",
+});
+
+// Thread creator relation
+Thread.belongsTo(User, {
+  foreignKey: "created_by",
+  as: "creator",
+});
+
+// Thread primary user relation
+Thread.belongsTo(User, {
+  foreignKey: "primary_user_id",
+  as: "primaryUser",
+});
+
+// Thread client relation
+Thread.belongsTo(Client, {
+  foreignKey: "client_id",
+  as: "client",
+});
+
 module.exports = {
   sequelize,
   User,
@@ -75,4 +123,6 @@ module.exports = {
   ClientMedical,
   Document,
   ClientAppointment,
+  Thread,
+  Message,
 };

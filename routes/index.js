@@ -26,7 +26,7 @@ router.use("/client/:clientId/users", verifyCognitoToken, require("./client.user
 router.use("/client/:clientId/appointments", verifyCognitoToken, require("./client.appointment.routes"));
 router.use("/appointments", verifyCognitoToken, require("./all.clients.appointments.route"));
 router.use("/general-documents", verifyCognitoToken, require("./general.document.routes"));
-
+router.use("/threads", verifyCognitoToken, require("./thread.routes"));
 router.use("/subscription", require("./subscription.routes"));
 
 module.exports = router;

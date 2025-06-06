@@ -82,3 +82,13 @@ exports.SUBSCRIPTION_STATUS = {
   INACTIVE: "inactive",
   CANCELED: "canceled",
 };
+
+exports.THREAD_TYPES = {
+  GENERAL: "general",
+  CLIENT: "client",
+};
+
+exports.THREAD_SUB_TYPES = {
+  ONE_TO_ONE: "one-to-one",
+  GROUP: "group",
+};
