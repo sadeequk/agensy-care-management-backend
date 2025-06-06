@@ -4,6 +4,7 @@ const clientService = require("./client.service");
 const { sendLoginEmail } = require("../helpers/login.email.templete");
 const { COGNITO_GROUPS, USER_ROLES } = require("../constants/index");
 const { Client } = require("../models/index");
+const { Op } = require("sequelize");
 
 module.exports.createUser = (userData) =>
   new Promise(async (resolve, reject) => {
@@ -163,3 +164,29 @@ module.exports.checkUserEmailForClient = (email, clientId) =>
       reject(error);
     }
   });
+
+exports.getRelatedUsers = async (userId) => {
+  const user = await User.findByPk(userId);
+
+  if (!user) throw new Error("User not found");
+
+  if (user.primary_user_id === null) {
+    return User.findAll({
+      where: {
+        [Op.or]: [
+          { id: user.id }, // the primary user
+          { primary_user_id: user.id }, // all sub-users
+        ],
+      },
+    });
+  }
+
+  return User.findAll({
+    where: {
+      [Op.or]: [
+        { id: user.primary_user_id }, // the primary user
+        { primary_user_id: user.primary_user_id }, // all sibling sub-users
+      ],
+    },
+  });
+};
