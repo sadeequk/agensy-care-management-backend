@@ -16,13 +16,13 @@ module.exports.configureSockets = (server) => {
   io.use(authenticateSocket);
 
   io.on("connection", async (client) => {
-    console.log(`[CONNECT] ${client.user.email} connected (socketId: ${client.id})`);
+    console.log(`" ${client.user.email}" Connected , SocketId: ${client.id})`);
 
     try {
       const user = await User.findByPk(client.user.id);
       if (user) {
         await user.update({ socket_id: client.id });
-        console.log(`[SOCKET ID] Updated socket_id for ${user.email}`);
+        console.log(`"${user.email} "Socket Id Updated `);
       }
     } catch (err) {
       console.error("[ERROR] Failed to update socket_id:", err);
@@ -65,7 +65,7 @@ module.exports.configureSockets = (server) => {
 
         threads.forEach((thread) => {
           client.join(`thread_${thread.id}`);
-          console.log(`[ROOM JOINED] thread_${thread.id}`);
+          console.log(`[JOINED] thread_${thread.id}`);
         });
 
         console.log(`[JOINED] ${threads.length} threads`);
@@ -77,7 +77,7 @@ module.exports.configureSockets = (server) => {
 
     client.on("sendMessage", async (data) => {
       const { threadId, content } = data;
-      console.log(`[SEND MESSAGE] by ${client.user.email} to thread: ${threadId}`);
+      console.log(`[SEND MESSAGE] by ${client.user.email} to thread  ====>: ${threadId}`);
 
       if (!threadId || !content) {
         return client.emit("error", { error: "threadId and content are required." });
@@ -154,10 +154,10 @@ module.exports.configureSockets = (server) => {
           },
         };
 
-        console.log(`[BROADCAST] to ${participants.length} participants`);
+        console.log(`${participants.length} participants`);
         participants.forEach((participant) => {
           if (participant.socket_id) {
-            console.log(`→ Sending to ${participant.email} [${participant.socket_id}]`);
+            console.log(`Sending to ${participant.email} [${participant.socket_id}]`);
             io.to(participant.socket_id).emit("receiveMessage", messageData);
           }
         });
@@ -168,7 +168,6 @@ module.exports.configureSockets = (server) => {
         client.emit("error", { error: "Failed to send message." });
       }
     });
-    ///
     client.on("markMessageRead", async (data) => {
       const { messageId } = data;
 
@@ -194,8 +193,6 @@ module.exports.configureSockets = (server) => {
         console.error(`[ERROR] Failed to mark message as read:`, error);
       }
     });
-
-    //
     client.on("disconnect", async () => {
       console.log(`[DISCONNECT] ${client.user.email} (${client.id})`);
       try {

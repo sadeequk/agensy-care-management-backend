@@ -50,7 +50,8 @@ exports.createThread = (data, primaryUserId, createdBy) => {
                 attributes: ["id", "first_name", "last_name", "role", "avatar"],
               },
             ],
-            order: [["sent_at", "ASC"]],
+            // order: [["sent_at", "ASC"]],
+            order: [["createdAt ", "DESC"]],
           },
         ],
       });
@@ -67,22 +68,21 @@ exports.getUserThreads = (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
       const threads = await Thread.findAll({
-        attributes: ["id", "type", "sub_type", "client_id", "created_by", "started_at", "primary_user_id"],
         include: [
           {
             model: User,
             as: "participants",
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
             through: { attributes: [] },
+          },
+          {
+            model: User,
+            as: "creator",
             attributes: ["id", "first_name", "last_name", "role", "avatar"],
           },
           {
             model: User,
             as: "primaryUser",
-            attributes: ["id", "first_name", "last_name", "role", "avatar"],
-          },
-          {
-            model: User,
-            as: "creator",
             attributes: ["id", "first_name", "last_name", "role", "avatar"],
           },
           {
@@ -100,14 +100,15 @@ exports.getUserThreads = (userId) => {
                 attributes: ["id", "first_name", "last_name", "role", "avatar"],
               },
             ],
-            order: [["sent_at", "ASC"]],
+            order: [["createdAt", "DESC"]],
+            limit: 50,
           },
         ],
         where: {
           [Op.or]: [{ primary_user_id: userId }, { created_by: userId }],
         },
       });
-      resolve({ threads });
+      resolve(threads);
     } catch (error) {
       reject(error);
     }
@@ -131,6 +132,16 @@ exports.getThreadById = (threadId) => {
             attributes: ["id", "first_name", "last_name", "role", "avatar"],
           },
           {
+            model: User,
+            as: "primaryUser",
+            attributes: ["id", "first_name", "last_name", "role", "avatar"],
+          },
+          {
+            model: Client,
+            as: "client",
+            attributes: ["id", "first_name", "last_name"],
+          },
+          {
             model: Message,
             as: "messages",
             include: [
@@ -140,7 +151,8 @@ exports.getThreadById = (threadId) => {
                 attributes: ["id", "first_name", "last_name", "role", "avatar"],
               },
             ],
-            order: [["sent_at", "ASC"]],
+            // order: [["sent_at", "ASC"]],
+            order: [["createdAt ", "DESC"]],
           },
         ],
       });

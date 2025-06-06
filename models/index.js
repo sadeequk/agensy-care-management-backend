@@ -72,6 +72,7 @@ Thread.belongsToMany(User, {
   foreignKey: "thread_id",
   as: "participants",
 });
+//^ User-Thread
 User.belongsToMany(Thread, {
   through: "threadParticipants",
   foreignKey: "user_id",
@@ -83,6 +84,8 @@ Thread.hasMany(Message, {
   foreignKey: "thread_id",
   as: "messages",
 });
+
+//^Message-Thread
 Message.belongsTo(Thread, {
   foreignKey: "thread_id",
   as: "thread",
@@ -94,19 +97,19 @@ Message.belongsTo(User, {
   as: "sender",
 });
 
-// Thread creator relation
+//^ Thread-Creator
 Thread.belongsTo(User, {
   foreignKey: "created_by",
   as: "creator",
 });
 
-// Thread primary user relation
+//^ Thread-PrimaryUser
 Thread.belongsTo(User, {
   foreignKey: "primary_user_id",
   as: "primaryUser",
 });
 
-// Thread client relation
+//^ Thread-Client
 Thread.belongsTo(Client, {
   foreignKey: "client_id",
   as: "client",
