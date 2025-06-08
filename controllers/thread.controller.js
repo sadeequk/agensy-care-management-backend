@@ -42,16 +42,3 @@ exports.thread_get = async (req, res) => {
     res.serverError(error);
   }
 };
-
-exports.participant_post = async (req, res) => {
-  try {
-    const { threadId } = req.params;
-    const { user_id } = req.body;
-
-    const updatedThread = await threadService.addParticipant(threadId, user_id);
-
-    return res.success(updatedThread);
-  } catch (error) {
-    return res.server(error);
-  }
-};
