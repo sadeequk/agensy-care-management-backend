@@ -5,7 +5,6 @@ const { THREAD_TYPES } = require("../constants");
 exports.createThread = (data, primaryUserId, createdBy) => {
   return new Promise(async (resolve, reject) => {
     try {
-      //--------------------------------------------------------------------------------------------------
       // ^ Will change the logic when we shifted to groups
       const existingThread = await Thread.findOne({
         include: [
@@ -25,20 +24,14 @@ exports.createThread = (data, primaryUserId, createdBy) => {
       });
 
       if (existingThread) {
-        // Get all participants of existing thread
         const participants = await existingThread.getParticipants();
         const participantIds = participants.map((p) => p.id);
 
-        // Check if both users are already participants
         if (participantIds.includes(createdBy) && participantIds.includes(data.participant_id)) {
-          return resolve(
-            "A thread already exists between these users"
-            // existingThread,
-          );
+          return resolve(existingThread);
         }
       }
-      //--------------------------------------------------------------------------------------------------
-      // If no existing thread, create new one
+
       const thread = await Thread.create({
         primary_user_id: primaryUserId,
         client_id: data.client_id,
@@ -74,19 +67,6 @@ exports.createThread = (data, primaryUserId, createdBy) => {
             as: "client",
             attributes: ["id", "first_name", "last_name"],
           },
-          {
-            model: Message,
-            as: "messages",
-            include: [
-              {
-                model: User,
-                as: "sender",
-                attributes: ["id", "first_name", "last_name", "role", "avatar"],
-              },
-            ],
-            // order: [["sent_at", "ASC"]],
-            order: [["createdAt ", "DESC"]],
-          },
         ],
       });
 
@@ -101,7 +81,30 @@ exports.createThread = (data, primaryUserId, createdBy) => {
 // exports.getUserThreads = (userId) => {
 //   return new Promise(async (resolve, reject) => {
 //     try {
+//       // First find all thread IDs where user is a participant
+//       const userThreads = await Thread.findAll({
+//         include: [
+//           {
+//             model: User,
+//             as: "participants",
+//             attributes: ["id"],
+//             through: { attributes: [] },
+//             required: true,
+//             where: { id: userId },
+//           },
+//         ],
+//         attributes: ["id"],
+//       });
+
+//       const threadIds = userThreads.map((thread) => thread.id);
+
+//       // Then get complete details for these threads
 //       const threads = await Thread.findAll({
+//         where: {
+//           id: {
+//             [Op.in]: threadIds,
+//           },
+//         },
 //         include: [
 //           {
 //             model: User,
@@ -138,10 +141,8 @@ exports.createThread = (data, primaryUserId, createdBy) => {
 //             limit: 50,
 //           },
 //         ],
-//         where: {
-//           [Op.or]: [{ primary_user_id: userId }, { created_by: userId }],
-//         },
 //       });
+
 //       resolve(threads);
 //     } catch (error) {
 //       reject(error);
@@ -152,36 +153,14 @@ exports.createThread = (data, primaryUserId, createdBy) => {
 exports.getUserThreads = (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      // First find all thread IDs where user is a participant
-      const userThreads = await Thread.findAll({
-        include: [
-          {
-            model: User,
-            as: "participants",
-            attributes: ["id"],
-            through: { attributes: [] },
-            required: true,
-            where: { id: userId },
-          },
-        ],
-        attributes: ["id"],
-      });
-
-      const threadIds = userThreads.map((thread) => thread.id);
-
-      // Then get complete details for these threads
       const threads = await Thread.findAll({
-        where: {
-          id: {
-            [Op.in]: threadIds,
-          },
-        },
         include: [
           {
             model: User,
             as: "participants",
             attributes: ["id", "first_name", "last_name", "role", "avatar"],
             through: { attributes: [] },
+            where: { id: userId },
           },
           {
             model: User,
@@ -198,6 +177,8 @@ exports.getUserThreads = (userId) => {
             as: "client",
             attributes: ["id", "first_name", "last_name"],
           },
+
+          //^Keeping the messages in response coz  frontend need it
           {
             model: Message,
             as: "messages",
@@ -212,6 +193,7 @@ exports.getUserThreads = (userId) => {
             limit: 50,
           },
         ],
+        order: [["last_message_time", "DESC"]],
       });
 
       resolve(threads);
@@ -220,6 +202,7 @@ exports.getUserThreads = (userId) => {
     }
   });
 };
+
 exports.getThreadById = (threadId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -256,7 +239,6 @@ exports.getThreadById = (threadId) => {
                 attributes: ["id", "first_name", "last_name", "role", "avatar"],
               },
             ],
-            // order: [["sent_at", "ASC"]],
             order: [["createdAt ", "DESC"]],
           },
         ],

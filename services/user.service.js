@@ -165,28 +165,61 @@ module.exports.checkUserEmailForClient = (email, clientId) =>
     }
   });
 
-exports.getRelatedUsers = async (userId) => {
-  const user = await User.findByPk(userId);
+//^ will  change it in future , coz the user is also dependent to client
+// exports.getRelatedUsers = async (userId) => {
+//   const user = await User.findByPk(userId);
 
-  if (!user) throw new Error("User not found");
+//   if (!user) throw new Error("User not found");
 
-  if (user.primary_user_id === null) {
-    return User.findAll({
-      where: {
-        [Op.or]: [
-          { id: user.id }, // the primary user
-          { primary_user_id: user.id }, // all sub-users
-        ],
-      },
-    });
-  }
+//   if (user.primary_user_id === null) {
+//     return User.findAll({
+//       where: {
+//         [Op.or]: [
+//           { id: user.id }, // the primary user
+//           { primary_user_id: user.id }, // all sub-users
+//         ],
+//       },
+//     });
+//   }
 
-  return User.findAll({
-    where: {
-      [Op.or]: [
-        { id: user.primary_user_id }, // the primary user
-        { primary_user_id: user.primary_user_id }, // all sibling sub-users
-      ],
-    },
+//   return User.findAll({
+//     where: {
+//       [Op.or]: [
+//         { id: user.primary_user_id }, // the primary user
+//         { primary_user_id: user.primary_user_id }, // all sibling sub-users
+//       ],
+//     },
+//   });
+// };
+exports.getRelatedUsers = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findByPk(userId);
+      if (!user) return reject(new Error("User not found"));
+
+      if (user.role === USER_ROLES.PRIMARY_USER) {
+        const users = await User.findAll({
+          where: {
+            primary_user_id: user.id,
+          },
+        });
+        return resolve(users);
+      }
+
+      if (user.role === USER_ROLES.FAMILY_MEMBER || user.role === USER_ROLES.CAREGIVER) {
+        const users = await User.findAll({
+          where: {
+            [Op.or]: [
+              // { id: user.id }, // self
+              { id: user.primary_user_id }, // primary user
+              { primary_user_id: user.primary_user_id }, // siblings
+            ],
+          },
+        });
+        return resolve(users);
+      }
+    } catch (error) {
+      return reject(error);
+    }
   });
 };

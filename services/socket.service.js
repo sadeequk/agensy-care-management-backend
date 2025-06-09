@@ -1,7 +1,6 @@
 const socketio = require("socket.io");
 const { authenticateSocket } = require("../middlewares/socket.mw");
-const { User, Thread, Message, Client } = require("../models");
-const { Op } = require("sequelize");
+const { User, Thread, Message } = require("../models");
 
 let io;
 
@@ -16,75 +15,28 @@ module.exports.configureSockets = (server) => {
   io.use(authenticateSocket);
 
   io.on("connection", async (client) => {
-    console.log(`" ${client.user.email}" Connected , SocketId: ${client.id})`);
+    // console.log(`" ${client.user.email}" Connected , SocketId: ${client.id})`);
 
     try {
       const user = await User.findByPk(client.user.id);
       if (user) {
         await user.update({ socket_id: client.id });
-        console.log(`"${user.email} "Socket Id Updated `);
+        // console.log(`"${user.email} "Socket Id Updated `);
       }
     } catch (err) {
       console.error("[ERROR] Failed to update socket_id:", err);
     }
 
-    client.on("joinThreads", async () => {
-      console.log(`[JOIN THREADS] ${client.user.email}`);
-      try {
-        const threads = await Thread.findAll({
-          include: [
-            {
-              model: User,
-              as: "participants",
-              where: { id: client.user.id },
-              through: { attributes: [] },
-            },
-            {
-              model: User,
-              as: "creator",
-              attributes: ["id", "first_name", "last_name", "avatar"],
-            },
-            {
-              model: Message,
-              as: "messages",
-              include: [
-                {
-                  model: User,
-                  as: "sender",
-                  attributes: ["id", "first_name", "last_name", "avatar"],
-                },
-              ],
-              order: [["createdAt", "DESC"]],
-              limit: 50,
-            },
-          ],
-          // where: {
-          //   [Op.or]: [{ primary_user_id: client.user.id }, { created_by: client.user.id }],
-          // },
-        });
-
-        threads.forEach((thread) => {
-          client.join(`thread_${thread.id}`);
-          console.log(`[JOINED] thread_${thread.id}`);
-        });
-
-        console.log(`[JOINED] ${threads.length} threads`);
-      } catch (error) {
-        console.error("[ERROR] joinThreads:", error);
-        client.emit("error", { message: "Failed to join threads" });
-      }
-    });
-
     client.on("sendMessage", async (data) => {
       const { threadId, content } = data;
-      console.log(`[SEND MESSAGE] by ${client.user.email} to thread  ====>: ${threadId}`);
+      // console.log(`[SEND MESSAGE] by ${client.user.email} to thread  ====>: ${threadId}`);
 
       if (!threadId || !content) {
         return client.emit("error", { error: "threadId and content are required." });
       }
 
       try {
-        const thread = await Thread.findOne({
+        const thread = await Thread.findByPk(threadId, {
           include: [
             {
               model: User,
@@ -111,14 +63,10 @@ module.exports.configureSockets = (server) => {
               limit: 1,
             },
           ],
-          where: {
-            id: threadId,
-            [Op.or]: [{ primary_user_id: client.user.id }, { created_by: client.user.id }],
-          },
         });
 
         if (!thread) {
-          console.log(`[ERROR] Thread not found or unauthorized`);
+          // console.log(`[ERROR] Thread not found or unauthorized`);
           return client.emit("error", { error: "Thread not found or user not authorized" });
         }
 
@@ -154,9 +102,9 @@ module.exports.configureSockets = (server) => {
           },
         };
 
-        console.log(`${participants.length} participants`);
+        // console.log(`${participants.length} participants`);
         participants.forEach((participant) => {
-          if (participant.socket_id) {
+          if (participant.socket_id && participant.id !== client.user.id) {
             console.log(`Sending to ${participant.email} [${participant.socket_id}]`);
             io.to(participant.socket_id).emit("receiveMessage", messageData);
           }
@@ -164,42 +112,18 @@ module.exports.configureSockets = (server) => {
 
         client.emit("messageSent", messageData);
       } catch (error) {
-        console.error("[ERROR] sendMessage:", error);
+        // console.error("[ERROR] sendMessage:", error);
         client.emit("error", { error: "Failed to send message." });
       }
     });
-    client.on("markMessageRead", async (data) => {
-      const { messageId } = data;
 
-      console.log(`[MARK READ] ${client.user.email} marking message ${messageId} as read.`);
-
-      try {
-        const message = await Message.findByPk(messageId);
-
-        if (!message) {
-          console.log(`[ERROR] Message not found: ${messageId}`);
-          return;
-        }
-
-        if (message.sender_id === client.user.id) {
-          console.log(`[SKIP] Sender cannot mark own message as read.`);
-          return;
-        }
-
-        await message.update({ read_at: new Date() });
-
-        console.log(`[SUCCESS] Message ${messageId} marked as read.`);
-      } catch (error) {
-        console.error(`[ERROR] Failed to mark message as read:`, error);
-      }
-    });
     client.on("disconnect", async () => {
-      console.log(`[DISCONNECT] ${client.user.email} (${client.id})`);
+      // console.log(`[DISCONNECT] ${client.user.email} (${client.id})`);
       try {
         const user = await User.findByPk(client.user.id);
         if (user) {
           await user.update({ socket_id: null });
-          console.log(`[SOCKET CLEARED] for ${user.email}`);
+          // console.log(`[SOCKET CLEARED] for ${user.email}`);
         }
       } catch (error) {
         console.error("[ERROR] clearing socket_id:", error);
