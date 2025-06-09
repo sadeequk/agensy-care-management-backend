@@ -166,32 +166,6 @@ module.exports.checkUserEmailForClient = (email, clientId) =>
   });
 
 //^ will  change it in future , coz the user is also dependent to client
-// exports.getRelatedUsers = async (userId) => {
-//   const user = await User.findByPk(userId);
-
-//   if (!user) throw new Error("User not found");
-
-//   if (user.primary_user_id === null) {
-//     return User.findAll({
-//       where: {
-//         [Op.or]: [
-//           { id: user.id }, // the primary user
-//           { primary_user_id: user.id }, // all sub-users
-//         ],
-//       },
-//     });
-//   }
-
-//   return User.findAll({
-//     where: {
-//       [Op.or]: [
-//         { id: user.primary_user_id }, // the primary user
-//         { primary_user_id: user.primary_user_id }, // all sibling sub-users
-//       ],
-//     },
-//   });
-// };
-
 exports.getRelatedUsers = (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
