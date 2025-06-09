@@ -191,14 +191,58 @@ module.exports.checkUserEmailForClient = (email, clientId) =>
 //     },
 //   });
 // };
-exports.getRelatedUsers = (userId) => {
+
+// exports.getRelatedUsers = (userId) => {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       const user = await User.findByPk(userId);
+//       if (!user) return reject(new Error("User not found"));
+
+//       if (user.role === USER_ROLES.PRIMARY_USER) {
+//         const users = await User.findAll({
+//           where: {
+//             primary_user_id: user.id,
+//           },
+//         });
+//         return resolve(users);
+//       }
+
+//       if (user.role === USER_ROLES.FAMILY_MEMBER || user.role === USER_ROLES.CAREGIVER) {
+//         const users = await User.findAll({
+//           where: {
+//             [Op.or]: [
+//               // { id: user.id }, // self
+//               { id: user.primary_user_id }, // primary user
+//               { primary_user_id: user.primary_user_id }, // siblings
+//             ],
+//           },
+//         });
+//         return resolve(users);
+//       }
+//     } catch (error) {
+//       return reject(error);
+//     }
+//   });
+// };
+
+exports.getRelatedUsers = (userId, clientId) => {
   return new Promise(async (resolve, reject) => {
     try {
       const user = await User.findByPk(userId);
       if (!user) return reject(new Error("User not found"));
 
+      const client = await Client.findByPk(clientId);
+      if (!client) return reject(new Error("Client not found"));
+
       if (user.role === USER_ROLES.PRIMARY_USER) {
         const users = await User.findAll({
+          include: [
+            {
+              model: Client,
+              where: { id: clientId },
+              through: { attributes: [] },
+            },
+          ],
           where: {
             primary_user_id: user.id,
           },
@@ -208,6 +252,13 @@ exports.getRelatedUsers = (userId) => {
 
       if (user.role === USER_ROLES.FAMILY_MEMBER || user.role === USER_ROLES.CAREGIVER) {
         const users = await User.findAll({
+          include: [
+            {
+              model: Client,
+              where: { id: clientId },
+              through: { attributes: [] }, // Don't include junction table data
+            },
+          ],
           where: {
             [Op.or]: [
               // { id: user.id }, // self

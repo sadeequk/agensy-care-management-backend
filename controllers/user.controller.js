@@ -148,11 +148,23 @@ module.exports.subuser_put = async (req, res) => {
   }
 };
 
+// module.exports.related_users_get = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const users = await userService.getRelatedUsers(userId);
+//     res.success(users);
+//   } catch (error) {
+//     console.error("UserController [related_users_get] Error:", error);
+//     res.serverError(error);
+//   }
+// };
+
 module.exports.related_users_get = async (req, res) => {
   try {
+    const clientId = req.clientId;
     const userId = req.user.id;
-    const users = await userService.getRelatedUsers(userId);
-    res.success(users);
+    const relatedUsers = await userService.getRelatedUsers(userId, clientId);
+    res.success(relatedUsers);
   } catch (error) {
     console.error("UserController [related_users_get] Error:", error);
     res.serverError(error);
