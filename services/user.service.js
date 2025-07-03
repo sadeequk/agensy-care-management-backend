@@ -108,10 +108,10 @@ module.exports.createSubuser = ({ primaryUserId, clientId, subuserData }) =>
       await client.addUser(user);
 
       // Send welcome email
-      // await sendLoginEmail(subuserData.email, {
-      //   first_name: subuserData.first_name,
-      //   tempPassword: subuserData.password,
-      // });
+      await sendLoginEmail(subuserData.email, {
+        first_name: subuserData.first_name,
+        tempPassword: subuserData.password,
+      });
 
       resolve(user);
     } catch (error) {

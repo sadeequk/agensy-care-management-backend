@@ -23,7 +23,7 @@ module.exports = (sequelize) =>
       },
       frequency: {
         type: DataTypes.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       purpose: {
         type: DataTypes.STRING(255),

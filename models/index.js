@@ -10,6 +10,7 @@ const Document = require("./client.document.model")(sequelize);
 const ClientAppointment = require("./client.appointment.model")(sequelize);
 const Thread = require("./thread.model")(sequelize);
 const Message = require("./message.model")(sequelize);
+const FaceSheetShortForm = require("./facesheet.short.form.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -115,6 +116,10 @@ Thread.belongsTo(Client, {
   as: "client",
 });
 
+//^ Client to FaceSheetShortForm Relation (One-To-One)
+Client.hasOne(FaceSheetShortForm, { foreignKey: "client_id", as: "facesheetShortForm", onDelete: "CASCADE" });
+FaceSheetShortForm.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+
 module.exports = {
   sequelize,
   User,
@@ -128,4 +133,5 @@ module.exports = {
   ClientAppointment,
   Thread,
   Message,
+  FaceSheetShortForm,
 };

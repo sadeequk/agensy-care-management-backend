@@ -12,9 +12,9 @@ exports.medical_post = async (req, res) => {
       return res.fail("Client not found or you don't have permission to add medical information");
     }
 
-    const existingRecord = await clientMedicalService.getMedicalRecordByClientId(clientId);
-    if (existingRecord) {
-      return res.fail("Medical record already exists for this client");
+    const recordExists = await clientMedicalService.checkMedicalRecordExists(clientId);
+    if (recordExists) {
+      return res.fail("Medical record already exists for this client. Only one medical record is allowed per client.");
     }
 
     const medicalRecord = await clientMedicalService.createMedicalRecord(clientId, medicalData);

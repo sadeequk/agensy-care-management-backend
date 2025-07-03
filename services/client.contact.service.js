@@ -1,4 +1,21 @@
 const { Client, ClientContact } = require("../models");
+const { CONTACT_TYPES } = require("../constants/index");
+
+module.exports.checkEmergencyContactExists = (clientId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const existingEmergencyContact = await ClientContact.findOne({
+        where: {
+          client_id: clientId,
+          contact_type: CONTACT_TYPES.EMERGENCY,
+        },
+      });
+      resolve(!!existingEmergencyContact);
+    } catch (error) {
+      console.error("ClientContactService [checkEmergencyContactExists] Error:", error);
+      reject(error);
+    }
+  });
 
 module.exports.createClientContact = (client, contactData) =>
   new Promise(async (resolve, reject) => {

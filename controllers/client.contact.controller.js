@@ -1,6 +1,7 @@
 const clientContactService = require("../services/client.contact.service");
 const clientService = require("../services/client.service");
 const joiSchemas = require("../validation/client.contact.schemas");
+const { CONTACT_TYPES } = require("../constants/index");
 
 exports.contact_get = async (req, res) => {
   try {
@@ -35,6 +36,13 @@ exports.contact_post = async (req, res) => {
       return res.fail("Client not found or you don't have permission to add contacts");
     }
 
+    if (results.contact_type === CONTACT_TYPES.EMERGENCY) {
+      const emergencyExists = await clientContactService.checkEmergencyContactExists(clientId);
+      if (emergencyExists) {
+        return res.fail("Client already has an emergency contact. Only one emergency contact is allowed per client.");
+      }
+    }
+
     const contact = await clientContactService.createClientContact(client, { ...results });
 
     return res.success(contact);
@@ -48,6 +56,13 @@ exports.contact_put = async (req, res) => {
   try {
     const { contactId } = req.params;
     const validatedData = await joiSchemas.contact_put.validateAsync(req.body);
+
+    if (results.contact_type === CONTACT_TYPES.EMERGENCY) {
+      const emergencyExists = await clientContactService.checkEmergencyContactExists(clientId);
+      if (emergencyExists) {
+        return res.fail("Client already has an emergency contact. Only one emergency contact is allowed per client.");
+      }
+    }
 
     const contact = await clientContactService.updateClientContact(contactId, validatedData);
     return res.success(contact);

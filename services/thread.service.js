@@ -150,6 +150,7 @@ exports.getUserThreads = (userId) => {
   });
 };
 
+//^ it doesnot work (doesnot extract all the participants)
 // exports.getUserThreads = (userId) => {
 //   return new Promise(async (resolve, reject) => {
 //     try {

@@ -1,5 +1,18 @@
 const { ClientMedical } = require("../models");
 
+exports.checkMedicalRecordExists = (clientId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const existingRecord = await ClientMedical.findOne({
+        where: { client_id: clientId },
+      });
+      resolve(!!existingRecord);
+    } catch (error) {
+      console.error("ClientMedicalService [checkMedicalRecordExists] Error:", error);
+      reject(error);
+    }
+  });
+
 exports.createMedicalRecord = (clientId, medicalData) =>
   new Promise(async (resolve, reject) => {
     try {
