@@ -1,0 +1,39 @@
+const { DataTypes } = require("sequelize");
+
+module.exports = (sequelize) =>
+  sequelize.define(
+    "ClientMedicationCondition",
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
+      client_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        unique: true,
+      },
+      primary_user_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      condition: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      onset_date: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      notes: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+    },
+    {
+      tableName: "medication_conditions",
+      timestamps: true,
+      underscored: true,
+    }
+  );

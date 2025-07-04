@@ -15,6 +15,7 @@ const ClientVaccination = require("./client.vaccination.model")(sequelize);
 const ClientHomeHealthAgency = require("./client.home.health.agency.model")(sequelize);
 const ClientBloodwork = require("./client.bloodwork.model")(sequelize);
 const ClientCaregiverAgency = require("./client.caregiver.agency.model")(sequelize);
+const ClientMedicationCondition = require("./client.medical.condition")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -140,6 +141,10 @@ ClientCaregiverAgency.belongsTo(Client, { foreignKey: "client_id", onDelete: "CA
 Client.hasOne(ClientHomeHealthAgency, { foreignKey: "client_id", as: "home_health_agency", onDelete: "CASCADE" });
 ClientHomeHealthAgency.belongsTo(Client, { foreignKey: "client_id", onDelete: "CASCADE" });
 
+//^ Client to ClientMedicationCondition Relation (One-To-Many)
+Client.hasMany(ClientMedicationCondition, { foreignKey: "client_id", as: "medicationConditions", onDelete: "CASCADE" });
+ClientMedicationCondition.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+
 module.exports = {
   sequelize,
   User,
@@ -158,4 +163,5 @@ module.exports = {
   ClientHomeHealthAgency,
   ClientBloodwork,
   ClientCaregiverAgency,
+  ClientMedicationCondition,
 };

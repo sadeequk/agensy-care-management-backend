@@ -106,6 +106,14 @@ exports.facesheet_put = Joi.object({
     care_giver_duties: Joi.string().max(255),
     impotant_information: Joi.string().max(255),
   }),
+  medical_conditions: Joi.array().items(
+    Joi.object({
+      id: Joi.string().uuid().optional(),
+      condition: Joi.string().required().max(255),
+      onset_date: Joi.date().iso(),
+      notes: Joi.string().max(255),
+    })
+  ),
   short_form: Joi.object({
     insurance: Joi.string().max(255),
     medicare: Joi.string().max(255),
