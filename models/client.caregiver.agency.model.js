@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) =>
   sequelize.define(
-    "FaceSheetShortForm",
+    "ClientCaregiverAgency",
     {
       id: {
         type: DataTypes.UUID,
@@ -13,49 +13,41 @@ module.exports = (sequelize) =>
         type: DataTypes.UUID,
         allowNull: false,
       },
-      insurance: {
+      primary_user_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      phone: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      medicare: {
+      address: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      group_number: {
+      point_of_contact: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      id_number: {
+      caregiver_schedule: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      mpoa: {
+      caregiver_duties: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      mpoa_phone: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      mpoa_address: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      dpoa: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      dpoa_phone: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      dpoa_address: {
+      important_information: {
         type: DataTypes.STRING,
         allowNull: true,
       },
     },
     {
-      tableName: "facesheet_short_forms",
+      tableName: "caregiver_agency",
       timestamps: true,
       underscored: true,
     }

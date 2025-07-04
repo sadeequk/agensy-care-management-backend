@@ -11,6 +11,10 @@ const ClientAppointment = require("./client.appointment.model")(sequelize);
 const Thread = require("./thread.model")(sequelize);
 const Message = require("./message.model")(sequelize);
 const FaceSheetShortForm = require("./facesheet.short.form.model")(sequelize);
+const ClientVaccination = require("./client.vaccination.model")(sequelize);
+const ClientHomeHealthAgency = require("./client.home.health.agency.model")(sequelize);
+const ClientBloodwork = require("./client.bloodwork.model")(sequelize);
+const ClientCaregiverAgency = require("./client.caregiver.agency.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -120,6 +124,22 @@ Thread.belongsTo(Client, {
 Client.hasOne(FaceSheetShortForm, { foreignKey: "client_id", as: "facesheetShortForm", onDelete: "CASCADE" });
 FaceSheetShortForm.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
+//^ Client to ClientVaccination Relation (One-To-Many)
+Client.hasMany(ClientVaccination, { foreignKey: "client_id", as: "vaccinations", onDelete: "CASCADE" });
+ClientVaccination.belongsTo(Client, { foreignKey: "client_id", onDelete: "CASCADE" });
+
+//^ Client to ClientBloodwork Relation (One-To-Many)
+Client.hasMany(ClientBloodwork, { foreignKey: "client_id", as: "bloodworks", onDelete: "CASCADE" });
+ClientBloodwork.belongsTo(Client, { foreignKey: "client_id", onDelete: "CASCADE" });
+
+//^ Client to ClientCaregiverAgency Relation (One-To-One)
+Client.hasOne(ClientCaregiverAgency, { foreignKey: "client_id", as: "caregiver_agency", onDelete: "CASCADE" });
+ClientCaregiverAgency.belongsTo(Client, { foreignKey: "client_id", onDelete: "CASCADE" });
+
+//^ Client to ClientHomeHealthAgency Relation (One-To-One)
+Client.hasOne(ClientHomeHealthAgency, { foreignKey: "client_id", as: "home_health_agency", onDelete: "CASCADE" });
+ClientHomeHealthAgency.belongsTo(Client, { foreignKey: "client_id", onDelete: "CASCADE" });
+
 module.exports = {
   sequelize,
   User,
@@ -134,4 +154,8 @@ module.exports = {
   Thread,
   Message,
   FaceSheetShortForm,
+  ClientVaccination,
+  ClientHomeHealthAgency,
+  ClientBloodwork,
+  ClientCaregiverAgency,
 };

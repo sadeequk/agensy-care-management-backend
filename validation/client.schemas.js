@@ -31,6 +31,8 @@ exports.client_post = Joi.object({
   pharmacy_address: Joi.string().max(200),
   pharmacy_phone: Joi.string().max(20),
   pharmacy_fax: Joi.string().max(20),
+  race: Joi.string().max(50),
+  last_care_plan_date: Joi.date().iso(),
 });
 
 exports.client_put = Joi.object({
@@ -49,6 +51,8 @@ exports.client_put = Joi.object({
   state: Joi.string().max(50),
   zip: Joi.string().max(20),
   living_situation: Joi.string().valid(...Object.values(LIVING_SITUATION)),
+  race: Joi.string().max(50),
+  last_care_plan_date: Joi.date().iso(),
 });
 
 exports.updateClientStatusSchema = Joi.object({

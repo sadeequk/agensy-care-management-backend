@@ -1,13 +1,17 @@
-const { CONTACT_TYPES } = require("../constants");
 const {
-  FaceSheetShortForm,
   Client,
   ClientMedical,
   ClientContact,
   ClientMedication,
   HealthcareProvider,
+  ClientVaccination,
+  ClientHomeHealthAgency,
+  ClientBloodwork,
+  ClientCaregiverAgency,
+  FaceSheetShortForm,
   User,
 } = require("../models");
+const { CONTACT_TYPES } = require("../constants");
 
 exports.getExistingDetails = (clientId) =>
   new Promise(async (resolve, reject) => {
@@ -31,13 +35,29 @@ exports.getExistingDetails = (clientId) =>
           "pharmacy_fax",
           "code_status",
           "advance_directive",
+          "language",
+          "marital_status",
+          "living_situation",
+          "gender",
+          "race",
+          "last_care_plan_date",
         ],
       });
 
       //* Medical Info
       const medicalInfo = await ClientMedical.findOne({
         where: { client_id: clientId },
-        attributes: ["id", "allergies", "diagnoses", "surgical_history"],
+        attributes: [
+          "id",
+          "allergies",
+          "diagnoses",
+          "dietary_restrictions",
+          "surgical_history",
+          "cognitive_status",
+          "last_cognitive_screening",
+          "cognitive_score",
+          "notes",
+        ],
       });
 
       const medicalInfoData = medicalInfo || {
@@ -45,6 +65,11 @@ exports.getExistingDetails = (clientId) =>
         allergies: null,
         diagnoses: null,
         surgical_history: null,
+        dietary_restrictions: null,
+        cognitive_status: null,
+        last_cognitive_screening: null,
+        cognitive_score: null,
+        notes: null,
       };
 
       //* Emergency Contact
@@ -69,7 +94,7 @@ exports.getExistingDetails = (clientId) =>
       //* Medications
       const medications = await ClientMedication.findAll({
         where: { client_id: clientId },
-        attributes: ["id", "client_id", "medication_name", "dosage", "purpose", "prescribing_doctor", "refill_due"],
+        attributes: ["id", "client_id", "medication_name", "dosage", "purpose"],
         order: [["created_at", "ASC"]],
       });
 
@@ -78,8 +103,6 @@ exports.getExistingDetails = (clientId) =>
         medication_name: null,
         dosage: null,
         purpose: null,
-        prescribing_doctor: null,
-        refill_due: null,
       };
 
       //* Healthcare Providers
@@ -107,6 +130,90 @@ exports.getExistingDetails = (clientId) =>
         phone: null,
         last_visit: null,
         next_visit: null,
+      };
+
+      //* Vaccinations
+      const clientVaccinations = await ClientVaccination.findAll({
+        where: { client_id: clientId },
+        attributes: ["id", "name", "date", "next_vaccine"],
+        order: [["created_at", "ASC"]],
+      });
+
+      const clientVaccinationsData = clientVaccinations || {
+        id: null,
+        name: null,
+        date: null,
+        next_vaccine: null,
+      };
+
+      //* Home Health Agency
+      const clientHomeHealthAgency = await ClientHomeHealthAgency.findOne({
+        where: { client_id: clientId },
+        attributes: [
+          "id",
+          "name",
+          "phone",
+          "address",
+          "fax",
+          "schedule",
+          "prescribing_doctor",
+          "start_date",
+          "discharge_date",
+        ],
+      });
+
+      const clientHomeHealthAgencyData = clientHomeHealthAgency || {
+        id: null,
+        name: null,
+        phone: null,
+        address: null,
+        fax: null,
+        schedule: null,
+        prescribing_doctor: null,
+        start_date: null,
+        discharge_date: null,
+      };
+
+      //* Bloodwork
+      const clientBloodwork = await ClientBloodwork.findAll({
+        where: { client_id: clientId },
+        attributes: ["id", "name", "date", "results", "ordered_by", "repeat"],
+        order: [["created_at", "ASC"]],
+      });
+
+      const clientBloodworkData = clientBloodwork || {
+        id: null,
+        name: null,
+        date: null,
+        results: null,
+        ordered_by: null,
+        repeat: null,
+      };
+
+      //* Caregiver Agency
+      const clientCaregiverAgency = await ClientCaregiverAgency.findOne({
+        where: { client_id: clientId },
+        attributes: [
+          "id",
+          "name",
+          "phone",
+          "address",
+          "point_of_contact",
+          "caregiver_schedule",
+          "caregiver_duties",
+          "important_information",
+        ],
+      });
+
+      const clientCaregiverAgencyData = clientCaregiverAgency || {
+        id: null,
+        name: null,
+        phone: null,
+        address: null,
+        point_of_contact: null,
+        caregiver_schedule: null,
+        caregiver_duties: null,
+        important_information: null,
       };
 
       //* Face Sheet Short Form
@@ -148,6 +255,10 @@ exports.getExistingDetails = (clientId) =>
         medications: medicationsData,
         healthcare_providers: healthcareProvidersData,
         short_form: shortFormData,
+        vaccinations: clientVaccinationsData,
+        home_health_agency: clientHomeHealthAgencyData,
+        bloodwork: clientBloodworkData,
+        caregiver_agency: clientCaregiverAgencyData,
       };
 
       resolve(generalDetails);
@@ -157,7 +268,7 @@ exports.getExistingDetails = (clientId) =>
     }
   });
 
-exports.updateFaceSheetShortForm = (clientId, data) =>
+exports.updateFaceSheetLongForm = async (clientId, primaryUserId, data) =>
   new Promise(async (resolve, reject) => {
     try {
       const result = {};
@@ -182,10 +293,7 @@ exports.updateFaceSheetShortForm = (clientId, data) =>
           await existingMedical.update(data.medical_info);
           result.medical_info = existingMedical;
         } else {
-          const newMedical = await ClientMedical.create({
-            ...data.medical_info,
-            client_id: clientId,
-          });
+          const newMedical = await ClientMedical.create({ ...data.medical_info, client_id: clientId });
           result.medical_info = newMedical;
         }
       }
@@ -198,7 +306,6 @@ exports.updateFaceSheetShortForm = (clientId, data) =>
             contact_type: CONTACT_TYPES.EMERGENCY,
           },
         });
-
         if (existingContact) {
           await existingContact.update(data.emergency_contact);
           result.emergency_contact = existingContact;
@@ -230,14 +337,10 @@ exports.updateFaceSheetShortForm = (clientId, data) =>
               updatedMedications.push(existingMedication);
             }
           } else {
-            const newMedication = await ClientMedication.create({
-              ...medicationData,
-              client_id: clientId,
-            });
+            const newMedication = await ClientMedication.create({ ...medicationData, client_id: clientId });
             updatedMedications.push(newMedication);
           }
         }
-
         result.medications = updatedMedications;
       }
 
@@ -247,31 +350,116 @@ exports.updateFaceSheetShortForm = (clientId, data) =>
 
         for (const providerData of data.healthcare_providers) {
           if (providerData.id) {
-            // Update existing provider by ID
             const existingProvider = await HealthcareProvider.findOne({
               where: {
                 id: providerData.id,
                 client_id: clientId,
               },
             });
-
             if (existingProvider) {
               await existingProvider.update(providerData);
               updatedProviders.push(existingProvider);
             }
           } else {
-            const newProvider = await HealthcareProvider.create({
-              ...providerData,
-              client_id: clientId,
-            });
+            const newProvider = await HealthcareProvider.create({ ...providerData, client_id: clientId });
             updatedProviders.push(newProvider);
           }
         }
-
         result.healthcare_providers = updatedProviders;
       }
 
-      //* Handle Short Form
+      //* Vaccinations
+      if (data.vaccinations && Array.isArray(data.vaccinations)) {
+        const updatedVaccinations = [];
+
+        for (const vaccinationData of data.vaccinations) {
+          if (vaccinationData.id) {
+            const existingVaccination = await ClientVaccination.findOne({
+              where: {
+                id: vaccinationData.id,
+                client_id: clientId,
+              },
+            });
+            if (existingVaccination) {
+              await existingVaccination.update(vaccinationData);
+              updatedVaccinations.push(existingVaccination);
+            }
+          } else {
+            const newVaccination = await ClientVaccination.create({
+              ...vaccinationData,
+              client_id: clientId,
+              primary_user_id: primaryUserId,
+            });
+            updatedVaccinations.push(newVaccination);
+          }
+        }
+        result.vaccinations = updatedVaccinations;
+      }
+
+      //* Home Health Agency
+      if (data.home_health_agency) {
+        const existingHomeHealth = await ClientHomeHealthAgency.findOne({
+          where: { client_id: clientId },
+        });
+        if (existingHomeHealth) {
+          await existingHomeHealth.update(data.home_health_agency);
+          result.home_health_agency = existingHomeHealth;
+        } else {
+          const newHomeHealth = await ClientHomeHealthAgency.create({
+            ...data.home_health_agency,
+            client_id: clientId,
+            primary_user_id: primaryUserId,
+          });
+          result.home_health_agency = newHomeHealth;
+        }
+      }
+
+      //* Bloodwork
+      if (data.bloodwork && Array.isArray(data.bloodwork)) {
+        const updatedBloodwork = [];
+        for (const bloodworkData of data.bloodwork) {
+          if (bloodworkData.id) {
+            const existingBloodwork = await ClientBloodwork.findOne({
+              where: {
+                id: bloodworkData.id,
+                client_id: clientId,
+              },
+            });
+            if (existingBloodwork) {
+              await existingBloodwork.update(bloodworkData);
+              updatedBloodwork.push(existingBloodwork);
+            }
+          } else {
+            const newBloodwork = await ClientBloodwork.create({
+              ...bloodworkData,
+              client_id: clientId,
+              primary_user_id: primaryUserId,
+            });
+            updatedBloodwork.push(newBloodwork);
+          }
+        }
+        result.bloodwork = updatedBloodwork;
+      }
+
+      //* Caregiver Agency
+      if (data.caregiver_agency) {
+        const existingCaregiver = await ClientCaregiverAgency.findOne({
+          where: { client_id: clientId },
+        });
+        if (existingCaregiver) {
+          await existingCaregiver.update(data.caregiver_agency);
+          result.caregiver_agency = existingCaregiver;
+        } else {
+          const newCaregiver = await ClientCaregiverAgency.create({
+            ...data.caregiver_agency,
+            client_id: clientId,
+            primary_user_id: primaryUserId,
+          });
+          result.caregiver_agency = newCaregiver;
+        }
+      }
+
+      //* Short Form
       if (data.short_form) {
         const existingShortForm = await FaceSheetShortForm.findOne({
           where: { client_id: clientId },
@@ -289,11 +477,11 @@ exports.updateFaceSheetShortForm = (clientId, data) =>
         }
       }
 
-      //* Resolve
-      const allDetails = await this.getExistingDetails(clientId);
+      // Return all details
+      const allDetails = await exports.getExistingDetails(clientId);
       resolve(allDetails);
     } catch (error) {
-      console.error("FaceSheetShortFormService [updateFaceSheetShortForm] Error:", error);
+      console.error("FaceSheetLongFormService [updateFaceSheet] Error:", error);
       reject(error);
     }
   });

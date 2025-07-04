@@ -92,3 +92,17 @@ exports.THREAD_SUB_TYPES = {
   ONE_TO_ONE: "one-to-one",
   GROUP: "group",
 };
+
+exports.VACCINATION_TYPES = {
+  FLU: "Flu",
+  COVID: "COVID",
+  TD_BOOSTER: "TD Booster",
+  SHINGLES_VACCINE_1ST: "Shingles Vaccine (1st)",
+  SHINGLES_VACCINE_2ND: "Shingles Vaccine (2nd)",
+  PNEUMONIA: "Pneumonia",
+  MMR: "MMR",
+  MENINGOCOCCAL: "Meningococcal",
+  CHICKEN_POX: "Chicken Pox",
+  HEPATITIS_A: "Hepatitis A",
+  HEPATITIS_B: "Hepatitis B",
+};

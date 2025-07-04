@@ -89,6 +89,12 @@ module.exports = (sequelize) =>
       pharmacy_fax: {
         type: DataTypes.STRING(20),
       },
+      race: {
+        type: DataTypes.STRING(50),
+      },
+      last_care_plan_date: {
+        type: DataTypes.DATEONLY,
+      },
       notes: {
         type: DataTypes.TEXT,
       },

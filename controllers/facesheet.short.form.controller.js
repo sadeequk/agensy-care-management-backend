@@ -17,7 +17,7 @@ exports.existing_details_get = async (req, res) => {
 exports.face_sheet_short_post = async (req, res) => {
   try {
     const clientId = req.clientId;
-    const validatedData = await joiSchemas.facesheet_upsert.validateAsync(req.body);
+    const validatedData = await joiSchemas.facesheet_put.validateAsync(req.body);
     const record = await facesheetShortFormService.updateFaceSheetShortForm(clientId, validatedData);
 
     return res.success(record);
