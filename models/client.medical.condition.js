@@ -12,7 +12,6 @@ module.exports = (sequelize) =>
       client_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        unique: true,
       },
       primary_user_id: {
         type: DataTypes.UUID,
