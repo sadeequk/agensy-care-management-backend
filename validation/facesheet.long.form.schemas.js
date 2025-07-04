@@ -104,7 +104,7 @@ exports.facesheet_put = Joi.object({
     point_of_contact: Joi.string().max(255),
     care_giver_schedule: Joi.string().max(255),
     care_giver_duties: Joi.string().max(255),
-    impotant_information: Joi.string().max(255),
+    important_information: Joi.string().max(255),
   }),
   medical_conditions: Joi.array().items(
     Joi.object({
