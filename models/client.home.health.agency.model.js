@@ -19,7 +19,7 @@ module.exports = (sequelize) =>
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       phone: {
         type: DataTypes.STRING,
@@ -40,6 +40,10 @@ module.exports = (sequelize) =>
       },
       prescribing_doctor: {
         type: DataTypes.STRING,
+        allowNull: true,
+      },
+      service_received: {
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
       start_date: {

@@ -15,7 +15,7 @@ module.exports = (sequelize) =>
       },
       provider_type: {
         type: DataTypes.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       provider_name: {
         type: DataTypes.STRING(255),
@@ -47,6 +47,14 @@ module.exports = (sequelize) =>
       },
       notes: {
         type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      specialty_provider: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      follow_up: {
+        type: DataTypes.STRING(255),
         allowNull: true,
       },
       active: {

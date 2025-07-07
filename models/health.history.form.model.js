@@ -2,44 +2,52 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) =>
   sequelize.define(
-    "ClientBloodwork",
+    "HealthHistoryForm",
     {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      client_id: {
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
       primary_user_id: {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      name: {
-        type: DataTypes.STRING(100),
-        allowNull: true,
+      client_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
       },
       date: {
         type: DataTypes.DATEONLY,
         allowNull: true,
       },
-      results: {
+      what_worked: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      ordered_by: {
+      notes: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      repeat: {
+      description_of_health_concern: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      onset_of_symptoms: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      frequency_of_symptoms: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      severity_of_symptoms: {
         type: DataTypes.STRING,
         allowNull: true,
       },
     },
     {
-      tableName: "bloodworks",
+      tableName: "health_history_forms",
       timestamps: true,
       underscored: true,
     }

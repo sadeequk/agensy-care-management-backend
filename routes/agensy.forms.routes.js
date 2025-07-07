@@ -1,15 +1,19 @@
 const express = require("express");
 const router = express.Router();
+const agensyFormControllers = require("../controllers/index");
+// const facesheetShortFormController = require("../controllers/facesheet.short.form.controller");
+// const facesheetLongFormController = require("../controllers/facesheet.long.form.controller");
 
-const facesheetShortFormController = require("../controllers/facesheet.short.form.controller");
-const facesheetLongFormController = require("../controllers/facesheet.long.form.controller");
+//^  MEDICAL ==> Face sheet (Short)
+router.get("/face-sheet-short", agensyFormControllers.facesheetShortFormController.existing_details_get);
+router.post("/face-sheet-short", agensyFormControllers.facesheetShortFormController.face_sheet_short_post);
 
-// Face sheet (Short)
-router.get("/face-sheet-short", facesheetShortFormController.existing_details_get);
-router.post("/face-sheet-short", facesheetShortFormController.face_sheet_short_post);
+//^  MEDICAL ==> Face sheet (long)
+router.get("/face-sheet-long", agensyFormControllers.facesheetLongFormController.existing_details_get);
+router.post("/face-sheet-long", agensyFormControllers.facesheetLongFormController.face_sheet_log_post);
 
-// Face sheet (long)
-router.get("/face-sheet-long", facesheetLongFormController.existing_details_get);
-router.post("/face-sheet-long", facesheetLongFormController.face_sheet_log_post);
+//^  MEDICAL ==> Health History
+router.get("/health-history", agensyFormControllers.healthHistoryFormController.existing_details_get);
+router.post("/health-history", agensyFormControllers.healthHistoryFormController.health_hitory_post);
 
 module.exports = router;

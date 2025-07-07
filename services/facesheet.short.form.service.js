@@ -74,18 +74,13 @@ exports.getExistingDetails = (clientId) =>
       });
 
       const medicationsData = medications || [];
-      // const medicationsData = medications || {
-      //   id: null,
-      //   medication_name: null,
-      //   dosage: null,
-      //   purpose: null,
-      //   prescribing_doctor: null,
-      //   refill_due: null,
-      // };
 
       //* Healthcare Providers
       const healthcareProviders = await HealthcareProvider.findAll({
-        where: { client_id: clientId },
+        where: {
+          client_id: clientId,
+          specialty_provider: false,
+        },
         attributes: [
           "id",
           "provider_type",
@@ -99,16 +94,6 @@ exports.getExistingDetails = (clientId) =>
         order: [["created_at", "ASC"]],
       });
 
-      // const healthcareProvidersData = healthcareProviders || {
-      //   id: null,
-      //   provider_type: null,
-      //   provider_name: null,
-      //   specialty: null,
-      //   address: null,
-      //   phone: null,
-      //   last_visit: null,
-      //   next_visit: null,
-      // };
       const healthcareProvidersData = healthcareProviders || [];
 
       //* Face Sheet Short Form

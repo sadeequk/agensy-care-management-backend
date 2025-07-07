@@ -19,7 +19,7 @@ module.exports = (sequelize) =>
       },
       condition: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       onset_date: {
         type: DataTypes.DATE,

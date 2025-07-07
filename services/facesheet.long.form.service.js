@@ -99,17 +99,14 @@ exports.getExistingDetails = (clientId) =>
         order: [["created_at", "ASC"]],
       });
 
-      // const medicationsData = medications || {
-      //   id: null,
-      //   medication_name: null,
-      //   dosage: null,
-      //   purpose: null,
-      // };
       const medicationsData = medications || [];
 
       //* Healthcare Providers
       const healthcareProviders = await HealthcareProvider.findAll({
-        where: { client_id: clientId },
+        where: {
+          client_id: clientId,
+          specialty_provider: false,
+        },
         attributes: [
           "id",
           "provider_type",
@@ -123,16 +120,6 @@ exports.getExistingDetails = (clientId) =>
         order: [["created_at", "ASC"]],
       });
 
-      // const healthcareProvidersData = healthcareProviders || {
-      //   id: null,
-      //   provider_type: null,
-      //   provider_name: null,
-      //   specialty: null,
-      //   address: null,
-      //   phone: null,
-      //   last_visit: null,
-      //   next_visit: null,
-      // };
       const healthcareProvidersData = healthcareProviders || [];
 
       //* Vaccinations
@@ -142,12 +129,6 @@ exports.getExistingDetails = (clientId) =>
         order: [["created_at", "ASC"]],
       });
 
-      //   const clientVaccinationsData = clientVaccinations || {
-      //     id: null,
-      //     name: null,
-      //     date: null,
-      //     next_vaccine: null,
-      //   };
       const clientVaccinationsData = clientVaccinations || [];
 
       //* Home Health Agency
@@ -185,14 +166,6 @@ exports.getExistingDetails = (clientId) =>
         order: [["created_at", "ASC"]],
       });
 
-      // const clientBloodworkData = clientBloodwork || {
-      //   id: null,
-      //   name: null,
-      //   date: null,
-      //   results: null,
-      //   ordered_by: null,
-      //   repeat: null,
-      // };
       const clientBloodworkData = clientBloodwork || [];
 
       //* Caregiver Agency
@@ -259,13 +232,6 @@ exports.getExistingDetails = (clientId) =>
         attributes: ["id", "condition", "onset_date", "notes"],
         order: [["created_at", "ASC"]],
       });
-
-      // const medicalConditionsData = medicalConditions || {
-      //   id: null,
-      //   condition: null,
-      //   onset_date: null,
-      //   notes: null,
-      // };
 
       const medicalConditionsData = medicalConditions || [];
 

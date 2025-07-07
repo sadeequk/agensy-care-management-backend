@@ -10,6 +10,8 @@ exports.provider_post = Joi.object({
   last_visit: Joi.date().iso(),
   next_visit: Joi.date().iso(),
   notes: Joi.string().allow(""),
+  specialty_provider: Joi.boolean().default(false),
+  follow_up: Joi.string().max(255),
   active: Joi.boolean().default(true),
 });
 
@@ -23,6 +25,8 @@ exports.provider_put = Joi.object({
   last_visit: Joi.date().iso(),
   next_visit: Joi.date().iso(),
   notes: Joi.string().allow(""),
+  specialty_provider: Joi.boolean().default(false),
+  follow_up: Joi.string().max(255),
   active: Joi.boolean().default(true),
 });
 
