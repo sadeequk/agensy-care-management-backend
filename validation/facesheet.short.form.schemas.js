@@ -7,7 +7,7 @@ exports.facesheet_put = Joi.object({
     date_of_birth: Joi.date().iso().required(),
     phone: Joi.string().required().max(20),
     address: Joi.string().required().max(255),
-    advance_directives: Joi.string().max(255),
+    advance_directive: Joi.string().max(255),
     preferred_hospital: Joi.string().max(255),
     hospital_address: Joi.string().max(255),
     hospital_phone: Joi.string().max(20),
