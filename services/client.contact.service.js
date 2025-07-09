@@ -10,7 +10,7 @@ module.exports.checkEmergencyContactExists = (clientId) =>
           contact_type: CONTACT_TYPES.EMERGENCY,
         },
       });
-      resolve(!!existingEmergencyContact);
+      resolve(existingEmergencyContact);
     } catch (error) {
       console.error("ClientContactService [checkEmergencyContactExists] Error:", error);
       reject(error);

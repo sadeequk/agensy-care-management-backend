@@ -28,7 +28,6 @@ exports.client_contacts_get = async (req, res) => {
 exports.contact_post = async (req, res) => {
   try {
     const clientId = req.clientId;
-
     const results = await joiSchemas.contact_post.validateAsync(req.body);
 
     const client = await clientService.getClientWithAccessCheck(req.user.id, clientId);
@@ -39,7 +38,7 @@ exports.contact_post = async (req, res) => {
     if (results.contact_type === CONTACT_TYPES.EMERGENCY) {
       const emergencyExists = await clientContactService.checkEmergencyContactExists(clientId);
       if (emergencyExists) {
-        return res.fail("Client already has an emergency contact. Only one emergency contact is allowed per client.");
+        return res.fail("Client already has an emergency contact.");
       }
     }
 
@@ -58,8 +57,9 @@ exports.contact_put = async (req, res) => {
     const { contactId } = req.params;
     const validatedData = await joiSchemas.contact_put.validateAsync(req.body);
 
+
     if (validatedData.contact_type === CONTACT_TYPES.EMERGENCY) {
-      const emergencyExists = await clientContactService.checkEmergencyContactExists(clientId);
+      const emergencyExists = await clientContactService.checkEmergencyContactExists(clientId, contactId);
       if (emergencyExists) {
         return res.fail("Client already has an emergency contact. Only one emergency contact is allowed per client.");
       }
