@@ -176,7 +176,7 @@ exports.uploadAvatar = [
       const fileName = `avatars/${Date.now()}-${Math.round(Math.random() * 1e9)}-${originalName}`;
 
       const putCommand = new PutObjectCommand({
-        Bucket: "agensy-staging-assets",
+        Bucket: process.env.AWS_S3_BUCKET_ASSETS,
         Key: fileName,
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
@@ -189,7 +189,7 @@ exports.uploadAvatar = [
 
       await s3.send(putCommand);
 
-      req.uploadedAvatar = `https://agensy-staging-assets.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+      req.uploadedAvatar = `https://${process.env.AWS_S3_BUCKET_ASSETS}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
       next();
     } catch (error) {
       console.error("S3 avatar upload error:", error);
@@ -207,7 +207,7 @@ exports.deleteAvatar = async (key) => {
     const avatarKey = `avatars/${filename}`;
 
     const deleteCommand = new DeleteObjectCommand({
-      Bucket: "agensy-staging-assets",
+      Bucket: process.env.AWS_S3_BUCKET_ASSETS,
       Key: avatarKey,
     });
 
