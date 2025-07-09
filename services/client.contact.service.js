@@ -1,9 +1,16 @@
 const { Client, ClientContact } = require("../models");
 const { CONTACT_TYPES } = require("../constants/index");
 
-module.exports.checkEmergencyContactExists = (clientId) =>
+module.exports.checkEmergencyContactExists = (clientId, contactId = null) =>
   new Promise(async (resolve, reject) => {
     try {
+      if (contactId) {
+        const currentContact = await ClientContact.findByPk(contactId);
+        if (currentContact && currentContact.contact_type === CONTACT_TYPES.EMERGENCY) {
+          resolve(null);
+          return;
+        }
+      }
       const existingEmergencyContact = await ClientContact.findOne({
         where: {
           client_id: clientId,
