@@ -57,7 +57,7 @@ exports.contact_put = async (req, res) => {
     const { contactId } = req.params;
     const validatedData = await joiSchemas.contact_put.validateAsync(req.body);
 
-    if (results.contact_type === CONTACT_TYPES.EMERGENCY) {
+    if (validatedData.contact_type === CONTACT_TYPES.EMERGENCY) {
       const emergencyExists = await clientContactService.checkEmergencyContactExists(clientId);
       if (emergencyExists) {
         return res.fail("Client already has an emergency contact. Only one emergency contact is allowed per client.");
