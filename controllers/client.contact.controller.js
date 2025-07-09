@@ -54,6 +54,7 @@ exports.contact_post = async (req, res) => {
 
 exports.contact_put = async (req, res) => {
   try {
+    const clientId = req.clientId;
     const { contactId } = req.params;
     const validatedData = await joiSchemas.contact_put.validateAsync(req.body);
 
