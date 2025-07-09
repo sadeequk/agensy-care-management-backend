@@ -15,12 +15,12 @@ const cognito = new CognitoIdentityProviderClient({
 });
 
 const USER_POOL_ID = process.env.USER_POOL_ID;
-const CLIENT_ID = "7tufgnk4fodrnal3tag1iff8gf";
+const CLIENT_ID = process.env.COGNITO_CLIENT_ID;
 
-// Test user credentials
+
 const testUser = {
-  email: "bw8051116@gmail.com", // Change this to your test user email
-  password: "Abc12345678$$$", // Change this to your test user password
+  email: "bw8051116@gmail.com",
+  password: "Abc12345678$$$",
 };
 
 async function createCognitoToken() {
@@ -46,7 +46,6 @@ async function createCognitoToken() {
       if (error.name === "NotAuthorizedException" && error.message.includes("Auth flow not enabled")) {
         console.log("USER_PASSWORD_AUTH not enabled, trying ADMIN_NO_SRP_AUTH...");
         
-        // Fallback to ADMIN_NO_SRP_AUTH
         const adminAuthParams = {
           AuthFlow: "ADMIN_NO_SRP_AUTH",
           ClientId: CLIENT_ID,
@@ -64,12 +63,10 @@ async function createCognitoToken() {
       }
     }
 
-    // Step 2: Handle authentication challenge if needed
     if (authResult.ChallengeName) {
       console.log("Challenge received:", authResult.ChallengeName);
       
       if (authResult.ChallengeName === "NEW_PASSWORD_REQUIRED") {
-        // Handle new password required challenge
         const challengeParams = {
           ChallengeName: "NEW_PASSWORD_REQUIRED",
           ClientId: CLIENT_ID,
@@ -84,7 +81,7 @@ async function createCognitoToken() {
         console.log("Password challenge completed");
         
         if (challengeResult.AuthenticationResult) {
-          console.log("✅ Token generated successfully!");
+          console.log("Token generated successfully!");
           console.log("Access Token:", challengeResult.AuthenticationResult.AccessToken);
           console.log("ID Token:", challengeResult.AuthenticationResult.IdToken);
           console.log("Refresh Token:", challengeResult.AuthenticationResult.RefreshToken);
@@ -92,40 +89,37 @@ async function createCognitoToken() {
         }
       }
     } else if (authResult.AuthenticationResult) {
-      // Direct authentication successful
-      console.log("✅ Token generated successfully!");
+      console.log("Token generated successfully!");
       console.log("Access Token:", authResult.AuthenticationResult.AccessToken);
       console.log("ID Token:", authResult.AuthenticationResult.IdToken);
       console.log("Refresh Token:", authResult.AuthenticationResult.RefreshToken);
       return authResult.AuthenticationResult;
     }
 
-    console.log("❌ Failed to generate token");
+    console.log("Failed to generate token");
     return null;
 
   } catch (error) {
-    console.error("❌ Error creating Cognito token:", error.message);
+    console.error("Error creating Cognito token:", error.message);
     
     if (error.name === "NotAuthorizedException") {
       if (error.message.includes("Auth flow not enabled")) {
-        console.log("💡 Tip: Neither USER_PASSWORD_AUTH nor ADMIN_NO_SRP_AUTH is enabled for this client");
-        console.log("💡 Tip: Enable one of these auth flows in your Cognito User Pool Client settings");
+        console.log("Tip: Enable one of these auth flows in your Cognito User Pool Client settings");
       } else {
-        console.log("💡 Tip: Check if the user exists and password is correct");
+        console.log(" Tip: Check if the user exists and password is correct");
       }
     } else if (error.name === "UserNotConfirmedException") {
-      console.log("💡 Tip: User needs to be confirmed first");
+      console.log("Tip: User needs to be confirmed first");
     } else if (error.name === "UserNotFoundException") {
-      console.log("💡 Tip: User does not exist in Cognito");
+      console.log(" Tip: User does not exist in Cognito");
     } else if (error.name === "InvalidParameterException") {
-      console.log("💡 Tip: Check your USER_POOL_ID and CLIENT_ID configuration");
+      console.log(" Tip: Check your USER_POOL_ID and CLIENT_ID configuration");
     }
     
     throw error;
   }
 }
 
-// Function to decode JWT token (for debugging)
 function decodeToken(token) {
   try {
     const base64Url = token.split('.')[1];
@@ -142,7 +136,7 @@ function decodeToken(token) {
 
 async function main() {
   try {
-    console.log("🚀 Starting Cognito token generation...");
+    console.log("Starting Cognito token generation...");
     console.log("User Pool ID:", USER_POOL_ID);
     console.log("Client ID:", CLIENT_ID);
     console.log("Region:", process.env.AWS_REGION);
@@ -151,12 +145,11 @@ async function main() {
     const tokens = await createCognitoToken();
     
     if (tokens) {
-      console.log("\n📋 Token Details:");
+      console.log("\nToken Details:");
       console.log("Access Token Length:", tokens.AccessToken?.length || 0);
       console.log("ID Token Length:", tokens.IdToken?.length || 0);
       console.log("Refresh Token Length:", tokens.RefreshToken?.length || 0);
       
-      // Decode and show ID token payload (for debugging)
       if (tokens.IdToken) {
         const decoded = decodeToken(tokens.IdToken);
         if (decoded) {
@@ -170,10 +163,9 @@ async function main() {
     }
 
   } catch (error) {
-    console.error("❌ Script failed:", error.message);
+    console.error("Script failed:", error.message);
     process.exit(1);
   }
 }
 
-// Run the script
 main(); 
