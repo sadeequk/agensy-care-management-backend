@@ -9,7 +9,6 @@ exports.recordFormUpdate = (clientId, userId, primaryUserId, formType) =>
         user_id: userId,
         primary_user_id: primaryUserId,
         form_type: formType,
-        updated_at: new Date(),
       });
 
       resolve(updateRecord);

@@ -26,11 +26,6 @@ module.exports = (sequelize) =>
         type: DataTypes.ENUM(Object.values(FORM_TYPES)),
         allowNull: false,
       },
-      updated_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
     },
     {
       tableName: "forms_history",

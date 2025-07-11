@@ -21,14 +21,14 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId, 
           form_type: FORM_TYPES.FACE_SHEET_SHORT 
         },
-        include: [
-          {
-            model: User,
-            as: "user",
-            attributes: ["id", "first_name", "last_name", "email"],
-          },
-        ],
-        order: [["updated_at", "DESC"]],
+        // include: [
+        //   {
+        //     model: User,
+        //     as: "user",
+        //     attributes: ["id", "first_name", "last_name", "email"],
+        //   },
+        // ],
+        order: [["created_at", "DESC"]],
       });
 
       //* Client Info

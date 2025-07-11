@@ -9,7 +9,7 @@ const {
   ClientHospitalization,
   FormsHistory,
 } = require("../models");
-const { CONTACT_TYPES , FORM_TYPES} = require("../constants");
+const { CONTACT_TYPES,FORM_TYPES } = require("../constants");
 const { Op } = require("sequelize");
 const today = new Date();
 
@@ -23,14 +23,14 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId, 
           form_type: FORM_TYPES.HEALTH_HISTORY 
         },
-        include: [
-          {
-            model: User,
-            as: "user",
-            attributes: ["id", "first_name", "last_name", "email"],
-          },
-        ],
-        order: [["updated_at", "DESC"]],
+        // include: [
+        //   {
+        //     model: User,
+        //     as: "user",
+        //     attributes: ["id", "first_name", "last_name", "email"],
+        //   },
+        // ],
+        order: [["created_at", "DESC"]],
       });
 
       //* Medical Info
