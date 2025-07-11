@@ -9,7 +9,7 @@ const {
   ClientHospitalization,
   FormsHistory,
 } = require("../models");
-const { CONTACT_TYPES } = require("../constants");
+const { CONTACT_TYPES , FORM_TYPES} = require("../constants");
 const { Op } = require("sequelize");
 const today = new Date();
 
