@@ -6,12 +6,30 @@ const {
   ClientContact,
   ClientMedication,
   HealthcareProvider,
+  FormsHistory,
   User,
 } = require("../models");
 
 exports.getExistingDetails = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
+
+      //* Forms History
+      const lastUpdate = await FormsHistory.findOne({
+        where: { 
+          client_id: clientId, 
+          form_type: FORM_TYPES.FACE_SHEET_SHORT 
+        },
+        include: [
+          {
+            model: User,
+            as: "user",
+            attributes: ["id", "first_name", "last_name", "email"],
+          },
+        ],
+        order: [["updated_at", "DESC"]],
+      });
+
       //* Client Info
       const clientInfo = await Client.findByPk(clientId, {
         attributes: [
@@ -129,6 +147,7 @@ exports.getExistingDetails = (clientId) =>
       };
 
       const generalDetails = {
+        last_update: lastUpdate,
         client_info: clientInfo,
         medical_info: medicalInfoData,
         emergency_contact: emergencyContactData,

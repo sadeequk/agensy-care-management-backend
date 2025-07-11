@@ -7,6 +7,7 @@ const {
   ClientHomeHealthAgency,
   HealthHistoryForm,
   ClientHospitalization,
+  FormsHistory,
 } = require("../models");
 const { CONTACT_TYPES } = require("../constants");
 const { Op } = require("sequelize");
@@ -15,6 +16,23 @@ const today = new Date();
 exports.getExistingDetails = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
+
+      //* Forms History
+      const lastUpdate = await FormsHistory.findOne({
+        where: { 
+          client_id: clientId, 
+          form_type: FORM_TYPES.HEALTH_HISTORY 
+        },
+        include: [
+          {
+            model: User,
+            as: "user",
+            attributes: ["id", "first_name", "last_name", "email"],
+          },
+        ],
+        order: [["updated_at", "DESC"]],
+      });
+
       //* Medical Info
       const medicalInfo = await ClientMedical.findOne({
         where: { client_id: clientId },
@@ -95,6 +113,7 @@ exports.getExistingDetails = (clientId) =>
       };
 
       const generalDetails = {
+        last_update: lastUpdate,
         medical_info: medicalInfoData,
         // medication_started: medicationStartedData,
         // medication_stopped: medicationStoppedData,
@@ -244,6 +263,9 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
           result.health_history = newHealthHistory;
         }
       }
+
+      //* Record form update
+      await FormUpdateHistoryService.recordFormUpdate(clientId, primaryUserId, "health_history");
 
       //* Resolve with updated details
       const allDetails = await this.getExistingDetails(clientId);

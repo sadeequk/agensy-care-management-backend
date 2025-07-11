@@ -1,6 +1,7 @@
 const HealthHistoryFormService = require("../services/health.history.form.service.js");
 const joiSchemas = require("../validation/health.history.form.schemas");
-const { USER_ROLES } = require("../constants");
+const { USER_ROLES ,FORM_TYPES} = require("../constants");
+const formHistoryService = require("../services/form.history.service");
 
 exports.existing_details_get = async (req, res) => {
   try {
@@ -19,11 +20,9 @@ exports.health_hitory_post = async (req, res) => {
     const clientId = req.clientId;
     const data = await joiSchemas.health_history_post.validateAsync(req.body);
     const result = await HealthHistoryFormService.saveOrUpdateDetails(clientId, data, primaryUserId);
+    await formHistoryService.recordFormUpdate(clientId, userId, primaryUserId, FORM_TYPES.HEALTH_HISTORY);
     return res.success(result);
   } catch (error) {
-    if (error.name === "ValidationError") {
-      return res.fail(error.message);
-    }
     console.error("HealthHistoryFormController [saveOrUpdateDetails] Error:", error);
     return res.serverError(error);
   }

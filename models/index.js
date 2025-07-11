@@ -18,6 +18,7 @@ const ClientCaregiverAgency = require("./client.caregiver.agency.model")(sequeli
 const ClientMedicationCondition = require("./client.medical.condition")(sequelize);
 const ClientHospitalization = require("./client.hospitalization.model")(sequelize);
 const HealthHistoryForm = require("./health.history.form.model")(sequelize);
+const FormsHistory = require("./forms.history.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -155,6 +156,14 @@ ClientHospitalization.belongsTo(Client, { foreignKey: "client_id", as: "client" 
 Client.hasOne(HealthHistoryForm, { foreignKey: "client_id", as: "health_history_form", onDelete: "CASCADE" });
 HealthHistoryForm.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
+//^ Client to FormsHistory Relation (One-To-Many)
+Client.hasMany(FormsHistory, { foreignKey: "client_id", as: "formsHistory", onDelete: "CASCADE" });
+FormsHistory.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+
+//^ User to FormsHistory Relation (One-To-Many)
+User.hasMany(FormsHistory, { foreignKey: "user_id", as: "formsHistory", onDelete: "CASCADE" });
+FormsHistory.belongsTo(User, { foreignKey: "user_id", as: "user" });
+
 module.exports = {
   sequelize,
   User,
@@ -176,4 +185,5 @@ module.exports = {
   ClientMedicationCondition,
   ClientHospitalization,
   HealthHistoryForm,
+  FormsHistory,
 };
