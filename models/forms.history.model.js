@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const { FORM_TYPES } = require("../constants");
 
 module.exports = (sequelize) =>
   sequelize.define(
@@ -22,7 +23,7 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       form_type: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM(Object.values(FORM_TYPES)),
         allowNull: false,
       },
       updated_at: {
