@@ -41,7 +41,12 @@ exports.LIVING_SITUATION = {
 exports.ALLOWED_FILE_TYPES = {
   "application/pdf": "PDF",
   "image/jpeg": "JPEG",
+  "image/jpg": "JPEG",
   "image/png": "PNG",
+  "image/heic": "HEIC",
+  "image/heif": "HEIF",
+  "image/heic-sequence": "HEIC",
+  "image/heif-sequence": "HEIF",
   "image/gif": "GIF",
 };
 
@@ -111,4 +116,12 @@ exports.FORM_TYPES = {
   FACE_SHEET_SHORT: "face_sheet_short",
   FACE_SHEET_LONG: "face_sheet_long",
   HEALTH_HISTORY: "health_history",
+};
+
+exports.CONGITO_STATUS = {
+  ALERT: "Alert",
+  ORIENTED: "Oriented",
+  DEMENTIA: "Dementia",
+  MILD_COGNITIVE_IMPAIRMENT: "Mild Cognitive Impairment",
+  OTHER: "Other",
 };

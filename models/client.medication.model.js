@@ -15,11 +15,11 @@ module.exports = (sequelize) =>
       },
       medication_name: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       dosage: {
         type: DataTypes.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       frequency: {
         type: DataTypes.STRING(100),

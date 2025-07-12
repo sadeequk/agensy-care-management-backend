@@ -28,75 +28,95 @@ module.exports = (sequelize) =>
       },
       ssn: {
         type: DataTypes.STRING(20),
+        allowNull: true,
       },
       address: {
         type: DataTypes.STRING(255),
+        allowNull: true,
       },
       city: {
         type: DataTypes.STRING(100),
+        allowNull: true,
       },
       state: {
         type: DataTypes.STRING(50),
+        allowNull: true,
       },
       zip: {
         type: DataTypes.STRING(20),
+        allowNull: true,
       },
       phone: {
         type: DataTypes.STRING(20),
+        allowNull: true,
       },
       relation: {
         type: DataTypes.STRING(20),
+        allowNull: true,
       },
       gender: {
         type: DataTypes.ENUM(...Object.values(GENDER_TYPES)),
-        allowNull: false,
+        allowNull: true,
       },
       marital_status: {
         type: DataTypes.ENUM(...Object.values(MARITAL_STATUS)),
-        allowNull: false,
+        allowNull: true,
       },
       language: {
         type: DataTypes.STRING(50),
+        allowNull: true,
       },
       living_situation: {
         type: DataTypes.ENUM(...Object.values(LIVING_SITUATION)),
-        allowNull: false,
+        allowNull: true,
       },
       code_status: {
         type: DataTypes.STRING(50),
+        allowNull: true,
       },
       advance_directive: {
         type: DataTypes.STRING(50),
+        allowNull: true,
       },
       preferred_hospital: {
         type: DataTypes.STRING(255),
+        allowNull: true,
       },
       hospital_address: {
         type: DataTypes.STRING(255),
+        allowNull: true,
       },
       hospital_phone: {
         type: DataTypes.STRING(20),
+        allowNull: true,
       },
       pharmacy_name: {
         type: DataTypes.STRING(255),
+        allowNull: true,
       },
       pharmacy_address: {
         type: DataTypes.STRING(255),
+        allowNull: true,
       },
       pharmacy_phone: {
         type: DataTypes.STRING(20),
+        allowNull: true,
       },
       pharmacy_fax: {
         type: DataTypes.STRING(20),
+        allowNull: true,
       },
       race: {
         type: DataTypes.STRING(50),
+        allowNull: true,
       },
       last_care_plan_date: {
         type: DataTypes.DATEONLY,
+        allowNull: true,
       },
       notes: {
         type: DataTypes.TEXT,
+        allowNull: true,
       },
       active: {
         type: DataTypes.BOOLEAN,

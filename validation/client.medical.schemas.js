@@ -1,23 +1,23 @@
 const Joi = require("joi");
-
+const { CONGITO_STATUS } = require("../constants");
 module.exports.medical_post = Joi.object({
-  diagnoses: Joi.string().allow("").required(),
-  allergies: Joi.string().allow("").required(),
-  dietary_restrictions: Joi.string().allow("").required(),
-  surgical_history: Joi.string().allow("").required(),
-  cognitive_status: Joi.string().allow("").required(),
-  last_cognitive_screening: Joi.date().iso().required(),
-  cognitive_score: Joi.string().max(50).allow("").required(),
-  notes: Joi.string().allow(""),
+  diagnoses: Joi.string().optional(),
+  allergies: Joi.string().optional(),
+  dietary_restrictions: Joi.string().optional(),
+  surgical_history: Joi.string().optional(),
+  cognitive_status: Joi.string().optional().valid(...Object.values(CONGITO_STATUS)),
+  last_cognitive_screening: Joi.date().iso().optional(),
+  cognitive_score: Joi.string().max(50).optional(),
+  notes: Joi.string().optional(),
 });
 
 module.exports.medical_put = Joi.object({
-  diagnoses: Joi.string().allow("").required(),
-  allergies: Joi.string().allow("").required(),
-  dietary_restrictions: Joi.string().allow("").required(),
-  surgical_history: Joi.string().allow("").required(),
-  cognitive_status: Joi.string().allow("").required(),
-  last_cognitive_screening: Joi.date().iso().required(),
-  cognitive_score: Joi.string().max(50).allow("").required(),
-  notes: Joi.string().allow(""),
+  diagnoses: Joi.string().optional(),
+  allergies: Joi.string().optional(),
+  dietary_restrictions: Joi.string().optional(),
+  surgical_history: Joi.string().optional(),
+  cognitive_status: Joi.string().optional().valid(...Object.values(CONGITO_STATUS)),
+  last_cognitive_screening: Joi.date().iso().optional(),
+  cognitive_score: Joi.string().max(50).optional(),
+  notes: Joi.string().optional(),
 });

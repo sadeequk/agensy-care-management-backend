@@ -19,7 +19,7 @@ module.exports = (sequelize) =>
       },
       provider_name: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       specialty: {
         type: DataTypes.STRING(255),
