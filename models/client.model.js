@@ -114,6 +114,34 @@ module.exports = (sequelize) =>
         type: DataTypes.DATEONLY,
         allowNull: true,
       },
+      email: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      cultural_background: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      education: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      religion: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      active_religion_location: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
+      date_of_divorce_or_widowhood: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+      },
+      loss_impact_description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
       notes: {
         type: DataTypes.TEXT,
         allowNull: true,

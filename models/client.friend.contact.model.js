@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) =>
   sequelize.define(
-    "ClientRelative",
+    "ClientFriendContact",
     {
       id: {
         type: DataTypes.UUID,
@@ -21,25 +21,21 @@ module.exports = (sequelize) =>
         type: DataTypes.STRING(255),
         allowNull: true,
       },
-      home_phone: {
-        type: DataTypes.STRING(20),
-        allowNull: true,
-      },
-      work_phone: {
-        type: DataTypes.STRING(20),
-        allowNull: true,
-      },
       relationship: {
         type: DataTypes.STRING(100),
         allowNull: true,
       },
-      email: {
-        type: DataTypes.STRING(255),
+      phone: {
+        type: DataTypes.STRING(20),
+        allowNull: true,
+      },
+      help_description: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
     {
-      tableName: "client_relatives",
+      tableName: "client_friend_contacts",
       timestamps: true,
       underscored: true,
     }

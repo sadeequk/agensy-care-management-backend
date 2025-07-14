@@ -126,3 +126,13 @@ exports.CONGITO_STATUS = {
   MILD_COGNITIVE_IMPAIRMENT: "Mild Cognitive Impairment",
   OTHER: "Other",
 };
+
+exports.PROFESSIONAL_CONTACT_ROLES = {
+  LAWYER: "Lawyer",
+  POWER_OF_ATTORNEY_FINANCES: "Power of Atty. (Finances)",
+  MEDICAL_POWER_OF_ATTORNEY_HEALTHCARE: "Medical Power of Atty. (Healthcare)",
+  TAX_PROFESSIONAL: "Tax Professional",
+  ACCOUNTANT: "Accountant",
+  FINANCIAL_ADVISOR: "Financial Advisor",
+  SIGNIFICANT_OTHER: "Significant other",
+}
