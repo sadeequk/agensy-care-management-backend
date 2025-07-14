@@ -3,4 +3,5 @@ module.exports = {
   facesheetShortFormController: require("./facesheet.short.form.controller"),
   healthHistoryFormController: require("./health.history.form.controller"),
   careRecipientQuestionnaireController: require("./care.recipient.questionnaire.controller"),
+  startOfCareChecklistController: require("./start.of.care.checklist.controller"),
 };

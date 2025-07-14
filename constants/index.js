@@ -117,6 +117,7 @@ exports.FORM_TYPES = {
   FACE_SHEET_LONG: "face_sheet_long",
   HEALTH_HISTORY: "health_history",
   CARE_RECIPIENT_QUESTIONNAIRE: "care_recipient_questionnaire",
+  START_OF_CARE_CHECKLIST: "start_of_care_checklist",
 };
 
 exports.CONGITIVE_STATUS = {

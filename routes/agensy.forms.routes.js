@@ -20,4 +20,11 @@ router.post("/health-history", agensyFormControllers.healthHistoryFormController
 router.get("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.existing_details_get);
 router.post("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.care_recipient_questionnaire_post);
 
+//^START OF CARE ====>  start of care checklist
+router.get("/start-of-care-checklist", agensyFormControllers.startOfCareChecklistController.existing_details_get);
+router.post("/start-of-care-checklist", agensyFormControllers.startOfCareChecklistController.start_of_care_checklist_post);
+
+
+
+
 module.exports = router;
