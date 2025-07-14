@@ -57,6 +57,10 @@ module.exports = (sequelize) =>
         type: DataTypes.STRING(255),
         allowNull: true,
       },
+      for_what_problem: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
       active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

@@ -59,7 +59,7 @@ module.exports = (sequelize) =>
 
       // Recent Hospitalization
       recent_hospitalization: { type: DataTypes.BOOLEAN, allowNull: true },
-      hospital_details: { type: DataTypes.TEXT, allowNull: true },
+      hospital_details: { type: DataTypes.STRING, allowNull: true },
       
       // Support System Thoughts
       support_system_thoughts: { type: DataTypes.STRING, allowNull: true },
@@ -69,38 +69,38 @@ module.exports = (sequelize) =>
       problem_areas_explanation: { type: DataTypes.STRING, allowNull: true },
 
       // Problems/Risks
-      problems_risks: { type: DataTypes.TEXT, allowNull: true }, // JSON or comma-separated
-      nutrition_concerns: { type: DataTypes.TEXT, allowNull: true },
-      self_care_capacity_summary: { type: DataTypes.TEXT, allowNull: true },
+      problems_risks: { type: DataTypes.STRING, allowNull: true },
+      nutrition_concerns: { type: DataTypes.STRING, allowNull: true },
+      self_care_capacity_summary: { type: DataTypes.STRING, allowNull: true },
 
       // Memory, Orientation, and Judgment
-      memory_problems: { type: DataTypes.TEXT, allowNull: true },
+      memory_problems: { type: DataTypes.STRING, allowNull: true },
   
 
       // Emotional Health
-      emotional_health_notes: { type: DataTypes.TEXT, allowNull: true },
-      personality_coping: { type: DataTypes.TEXT, allowNull: true },
-      recent_behavior_changes: { type: DataTypes.TEXT, allowNull: true },
+      emotional_health_notes: { type: DataTypes.STRING, allowNull: true },
+      personality_coping: { type: DataTypes.STRING, allowNull: true },
+      recent_behavior_changes: { type: DataTypes.STRING, allowNull: true },
       recipient_shares_concerns: { type: DataTypes.BOOLEAN, allowNull: true },
-      recipient_shares_concerns_notes: { type: DataTypes.TEXT, allowNull: true },
+      recipient_shares_concerns_notes: { type: DataTypes.STRING, allowNull: true },
 
       // Emotional Problems History
       emotional_problems_history: { type: DataTypes.BOOLEAN, allowNull: true },
       emotional_problems_treatment: { type: DataTypes.BOOLEAN, allowNull: true },
-      emotional_problems_notes: { type: DataTypes.TEXT, allowNull: true },
-      recent_losses_impact: { type: DataTypes.TEXT, allowNull: true },
+      emotional_problems_notes: { type: DataTypes.STRING, allowNull: true },
+      recent_losses_impact: { type: DataTypes.STRING, allowNull: true },
 
       // Social Life
-      social_life_notes: { type: DataTypes.TEXT, allowNull: true },
+      social_life_notes: { type: DataTypes.STRING, allowNull: true },
 
       // Work and Retirement
       occupation_profession: { type: DataTypes.STRING, allowNull: true },
       retirement_date: { type: DataTypes.DATE, allowNull: true },
-      retirement_adjustment: { type: DataTypes.TEXT, allowNull: true },
+      retirement_adjustment: { type: DataTypes.STRING, allowNull: true },
 
       // Summary
-      major_concerns: { type: DataTypes.TEXT, allowNull: true },
-      areas_accepting_help: { type: DataTypes.TEXT, allowNull: true },
+      major_concerns: { type: DataTypes.STRING, allowNull: true },
+      areas_accepting_help: { type: DataTypes.STRING, allowNull: true },
 
 
       //TODO: Remaining fields will be added here
