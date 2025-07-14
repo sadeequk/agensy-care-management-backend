@@ -119,20 +119,10 @@ exports.FORM_TYPES = {
   CARE_RECIPIENT_QUESTIONNAIRE: "care_recipient_questionnaire",
 };
 
-exports.CONGITO_STATUS = {
+exports.CONGITIVE_STATUS = {
   ALERT: "Alert",
   ORIENTED: "Oriented",
   DEMENTIA: "Dementia",
   MILD_COGNITIVE_IMPAIRMENT: "Mild Cognitive Impairment",
   OTHER: "Other",
 };
-
-exports.PROFESSIONAL_CONTACT_ROLES = {
-  LAWYER: "Lawyer",
-  POWER_OF_ATTORNEY_FINANCES: "Power of Atty. (Finances)",
-  MEDICAL_POWER_OF_ATTORNEY_HEALTHCARE: "Medical Power of Atty. (Healthcare)",
-  TAX_PROFESSIONAL: "Tax Professional",
-  ACCOUNTANT: "Accountant",
-  FINANCIAL_ADVISOR: "Financial Advisor",
-  SIGNIFICANT_OTHER: "Significant other",
-}

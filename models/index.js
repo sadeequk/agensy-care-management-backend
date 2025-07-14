@@ -21,7 +21,7 @@ const HealthHistoryForm = require("./health.history.form.model")(sequelize);
 const CareRecipientQuestionnaire = require("./care.recipient.questionnaire.model")(sequelize);
 const ClientInsurance = require("./client.insurance.model")(sequelize);
 const FormsHistory = require("./forms.history.model")(sequelize);
-const ClientRelative = require("./client.relative.model")(sequelize);
+const ClientRelatives= require("./client.relatives.model")(sequelize);
 const ClientFriendContact = require("./client.friend.contact.model")(sequelize);
 const ClientProfessionalContact = require("./client.professional.contact.model")(sequelize);
 
@@ -178,8 +178,8 @@ Client.hasOne(ClientInsurance, { foreignKey: "client_id", as: "insurance", onDel
 ClientInsurance.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
 // ^ Client to ClientRelative Relation (One-To-Many)
-Client.hasMany(ClientRelative, { foreignKey: "client_id", as: "relatives", onDelete: "CASCADE" });
-ClientRelative.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+Client.hasMany(ClientRelatives, { foreignKey: "client_id", as: "relatives", onDelete: "CASCADE" });
+ClientRelatives.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
 // //^ Client to ClientHelper Relation (One-To-Many)
 // Client.hasMany(ClientHelper, { foreignKey: "client_id", as: "helpers", onDelete: "CASCADE" });
@@ -217,7 +217,7 @@ module.exports = {
   CareRecipientQuestionnaire,
   ClientInsurance,
   FormsHistory,
-  ClientRelative,
+  ClientRelatives,
   ClientFriendContact,
   ClientProfessionalContact,
 };

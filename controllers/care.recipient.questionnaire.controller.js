@@ -6,7 +6,9 @@ const formHistoryService = require("../services/form.history.service");
 exports.existing_details_get = async (req, res) => {
   try {
     const clientId = req.clientId;
-    const details = await careRecipientQuestionnaireService.getExistingDetails(clientId);
+    const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? req.user.id : req.user.primary_user_id;
+    console.log("primaryUserId", primaryUserId);
+    const details = await careRecipientQuestionnaireService.getExistingDetails(clientId, primaryUserId);
     return res.success(details);
   } catch (error) {
     console.error("CareRecipientQuestionnaireController [existing_details_get] Error:", error);

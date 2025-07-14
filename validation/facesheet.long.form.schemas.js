@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { VACCINATION_TYPES, LIVING_SITUATION, CONGITO_STATUS } = require("../constants");
+const { VACCINATION_TYPES, LIVING_SITUATION, CONGITIVE_STATUS } = require("../constants");
 
 exports.facesheet_put = Joi.object({
   client_info: Joi.object({
@@ -60,7 +60,7 @@ exports.facesheet_put = Joi.object({
     diagnoses: Joi.string().max(255).optional().allow(null),
     surgical_history: Joi.string().max(255).optional().allow(null),
     dietary_restrictions: Joi.string().max(255).optional().allow(null),
-    cognitive_status: Joi.string().optional().valid(...Object.values(CONGITO_STATUS)).allow(null),
+    cognitive_status: Joi.string().optional().valid(...Object.values(CONGITIVE_STATUS)).allow(null),
     last_cognitive_screening: Joi.date().iso().optional().allow(null),
     cognitive_score: Joi.string().max(50).optional().allow(null),
     notes: Joi.string().max(255).optional().allow(null),

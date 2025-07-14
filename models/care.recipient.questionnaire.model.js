@@ -57,12 +57,6 @@ module.exports = (sequelize) =>
       living_environment_type: { type: DataTypes.STRING, allowNull: true },
       home_environment_adequacy: { type: DataTypes.STRING, allowNull: true },
 
-      // Recent Hospitalization
-      recent_hospitalization: { type: DataTypes.BOOLEAN, allowNull: true },
-      hospital_details: { type: DataTypes.STRING, allowNull: true },
-      
-      // Support System Thoughts
-      support_system_thoughts: { type: DataTypes.STRING, allowNull: true },
 
       // Self-care and Daily Living
       problem_areas_daily_living: { type: DataTypes.STRING, allowNull: true },
@@ -102,8 +96,6 @@ module.exports = (sequelize) =>
       major_concerns: { type: DataTypes.STRING, allowNull: true },
       areas_accepting_help: { type: DataTypes.STRING, allowNull: true },
 
-
-      //TODO: Remaining fields will be added here
     },
     {
       tableName: "care_recipient_questionnaire",

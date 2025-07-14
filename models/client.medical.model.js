@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const { CONGITO_STATUS } = require("../constants");
+const { CONGITIVE_STATUS } = require("../constants");
 
 module.exports = (sequelize) =>
   sequelize.define(
@@ -31,7 +31,7 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       cognitive_status: {
-        type: DataTypes.ENUM(...Object.values(CONGITO_STATUS)),
+        type: DataTypes.ENUM(...Object.values(CONGITIVE_STATUS)),
         allowNull: true,
       },
       last_cognitive_screening: {
@@ -42,6 +42,13 @@ module.exports = (sequelize) =>
         type: DataTypes.STRING(50),
         allowNull: true,
       },
+      last_checkup_date: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+      },
+      recent_hospitalization: { type: DataTypes.BOOLEAN, allowNull: true },
+      hospital_details: { type: DataTypes.STRING, allowNull: true },
+      support_system_thoughts: { type: DataTypes.STRING, allowNull: true },
       notes: {
         type: DataTypes.TEXT,
         allowNull: true,

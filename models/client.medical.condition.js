@@ -25,6 +25,18 @@ module.exports = (sequelize) =>
         type: DataTypes.DATE,
         allowNull: true,
       },
+      problem:{
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      treatment:{
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      medications:{
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       notes: {
         type: DataTypes.STRING,
         allowNull: true,

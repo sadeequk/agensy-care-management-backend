@@ -26,6 +26,10 @@ module.exports = (sequelize) =>
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
+      birth_place: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
       ssn: {
         type: DataTypes.STRING(20),
         allowNull: true,
@@ -142,6 +146,19 @@ module.exports = (sequelize) =>
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      dnr: { type: DataTypes.STRING, allowNull: true },
+      trust: { type: DataTypes.STRING, allowNull: true },
+      lifecare: { type: DataTypes.STRING, allowNull: true },
+      will: { type: DataTypes.STRING, allowNull: true },
+      living_will: { type: DataTypes.STRING, allowNull: true },
+      funeral_arrangements: { type: DataTypes.STRING, allowNull: true },
+      cemetery_plot: { type: DataTypes.STRING, allowNull: true },
+      monthly_income: { type: DataTypes.STRING, allowNull: true },
+      spouse_income: { type: DataTypes.STRING, allowNull: true },
+      savings: { type: DataTypes.STRING, allowNull: true },
+      other_assets: { type: DataTypes.STRING, allowNull: true },
+      financial_problems_description: { type: DataTypes.TEXT, allowNull: true },
+   
       notes: {
         type: DataTypes.TEXT,
         allowNull: true,

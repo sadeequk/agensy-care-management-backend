@@ -1,5 +1,4 @@
 const { DataTypes } = require("sequelize");
-const { PROFESSIONAL_CONTACT_ROLES } = require("../constants");
 
 module.exports = (sequelize) =>
   sequelize.define(
@@ -15,9 +14,9 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       role: {
-        type: DataTypes.ENUM(...Object.values(PROFESSIONAL_CONTACT_ROLES)),
+        type: DataTypes.STRING(100),
         allowNull: true,
-      },
+      },      
       name: {
         type: DataTypes.STRING(100),
         allowNull: true,

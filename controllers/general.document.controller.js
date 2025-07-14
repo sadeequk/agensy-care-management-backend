@@ -6,11 +6,19 @@ const { USER_ROLES } = require("../constants");
 exports.document_post = async (req, res) => {
   try {
     if (!req.file) return res.fail("Please upload a file");
+    
+    const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? req.user.id : req.user.primary_user_id;
+    
+    // Validate that primaryUserId is not undefined
+    if (!primaryUserId) {
+      return res.fail("Primary user ID not found. Please contact support.");
+    }
+    
     const data = {
       ...req.body,
       client_id: null,
       uploaded_by: req.user.id,
-      primary_user_id: req.user.role == USER_ROLES.PRIMARY_USER ? req.user.id : req.user.primary_user_id,
+      primary_user_id: primaryUserId,
       category: req.body.category,
       file_size: req.file.size,
       file_type: req.file.mimetype,
