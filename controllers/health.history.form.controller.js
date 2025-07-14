@@ -18,6 +18,7 @@ exports.health_hitory_post = async (req, res) => {
   try {
     const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? req.user.id : req.user.primary_user_id;
     const clientId = req.clientId;
+    const userId = req.user.id;
     const data = await joiSchemas.health_history_post.validateAsync(req.body);
     const result = await HealthHistoryFormService.saveOrUpdateDetails(clientId, data, primaryUserId);
     await formHistoryService.recordFormUpdate(clientId, userId, primaryUserId, FORM_TYPES.HEALTH_HISTORY);

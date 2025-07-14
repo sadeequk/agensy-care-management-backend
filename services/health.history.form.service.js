@@ -264,8 +264,7 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
         }
       }
 
-      //* Record form update
-      await FormUpdateHistoryService.recordFormUpdate(clientId, primaryUserId, "health_history");
+  
 
       //* Resolve with updated details
       const allDetails = await this.getExistingDetails(clientId);

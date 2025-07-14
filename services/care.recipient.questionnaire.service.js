@@ -110,67 +110,23 @@ exports.getExistingDetails = (clientId) =>
       });
       const professionalContactsData = professionalContacts || [];
 
-    //   //* Medical Info
-    //   const medicalInfo = await ClientMedical.findOne({
-    //     where: { client_id: clientId },
-    //     attributes: ["id", "allergies", "diagnoses", "surgical_history"],
-    //   });
 
-    //   const medicalInfoData = medicalInfo || {
-    //     id: null,
-    //     allergies: null,
-    //     diagnoses: null,
-    //     surgical_history: null,
-    //   };
+      //* Healthcare Providers
+      const healthcareProviders = await HealthcareProvider.findAll({
+        where: {
+          client_id: clientId,
+          specialty_provider: false,
+        },
+        attributes: [
+          "id",
+          "provider_name",
+          "phone",    
+          "for_what_problem",
+        ],
+        order: [["created_at", "ASC"]],
+      });
 
-    //   //* Emergency Contact
-    //   const emergencyContact = await ClientContact.findOne({
-    //     where: {
-    //       client_id: clientId,
-    //       contact_type: "emergency",
-    //     },
-    //     attributes: ["id", "first_name", "last_name", "email", "phone", "relationship", "address"],
-    //   });
-
-    //   const emergencyContactData = emergencyContact || {
-    //     id: null,
-    //     first_name: null,
-    //     last_name: null,
-    //     email: null,
-    //     phone: null,
-    //     relationship: null,
-    //     address: null,
-    //   };
-
-    //   //* Medications
-    //   const medications = await ClientMedication.findAll({
-    //     where: { client_id: clientId },
-    //     attributes: ["id", "client_id", "medication_name", "dosage", "purpose", "prescribing_doctor", "refill_due"],
-    //     order: [["created_at", "ASC"]],
-    //   });
-
-    //   const medicationsData = medications || [];
-
-    //   //* Healthcare Providers
-    //   const healthcareProviders = await HealthcareProvider.findAll({
-    //     where: {
-    //       client_id: clientId,
-    //       specialty_provider: false,
-    //     },
-    //     attributes: [
-    //       "id",
-    //       "provider_type",
-    //       "provider_name",
-    //       "specialty",
-    //       "address",
-    //       "phone",
-    //       "last_visit",
-    //       "next_visit",
-    //     ],
-    //     order: [["created_at", "ASC"]],
-    //   });
-
-    //   const healthcareProvidersData = healthcareProviders || [];
+      const healthcareProvidersData = healthcareProviders || [];
 
     //   //* Care Recipient Questionnaire
     //   const questionnaire = await CareRecipientQuestionnaire.findOne({

@@ -17,3 +17,4 @@ exports.recordFormUpdate = (clientId, userId, primaryUserId, formType) =>
       reject(error);
     }
   });
+  
