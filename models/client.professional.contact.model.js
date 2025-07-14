@@ -30,6 +30,6 @@ module.exports = (sequelize) =>
     {
       tableName: "client_professional_contacts",
       timestamps: true,
-      underscored: true,I
+      underscored: true,
     }
   ); 

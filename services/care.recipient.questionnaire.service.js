@@ -37,14 +37,14 @@ exports.getExistingDetails = (clientId) =>
           "ssn",
           "date_of_birth",
           "phone",
-          "email",// have to add in client model
-          "cultural_background",// have to add in client model
-          "education",// have to add in client model
-          "religion",// have to add in client model
-          "active_religion_location",// have to add in client model
+          "email",  
+          "cultural_background",
+          "education",
+          "religion",
+          "active_religion_location",
           "marital_status",
-          "date_of_divorce_or_widowhood",// have to add in client model
-          "loss_impact_description",// have to add in client model
+          "date_of_divorce_or_widowhood",
+          "loss_impact_description",
         ],
       });
 

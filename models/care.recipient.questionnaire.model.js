@@ -20,59 +20,53 @@ module.exports = (sequelize) =>
 
       // Support System Section
       support_system_rating: {
-        type: DataTypes.ENUM('Excellent', 'Good', 'Fair', 'Poor'),
+        type: DataTypes.STRING,
         allowNull: true,
       },
       support_system_problems: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: true,
       },
       emergency_contacts: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: true,
       },
 
       // In-Home Help Section
       house_cleaning_agency: { type: DataTypes.STRING, allowNull: true },
-      house_cleaning_satisfaction: { type: DataTypes.ENUM('High', 'Medium', 'Low'), allowNull: true },
-      house_cleaning_frequency: { type: DataTypes.ENUM('Daily', 'Weekly', 'Monthly'), allowNull: true },
+      house_cleaning_satisfaction: { type: DataTypes.STRING, allowNull: true },
+      house_cleaning_frequency: { type: DataTypes.STRING, allowNull: true },
 
       home_aid_agency: { type: DataTypes.STRING, allowNull: true },
-      home_aid_satisfaction: { type: DataTypes.ENUM('High', 'Medium', 'Low'), allowNull: true },
-      home_aid_frequency: { type: DataTypes.ENUM('Daily', 'Weekly', 'Monthly'), allowNull: true },
+      home_aid_satisfaction:{ type: DataTypes.STRING, allowNull: true },
+      home_aid_frequency:{ type: DataTypes.STRING, allowNull: true },
 
       home_health_agency: { type: DataTypes.STRING, allowNull: true },
-      home_health_satisfaction: { type: DataTypes.ENUM('High', 'Medium', 'Low'), allowNull: true },
-      home_health_frequency: { type: DataTypes.ENUM('Daily', 'Weekly', 'Monthly'), allowNull: true },
+      home_health_satisfaction: { type: DataTypes.STRING, allowNull: true },
+      home_health_frequency:{ type: DataTypes.STRING, allowNull: true },
 
       maintenance_agency: { type: DataTypes.STRING, allowNull: true },
-      maintenance_satisfaction: { type: DataTypes.ENUM('High', 'Medium', 'Low'), allowNull: true },
-      maintenance_frequency: { type: DataTypes.ENUM('Daily', 'Weekly', 'Monthly'), allowNull: true },
+      maintenance_satisfaction: { type: DataTypes.STRING, allowNull: true },
+      maintenance_frequency: { type: DataTypes.STRING, allowNull: true },
 
       other_help_agency: { type: DataTypes.STRING, allowNull: true },
-      other_help_satisfaction: { type: DataTypes.ENUM('High', 'Medium', 'Low'), allowNull: true },
-      other_help_frequency: { type: DataTypes.ENUM('Daily', 'Weekly', 'Monthly'), allowNull: true },
+      other_help_satisfaction: { type: DataTypes.STRING, allowNull: true },
+      other_help_frequency:{ type: DataTypes.STRING, allowNull: true },
 
       // Living Environment
-      living_environment_type: {
-        type: DataTypes.ENUM('Rent', 'Own', 'Apartment', 'House', 'Condominium'),
-        allowNull: true,
-      },
-      home_environment_adequacy: {
-        type: DataTypes.ENUM('Excellent', 'Fair', 'Poor'),
-        allowNull: true,
-      },
+      living_environment_type: { type: DataTypes.STRING, allowNull: true },
+      home_environment_adequacy: { type: DataTypes.STRING, allowNull: true },
 
       // Recent Hospitalization
       recent_hospitalization: { type: DataTypes.BOOLEAN, allowNull: true },
       hospital_details: { type: DataTypes.TEXT, allowNull: true },
       
       // Support System Thoughts
-      support_system_thoughts: { type: DataTypes.TEXT, allowNull: true },
+      support_system_thoughts: { type: DataTypes.STRING, allowNull: true },
 
       // Self-care and Daily Living
-      problem_areas_daily_living: { type: DataTypes.TEXT, allowNull: true }, // JSON or comma-separated
-      problem_areas_explanation: { type: DataTypes.TEXT, allowNull: true },
+      problem_areas_daily_living: { type: DataTypes.STRING, allowNull: true },
+      problem_areas_explanation: { type: DataTypes.STRING, allowNull: true },
 
       // Problems/Risks
       problems_risks: { type: DataTypes.TEXT, allowNull: true }, // JSON or comma-separated
