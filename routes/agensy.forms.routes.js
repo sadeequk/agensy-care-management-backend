@@ -16,4 +16,8 @@ router.post("/face-sheet-long", agensyFormControllers.facesheetLongFormControlle
 router.get("/health-history", agensyFormControllers.healthHistoryFormController.existing_details_get);
 router.post("/health-history", agensyFormControllers.healthHistoryFormController.health_hitory_post);
 
+//^ ASSESSMENT ==> Care Recipient Questionnaire
+router.get("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.existing_details_get);
+router.post("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.care_recipient_questionnaire_post);
+
 module.exports = router;

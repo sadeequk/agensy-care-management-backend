@@ -116,6 +116,7 @@ exports.FORM_TYPES = {
   FACE_SHEET_SHORT: "face_sheet_short",
   FACE_SHEET_LONG: "face_sheet_long",
   HEALTH_HISTORY: "health_history",
+  CARE_RECIPIENT_QUESTIONNAIRE: "care_recipient_questionnaire",
 };
 
 exports.CONGITO_STATUS = {

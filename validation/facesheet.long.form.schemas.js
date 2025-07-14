@@ -19,6 +19,7 @@ exports.facesheet_put = Joi.object({
     ssn: Joi.string().max(20).optional(),
     advance_directive: Joi.string().max(255).optional(),
     race: Joi.string().max(50).optional(),
+    language: Joi.string().max(50).optional(),
     last_care_plan_date: Joi.date().iso().optional(),
     gender: Joi.string().max(50).optional(),
     marital_status: Joi.string().max(50).optional(),

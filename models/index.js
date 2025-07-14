@@ -18,7 +18,12 @@ const ClientCaregiverAgency = require("./client.caregiver.agency.model")(sequeli
 const ClientMedicationCondition = require("./client.medical.condition")(sequelize);
 const ClientHospitalization = require("./client.hospitalization.model")(sequelize);
 const HealthHistoryForm = require("./health.history.form.model")(sequelize);
+const CareRecipientQuestionnaire = require("./care.recipient.questionnaire.model")(sequelize);
+const ClientInsurance = require("./client.insurance.model")(sequelize);
 const FormsHistory = require("./forms.history.model")(sequelize);
+// const ClientRelative = require("./client.relative.model")(sequelize);
+// const ClientHelper = require("./client.helper.model")(sequelize);
+// const ClientProfessionalContact = require("./client.professional.contact.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -164,6 +169,24 @@ FormsHistory.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 User.hasMany(FormsHistory, { foreignKey: "user_id", as: "formsHistory", onDelete: "CASCADE" });
 FormsHistory.belongsTo(User, { foreignKey: "user_id", as: "user" });
 
+//^ Client to CareRecipientQuestionnaire Relation (One-To-One)
+Client.hasOne(CareRecipientQuestionnaire, { foreignKey: "client_id", as: "care_recipient_questionnaire", onDelete: "CASCADE" });
+CareRecipientQuestionnaire.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+
+//^ Client to ClientInsurance Relation (One-To-One)
+Client.hasOne(ClientInsurance, { foreignKey: "client_id", as: "insurance", onDelete: "CASCADE" });
+ClientInsurance.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+
+//^ Client to ClientRelative Relation (One-To-Many)
+// Client.hasMany(ClientRelative, { foreignKey: "client_id", as: "relatives", onDelete: "CASCADE" });
+// ClientRelative.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+// //^ Client to ClientHelper Relation (One-To-Many)
+// Client.hasMany(ClientHelper, { foreignKey: "client_id", as: "helpers", onDelete: "CASCADE" });
+// ClientHelper.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+// //^ Client to ClientProfessionalContact Relation (One-To-Many)
+// Client.hasMany(ClientProfessionalContact, { foreignKey: "client_id", as: "professionalContacts", onDelete: "CASCADE" });
+// ClientProfessionalContact.belongsTo(Client, { foreignKey: "client_id", as: "client" });
+
 module.exports = {
   sequelize,
   User,
@@ -185,5 +208,10 @@ module.exports = {
   ClientMedicationCondition,
   ClientHospitalization,
   HealthHistoryForm,
+  CareRecipientQuestionnaire,
+  ClientInsurance,
   FormsHistory,
+  // ClientRelative,
+  // ClientHelper,
+  // ClientProfessionalContact,
 };
