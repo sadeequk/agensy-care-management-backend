@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const { CONGITIVE_STATUS } = require("../constants");
 
 exports.facesheet_put = Joi.object({
   client_info: Joi.object({
@@ -56,7 +55,7 @@ exports.facesheet_put = Joi.object({
     allergies: Joi.string().max(255).optional().allow(null),
     diagnoses: Joi.string().max(255).optional().allow(null),
     surgical_history: Joi.string().max(255).optional().allow(null),
-    cognitive_status: Joi.string().optional().valid(...Object.values(CONGITIVE_STATUS)).allow(null),
+    cognitive_status: Joi.string().optional().allow(null),
     last_cognitive_screening: Joi.date().iso().optional().allow(null),
     cognitive_score: Joi.string().max(50).optional().allow(null),
   }),

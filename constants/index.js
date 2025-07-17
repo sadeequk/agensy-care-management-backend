@@ -119,13 +119,7 @@ exports.FORM_TYPES = {  //checklists types are included here
   CARE_RECIPIENT_QUESTIONNAIRE: "care_recipient_questionnaire",
 };
 
-exports.CONGITIVE_STATUS = {
-  ALERT: "Alert",
-  ORIENTED: "Oriented",
-  DEMENTIA: "Dementia",
-  MILD_COGNITIVE_IMPAIRMENT: "Mild Cognitive Impairment",
-  OTHER: "Other",
-};
+
 
 exports.CHECKLIST_TYPES = {
   START_OF_CARE: "start_of_care",

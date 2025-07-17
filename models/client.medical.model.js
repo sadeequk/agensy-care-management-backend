@@ -1,5 +1,4 @@
 const { DataTypes } = require("sequelize");
-const { CONGITIVE_STATUS } = require("../constants");
 
 module.exports = (sequelize) =>
   sequelize.define(
@@ -31,7 +30,7 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       cognitive_status: {
-        type: DataTypes.ENUM(...Object.values(CONGITIVE_STATUS)),
+        type: DataTypes.STRING,
         allowNull: true,
       },
       last_cognitive_screening: {
