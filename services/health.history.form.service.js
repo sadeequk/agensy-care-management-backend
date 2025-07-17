@@ -96,8 +96,7 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
       }
 
    
-      const allDetails = await this.getExistingDetails(clientId);
-      resolve(allDetails);
+      resolve(result);
     } catch (error) {
       console.error("HealthHistoryFormService [saveOrUpdateDetails] Error:", error);
       reject(error);
