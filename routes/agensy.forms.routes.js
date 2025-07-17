@@ -21,8 +21,8 @@ router.get("/care-recipient-questionnaire", agensyFormControllers.careRecipientQ
 router.post("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.care_recipient_questionnaire_post);
 
 //^START OF CARE ====>  start of care checklist
-router.get("/start-of-care-checklist", agensyFormControllers.startOfCareChecklistController.existing_details_get);
-router.post("/start-of-care-checklist", agensyFormControllers.startOfCareChecklistController.start_of_care_checklist_post);
+router.get("/checklists/:formType", agensyFormControllers.checkListController.existing_details_get);
+router.post("/checklists/:formType", agensyFormControllers.checkListController.checklist_post);
 
 
 

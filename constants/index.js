@@ -112,12 +112,11 @@ exports.VACCINATION_TYPES = {
   HEPATITIS_B: "Hepatitis B",
 };
 
-exports.FORM_TYPES = {
+exports.FORM_TYPES = {  //checklists types are included here 
   FACE_SHEET_SHORT: "face_sheet_short",
   FACE_SHEET_LONG: "face_sheet_long",
   HEALTH_HISTORY: "health_history",
   CARE_RECIPIENT_QUESTIONNAIRE: "care_recipient_questionnaire",
-  START_OF_CARE_CHECKLIST: "start_of_care_checklist",
 };
 
 exports.CONGITIVE_STATUS = {
@@ -126,4 +125,8 @@ exports.CONGITIVE_STATUS = {
   DEMENTIA: "Dementia",
   MILD_COGNITIVE_IMPAIRMENT: "Mild Cognitive Impairment",
   OTHER: "Other",
+};
+
+exports.CHECKLIST_TYPES = {
+  START_OF_CARE: "start_of_care",
 };

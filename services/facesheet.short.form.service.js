@@ -88,7 +88,7 @@ exports.getExistingDetails = (clientId) =>
       //* Medications
       const medications = await ClientMedication.findAll({
         where: { client_id: clientId },
-        attributes: ["id", "client_id", "medication_name", "dosage", "purpose", "prescribing_doctor", "refill_due"],
+        attributes: ["id", "client_id", "medication_name", "dosage", "purpose", "prescribing_doctor", "refill_due" , "start_date" , "end_date"],
         order: [["created_at", "ASC"]],
       });
 

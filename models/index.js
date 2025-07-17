@@ -24,7 +24,7 @@ const FormsHistory = require("./forms.history.model")(sequelize);
 const ClientRelatives= require("./client.relatives.model")(sequelize);
 const ClientFriendContact = require("./client.friend.contact.model")(sequelize);
 const ClientProfessionalContact = require("./client.professional.contact.model")(sequelize);
-const StartOfCareChecklist = require("./start.of.care.checklist.model")(sequelize);
+const Checklists = require("./check.lists.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -182,9 +182,6 @@ ClientInsurance.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 Client.hasMany(ClientRelatives, { foreignKey: "client_id", as: "relatives", onDelete: "CASCADE" });
 ClientRelatives.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
-// //^ Client to ClientHelper Relation (One-To-Many)
-// Client.hasMany(ClientHelper, { foreignKey: "client_id", as: "helpers", onDelete: "CASCADE" });
-// ClientHelper.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
 // //^ Client to ClientProfessionalContact Relation (One-To-Many)
 Client.hasMany(ClientProfessionalContact, { foreignKey: "client_id", as: "professionalContacts", onDelete: "CASCADE" });
@@ -195,8 +192,8 @@ Client.hasMany(ClientFriendContact, { foreignKey: "client_id", as: "friendContac
 ClientFriendContact.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
 //^ Client to StartOfCareChecklist Relation (One-To-One)
-Client.hasOne(StartOfCareChecklist, { foreignKey: 'client_id', as: 'startOfCareChecklist' });
-StartOfCareChecklist.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
+Client.hasMany(Checklists, { foreignKey: 'client_id', as: 'checklists' });
+Checklists.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
 
 module.exports = {
   sequelize,
@@ -225,5 +222,5 @@ module.exports = {
   ClientRelatives,
   ClientFriendContact,
   ClientProfessionalContact,
-  StartOfCareChecklist,
+  Checklists,
 };

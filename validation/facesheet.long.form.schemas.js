@@ -41,6 +41,8 @@ exports.facesheet_put = Joi.object({
       medication_name: Joi.string().optional().min(2).max(255).allow(null),
       dosage: Joi.string().optional().max(100).allow(null),
       purpose: Joi.string().max(255).optional().allow(null),
+      start_date: Joi.date().iso().optional().allow(null),
+      end_date: Joi.date().iso().optional().allow(null),
     })
   ),
   healthcare_providers: Joi.array().items(
