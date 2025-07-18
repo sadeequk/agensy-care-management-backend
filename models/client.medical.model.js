@@ -37,6 +37,10 @@ module.exports = (sequelize) =>
         type: DataTypes.DATEONLY,
         allowNull: true,
       },
+      test_type: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       cognitive_score: {
         type: DataTypes.STRING(50),
         allowNull: true,
