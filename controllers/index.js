@@ -4,4 +4,5 @@ module.exports = {
   healthHistoryFormController: require("./health.history.form.controller"),
   careRecipientQuestionnaireController: require("./care.recipient.questionnaire.controller"),
   checkListController: require("./check.lists.controller"),
+  essentialDocumentController: require("./essential.document.controller"),
 };

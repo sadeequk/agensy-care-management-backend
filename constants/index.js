@@ -117,6 +117,7 @@ exports.FORM_TYPES = {  //checklists types are included here
   FACE_SHEET_LONG: "face_sheet_long",
   HEALTH_HISTORY: "health_history",
   CARE_RECIPIENT_QUESTIONNAIRE: "care_recipient_questionnaire",
+  ESSENTIAL_DOCUMENT: "essential_document",
 };
 
 

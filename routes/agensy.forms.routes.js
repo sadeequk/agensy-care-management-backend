@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const agensyFormControllers = require("../controllers/index");
-// const facesheetShortFormController = require("../controllers/facesheet.short.form.controller");
-// const facesheetLongFormController = require("../controllers/facesheet.long.form.controller");
+
 
 //^  MEDICAL ==> Face sheet (Short)
 router.get("/face-sheet-short", agensyFormControllers.facesheetShortFormController.existing_details_get);
@@ -20,11 +19,12 @@ router.post("/health-history", agensyFormControllers.healthHistoryFormController
 router.get("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.existing_details_get);
 router.post("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.care_recipient_questionnaire_post);
 
-//^START OF CARE ====>  start of care checklist
+//^CHECKLISTS
 router.get("/checklists/:formType", agensyFormControllers.checkListController.existing_details_get);
 router.post("/checklists/:formType", agensyFormControllers.checkListController.checklist_post);
 
-
+router.get("/essential-documents", agensyFormControllers.essentialDocumentController.existing_details_get);
+router.post("/essential-documents", agensyFormControllers.essentialDocumentController.essential_document_post);
 
 
 module.exports = router;

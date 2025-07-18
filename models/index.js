@@ -25,6 +25,7 @@ const ClientRelatives= require("./client.relatives.model")(sequelize);
 const ClientFriendContact = require("./client.friend.contact.model")(sequelize);
 const ClientProfessionalContact = require("./client.professional.contact.model")(sequelize);
 const Checklists = require("./check.lists.model")(sequelize);
+const EssentialDocument = require("./essential.document.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -195,6 +196,13 @@ ClientFriendContact.belongsTo(Client, { foreignKey: "client_id", as: "client" })
 Client.hasMany(Checklists, { foreignKey: 'client_id', as: 'checklists' });
 Checklists.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
 
+//^ Client to EssentialDocument Relation (One-To-Many)
+Client.hasMany(EssentialDocument, { foreignKey: 'client_id', as: 'essentialDocuments', onDelete: 'CASCADE' });
+EssentialDocument.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
+
+//^ EssentialDocument to User Relation (Many-To-One)
+EssentialDocument.belongsTo(User, { foreignKey: 'primary_user_id', as: 'primaryUser' });
+
 module.exports = {
   sequelize,
   User,
@@ -223,4 +231,5 @@ module.exports = {
   ClientFriendContact,
   ClientProfessionalContact,
   Checklists,
+  EssentialDocument,
 };
