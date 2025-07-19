@@ -73,6 +73,37 @@ const modelFieldsMap = {
     "helpful_information",
     "documentation",
   ],
+  MedicalAppointmentTemplate: [
+    "id",
+    "primary_user_id",
+    "client_id",
+    
+    // Consultation Date
+    "consultation_date",
+    
+    // Vitals
+    "height",
+    "weight",
+    "blood_pressure",
+    "temperature",
+    "heart_rate",
+    "additional_vitals",
+    
+    // Visit Details
+    "reason_for_visit",
+    "top_3_concerns",
+    "tests_labs_imaging",
+    "visit_notes",
+    
+    // Medication Changes
+    "medication_changes",
+    
+    // Recommendations and Follow-up
+    "recommendations",
+    "referrals",
+    "follow_up",
+    "report_given_to",
+  ],
   Checklists: [
     "id",
     "client_id",

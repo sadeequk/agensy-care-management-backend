@@ -6,4 +6,5 @@ module.exports = {
   checkListController: require("./check.lists.controller"),
   essentialDocumentController: require("./essential.document.controller"),
   caregiverInformationSheetController: require("./caregiver.information.sheet.controller"),
+  // documentScanningController: require("./document.scanning.controller"),
 };
