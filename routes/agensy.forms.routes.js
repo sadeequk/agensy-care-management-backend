@@ -26,5 +26,12 @@ router.post("/checklists/:formType", agensyFormControllers.checkListController.c
 router.get("/essential-documents", agensyFormControllers.essentialDocumentController.existing_details_get);
 router.post("/essential-documents", agensyFormControllers.essentialDocumentController.essential_document_post);
 
+//^ Caregiver Information Sheet
+router.get("/caregiver-information-sheet", agensyFormControllers.caregiverInformationSheetController.existing_details_get);
+router.post("/caregiver-information-sheet", agensyFormControllers.caregiverInformationSheetController.caregiver_information_sheet_post);
+
+
+
+
 
 module.exports = router;

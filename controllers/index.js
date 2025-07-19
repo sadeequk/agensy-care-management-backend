@@ -5,4 +5,5 @@ module.exports = {
   careRecipientQuestionnaireController: require("./care.recipient.questionnaire.controller"),
   checkListController: require("./check.lists.controller"),
   essentialDocumentController: require("./essential.document.controller"),
+  caregiverInformationSheetController: require("./caregiver.information.sheet.controller"),
 };

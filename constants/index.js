@@ -118,6 +118,7 @@ exports.FORM_TYPES = {  //checklists types are included here
   HEALTH_HISTORY: "health_history",
   CARE_RECIPIENT_QUESTIONNAIRE: "care_recipient_questionnaire",
   ESSENTIAL_DOCUMENT: "essential_document",
+  CAREGIVER_INFORMATION_SHEET: "caregiver_information_sheet",
 };
 
 
