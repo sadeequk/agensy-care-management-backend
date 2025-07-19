@@ -106,7 +106,7 @@ exports.getExistingDetails = (clientId, userId) =>
       };
 
       //* Relative
-      const relatives= await ClientRelative.findAll({
+      const relatives= await ClientRelatives.findAll({
         where: { client_id: clientId },
         attributes: ["id", "name", "address", "home_phone", "work_phone", "relationship", "email"],
       });
