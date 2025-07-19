@@ -61,7 +61,6 @@ exports.saveOrUpdateDetails = (clientId, primaryUserId, data) =>
         }
 
         result.essential_documents = updatedDocuments;
-        result.last_update = lastUpdate;
       }
 
       resolve(result);
