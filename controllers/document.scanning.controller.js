@@ -1,46 +1,29 @@
-// const documentScanningService = require("../services/document.scanning.service");
-// const awsTextract = require("../helpers/aws.textract");
+const documentScanningService = require("../services/document.scanning.service");
 
-// const multer = require('multer');
+module.exports.scan_document_post = async function scan_document_post(req, res) {
+  try {
+    if (!req.file) {
+      return res.fail('No document file uploaded');
+    }
 
-// const upload = multer({
-//   storage: multer.memoryStorage(),
-//   limits: {
-//     fileSize: awsTextract.DOCUMENT_CONFIG.maxFileSize,
-//   },
-//   fileFilter: (req, file, cb) => {
-//     if (awsTextract.DOCUMENT_CONFIG.allowedFileTypes.includes(file.mimetype)) {
-//       cb(null, true);
-//     } else {
-//       cb(new Error(awsTextract.DOCUMENT_CONFIG.errorMessages.invalidFileType), false);
-//     }
-//   },
-// }).single('document');
+    console.log(`Processing uploaded file: ${req.file.originalname} (${req.file.size} bytes)`);
 
-// module.exports.scan_document_post = async function scan_document_post(req, res) {
-//   upload(req, res, async (err) => {
-//     try {
-//       if (err) {
-//         res.fail(err.message);
-//       }
+    const result = await documentScanningService.scanDocument(req.file.buffer);
 
-//       if (!req.file) {
-//         return res.fail('No document file uploaded');
-//       }
-
-//       console.log(`Processing uploaded file: ${req.file.originalname} (${req.file.size} bytes)`);
-
-//       const result = await documentScanningService.scanDocument(req.file.buffer);
-
-//       return res.success(
-//         {       
-//           text: result.text,
-//           keyValuePairs: result.keyValuePairs,
-//         }
-//       )
-//     } catch (error) {
-//       console.error('Document scanning controller error:', error);
-//       return res.serverError(error.message);
-//     }
-//   });
-// }
+    return res.success({
+      text: result.text,
+      keyValuePairs: result.keyValuePairs,
+    });
+  } catch (error) {
+    console.error('Document scanning controller error:', error);
+    
+    // if (error.code === 'LIMIT_FILE_SIZE') {
+    //   return res.fail('File too large. Maximum size is 20MB');
+    // }
+    // if (error.message && error.message.includes('Invalid file type')) {
+    //   return res.fail(error.message);
+    // }
+    
+    return res.serverError(error.message);
+  }
+};
