@@ -21,7 +21,6 @@ const HealthHistoryForm = require("./health.history.form.model")(sequelize);
 const CareRecipientQuestionnaire = require("./care.recipient.questionnaire.model")(sequelize);
 const ClientInsurance = require("./client.insurance.model")(sequelize);
 const FormsHistory = require("./forms.history.model")(sequelize);
-const MedicalConsultationForm = require("./medical.consultation.form.model")(sequelize);
 const ClientRelatives= require("./client.relatives.model")(sequelize);
 const ClientFriendContact = require("./client.friend.contact.model")(sequelize);
 const ClientProfessionalContact = require("./client.professional.contact.model")(sequelize);
@@ -228,7 +227,6 @@ module.exports = {
   CareRecipientQuestionnaire,
   ClientInsurance,
   FormsHistory,
-  MedicalConsultationForm,
   ClientRelatives,
   ClientFriendContact,
   ClientProfessionalContact,
