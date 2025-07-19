@@ -14,7 +14,7 @@ exports.existing_details_get = async (req, res) => {
   }
 };
 
-exports.health_hitory_post = async (req, res) => {
+exports.health_history_post = async (req, res) => {
   try {
     const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? req.user.id : req.user.primary_user_id;
     const clientId = req.clientId;

@@ -13,7 +13,7 @@ router.post("/face-sheet-long", agensyFormControllers.facesheetLongFormControlle
 
 //^  MEDICAL ==> Health History
 router.get("/health-history", agensyFormControllers.healthHistoryFormController.existing_details_get);
-router.post("/health-history", agensyFormControllers.healthHistoryFormController.health_hitory_post);
+router.post("/health-history", agensyFormControllers.healthHistoryFormController.health_history_post);
 
 //^ ASSESSMENT ==> Care Recipient Questionnaire
 router.get("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.existing_details_get);

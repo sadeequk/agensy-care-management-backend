@@ -16,7 +16,6 @@ const ClientHomeHealthAgency = require("./client.home.health.agency.model")(sequ
 const ClientBloodwork = require("./client.bloodwork.model")(sequelize);
 const ClientCaregiverAgency = require("./client.caregiver.agency.model")(sequelize);
 const ClientMedicationCondition = require("./client.medical.condition")(sequelize);
-const ClientHospitalization = require("./client.hospitalization.model")(sequelize);
 const HealthHistoryForm = require("./health.history.form.model")(sequelize);
 const CareRecipientQuestionnaire = require("./care.recipient.questionnaire.model")(sequelize);
 const ClientInsurance = require("./client.insurance.model")(sequelize);
@@ -155,9 +154,6 @@ ClientHomeHealthAgency.belongsTo(Client, { foreignKey: "client_id", onDelete: "C
 Client.hasMany(ClientMedicationCondition, { foreignKey: "client_id", as: "medicationConditions", onDelete: "CASCADE" });
 ClientMedicationCondition.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
-//^ Client to ClientHospitalization Relation (One-To-One)
-Client.hasOne(ClientHospitalization, { foreignKey: "client_id", as: "hospitalization", onDelete: "CASCADE" });
-ClientHospitalization.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
 //^ Client to HealthHistoryForm Relation (One-To-One)
 Client.hasOne(HealthHistoryForm, { foreignKey: "client_id", as: "health_history_form", onDelete: "CASCADE" });
@@ -222,7 +218,6 @@ module.exports = {
   ClientBloodwork,
   ClientCaregiverAgency,
   ClientMedicationCondition,
-  ClientHospitalization,
   HealthHistoryForm,
   CareRecipientQuestionnaire,
   ClientInsurance,

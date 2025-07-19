@@ -228,13 +228,6 @@ const modelFieldsMap = {
     "start_date",
     "discharge_date",
   ],
-  ClientHospitalization: [
-    "id",
-    "primary_user_id",
-    "client_id",
-    "admitting_diagnosis",
-    "treatment",
-  ],
   ClientInsurance: [
     "id",
     "client_id",

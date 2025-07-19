@@ -21,11 +21,15 @@ module.exports = (sequelize) =>
         type: DataTypes.DATEONLY,
         allowNull: true,
       },
-      diagnosis: {
+      description_of_health_concern: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      health_concern_description: {
+      admitting_diagnosis: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      treatment: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -38,26 +42,6 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       severity_of_symptoms: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      hospitalization: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      specialty_provider: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      medication_started: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      medication_stopped: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      home_health: {
         type: DataTypes.STRING,
         allowNull: true,
       },
