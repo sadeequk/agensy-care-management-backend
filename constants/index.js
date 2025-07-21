@@ -125,8 +125,8 @@ exports.FORM_TYPES = {  //checklists types are included here
 
 exports.CHECKLIST_TYPES = {
   START_OF_CARE: "start_of_care",
-  CARE_PLAN_CHECKLIST: "care_plan_checklist",
-  HOSPITALIZATION_CHECKLIST: "hospitalization_checklist", 
-  MOVE_IN_CHECKLIST: "move_in_checklist",
+  CARE_PLAN: "care_plan",
+  HOSPITALIZATION: "hospitalization", 
+  MOVE_IN: "move_in",
   NEXT_STEP_AFTER_DEATH: "next_step_after_death",
 }
