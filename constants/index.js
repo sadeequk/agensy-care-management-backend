@@ -119,6 +119,7 @@ exports.FORM_TYPES = {
   CARE_RECIPIENT_QUESTIONNAIRE: "care_recipient_questionnaire",
   ESSENTIAL_DOCUMENT: "essential_document",
   CAREGIVER_INFORMATION_SHEET: "caregiver_information_sheet",
+  //checklists 
   START_OF_CARE: "start_of_care",
   CARE_PLAN: "care_plan",
   HOSPITALIZATION: "hospitalization", 
@@ -127,7 +128,7 @@ exports.FORM_TYPES = {
 };
 
 
-
+//validating checklist
 exports.CHECKLIST_TYPES = {
   START_OF_CARE: "start_of_care",
   CARE_PLAN: "care_plan",
