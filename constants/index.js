@@ -112,13 +112,18 @@ exports.VACCINATION_TYPES = {
   HEPATITIS_B: "Hepatitis B",
 };
 
-exports.FORM_TYPES = {  //checklists types are included here 
+exports.FORM_TYPES = { 
   FACE_SHEET_SHORT: "face_sheet_short",
   FACE_SHEET_LONG: "face_sheet_long",
   HEALTH_HISTORY: "health_history",
   CARE_RECIPIENT_QUESTIONNAIRE: "care_recipient_questionnaire",
   ESSENTIAL_DOCUMENT: "essential_document",
   CAREGIVER_INFORMATION_SHEET: "caregiver_information_sheet",
+  START_OF_CARE: "start_of_care",
+  CARE_PLAN: "care_plan",
+  HOSPITALIZATION: "hospitalization", 
+  MOVE_IN: "move_in",
+  NEXT_STEP_AFTER_DEATH: "next_step_after_death",
 };
 
 
