@@ -1,5 +1,5 @@
 const InitialCarePlanAssessmentService = require("../services/initial.care.plan.assessment.service");
-const joiSchemas = require("../validation/initial.care.plan.assessment.schemas");
+const joiSchemas = require("../validation/initial.care.plan.assessment.schemas.js");
 const { USER_ROLES, FORM_TYPES } = require("../constants");
 const formHistoryService = require("../services/form.history.service");
 

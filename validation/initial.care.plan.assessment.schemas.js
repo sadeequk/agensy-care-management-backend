@@ -6,16 +6,8 @@ exports.initial_care_plan_assessment_post = Joi.object({
     date_of_assessment: Joi.date().iso().optional().allow(null),
     date_of_care_plan: Joi.date().iso().optional().allow(null),
     person_completing_assessment: Joi.string().optional().max(1000).allow(null),
-    present_for_assessment: Joi.string().optional().max(2000).allow(null),
-    goals_for_assessment: Joi.string().optional().max(2000).allow(null),
-    functional_adls: Joi.string().optional().max(1000).allow(null),
-    functional_iadls: Joi.string().optional().max(1000).allow(null),
-    home_safety: Joi.string().optional().max(1000).allow(null),
-    memory_and_recommendations: Joi.string().optional().max(1000).allow(null),
-    geriatric_depression: Joi.string().optional().max(1000).allow(null),
-    nutritional_health: Joi.string().optional().max(1000).allow(null),
-    legal_and_financial: Joi.string().optional().max(1000).allow(null),
-    care_giver_support: Joi.string().optional().max(1000).allow(null),
+    present_for_assessment: Joi.string().optional().allow(null),
+    goals_for_assessment: Joi.string().optional().allow(null),
     next_step_care_recipient: Joi.string().optional().max(1000).allow(null),
     next_step_care_partner: Joi.string().optional().max(1000).allow(null),
   }),
@@ -28,5 +20,38 @@ exports.initial_care_plan_assessment_post = Joi.object({
       description: Joi.string().optional().max(500).allow(null),
       details: Joi.string().optional().max(3000).allow(null),
     })
-  ).optional().allow(null),
+  ).optional(),
+
+  // Category fields as separate objects
+  functional_adls: Joi.object({
+    summary: Joi.string().optional().allow(null),
+  }).optional(),
+
+  functional_iadls: Joi.object({
+    summary: Joi.string().optional().allow(null),
+  }).optional(),
+
+  home_safety: Joi.object({
+    summary: Joi.string().optional().allow(null),
+  }).optional(),
+
+  memory_and_recommendations: Joi.object({
+    summary: Joi.string().optional().allow(null),
+  }).optional(),
+
+  geriatric_depression: Joi.object({
+    summary: Joi.string().optional().allow(null),
+  }).optional(),
+
+  nutritional_health: Joi.object({
+    summary: Joi.string().optional().allow(null),
+  }).optional(),
+
+  legal_and_financial: Joi.object({
+    summary: Joi.string().optional().allow(null),
+  }).optional(),
+
+  care_giver_support: Joi.object({
+    summary: Joi.string().optional().allow(null),
+  }).optional(),
 });

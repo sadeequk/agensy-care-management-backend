@@ -138,3 +138,15 @@ exports.CHECKLIST_TYPES = {
   MOVE_IN: "move_in",
   NEXT_STEP_AFTER_DEATH: "next_step_after_death",
 }
+
+
+exports.CARE_PLAN_CATEGORIES = {
+  FUNCTIONAL_ADLS: "functional_adls",
+  FUNCTIONAL_IADLS: "functional_iadls",
+  HOME_SAFETY: "home_safety",
+  MEMORY_REASONING: "memory_reasoning",
+  GERIATRIC_DEPRESSION: "geriatric_depression",
+  NUTRITIONAL_HEALTH: "nutritional_health",
+  LEGAL_FINANCIAL: "legal_financial",
+  CARE_GIVER_SUPPORT: "care_giver_support",
+};

@@ -9,6 +9,7 @@ router.post("/face-sheet-short", agensyFormControllers.facesheetShortFormControl
 router.get("/face-sheet-long", agensyFormControllers.facesheetLongFormController.existing_details_get);
 router.post("/face-sheet-long", agensyFormControllers.facesheetLongFormController.face_sheet_log_post);
 
+router.get("/health-history", agensyFormControllers.healthHistoryFormController.existing_details_get);
 router.post("/health-history", agensyFormControllers.healthHistoryFormController.health_history_post);
 
 router.get("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.existing_details_get);

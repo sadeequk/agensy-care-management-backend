@@ -38,38 +38,7 @@ module.exports = (sequelize) =>
         type: DataTypes.TEXT,
         allowNull: true,
       },
-       functional_adls:{
-       type: DataTypes.STRING,
-        allowNull: true,
-     },
-       functional_iadls:{
-        type: DataTypes.STRING,
-        allowNull: true,
-     },
-     home_safety:{
-        type: DataTypes.STRING,
-        allowNull: true,
-     },
-     memory_and_recommendations:{
-        type: DataTypes.STRING,
-        allowNull: true,
-     },
-     geriatric_depression:{
-        type: DataTypes.STRING,
-        allowNull: true,
-     },
-     nutritional_health:{
-        type: DataTypes.STRING,
-        allowNull: true,
-     },
-     legal_and_financial:{
-        type: DataTypes.STRING,
-        allowNull: true,
-     },
-     care_giver_support:{
-        type: DataTypes.STRING,
-        allowNull: true,
-     },
+     
      next_step_care_recipient:{
         type: DataTypes.STRING,
         allowNull: true,

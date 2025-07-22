@@ -27,6 +27,7 @@ const Checklists = require("./check.lists.model")(sequelize);
 const EssentialDocument = require("./essential.document.model")(sequelize);
 const MedicalTemplate = require("./medical.template.model")(sequelize);
 const InitialCarePlanAssessment = require("./initial.care.plan.assessment.model")(sequelize);
+const CarePlanCategory = require("./care.plan.category.model")(sequelize);
 const FocusedRecommendations = require("./focused.recommendations.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
@@ -216,6 +217,15 @@ InitialCarePlanAssessment.belongsTo(Client, { foreignKey: 'client_id', as: 'clie
 //^ InitialCarePlanAssessment to User Relation (Many-To-One)
 InitialCarePlanAssessment.belongsTo(User, { foreignKey: 'primary_user_id', as: 'primaryUser' });
 
+
+
+//^ Client to CarePlanCategory Relation (One-To-Many)
+Client.hasMany(CarePlanCategory, { foreignKey: 'client_id', as: 'carePlanCategories', onDelete: 'CASCADE' });
+CarePlanCategory.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
+
+//^ CarePlanCategory to User Relation (Many-To-One)
+CarePlanCategory.belongsTo(User, { foreignKey: 'primary_user_id', as: 'primaryUser' });
+
 //^ Client to FocusedRecommendations Relation (One-To-Many)
 Client.hasMany(FocusedRecommendations, { foreignKey: 'client_id', as: 'focusedRecommendations', onDelete: 'CASCADE' });
 FocusedRecommendations.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
@@ -253,5 +263,6 @@ module.exports = {
   EssentialDocument,
   MedicalTemplate,
   InitialCarePlanAssessment,
+  CarePlanCategory,
   FocusedRecommendations,
 };
