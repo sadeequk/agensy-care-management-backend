@@ -30,6 +30,10 @@ router.post("/essential-documents", agensyFormControllers.essentialDocumentContr
 router.get("/caregiver-information-sheet", agensyFormControllers.caregiverInformationSheetController.existing_details_get);
 router.post("/caregiver-information-sheet", agensyFormControllers.caregiverInformationSheetController.caregiver_information_sheet_post);
 
+//^ MEDICAL ==> Medical Template
+router.get("/medical-template", agensyFormControllers.medicalTemplateController.existing_details_get);
+router.post("/medical-template", agensyFormControllers.medicalTemplateController.medical_template_post);
+
 
 
 module.exports = router;

@@ -119,6 +119,7 @@ exports.FORM_TYPES = {
   CARE_RECIPIENT_QUESTIONNAIRE: "care_recipient_questionnaire",
   ESSENTIAL_DOCUMENT: "essential_document",
   CAREGIVER_INFORMATION_SHEET: "caregiver_information_sheet",
+  MEDICAL_TEMPLATE: "medical_template",
   //checklists 
   START_OF_CARE: "start_of_care",
   CARE_PLAN: "care_plan",

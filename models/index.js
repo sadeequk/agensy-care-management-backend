@@ -25,6 +25,7 @@ const ClientFriendContact = require("./client.friend.contact.model")(sequelize);
 const ClientProfessionalContact = require("./client.professional.contact.model")(sequelize);
 const Checklists = require("./check.lists.model")(sequelize);
 const EssentialDocument = require("./essential.document.model")(sequelize);
+const MedicalTemplate = require("./medical.template.model")(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: "primary_user_id", as: "subUsers" }); //sub users for a parent user
@@ -199,6 +200,13 @@ EssentialDocument.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
 //^ EssentialDocument to User Relation (Many-To-One)
 EssentialDocument.belongsTo(User, { foreignKey: 'primary_user_id', as: 'primaryUser' });
 
+//^ Client to MedicalTemplate Relation (One-To-One)
+Client.hasOne(MedicalTemplate, { foreignKey: 'client_id', as: 'medicalTemplate', onDelete: 'CASCADE' });
+MedicalTemplate.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
+
+//^ MedicalTemplate to User Relation (Many-To-One)
+MedicalTemplate.belongsTo(User, { foreignKey: 'primary_user_id', as: 'primaryUser' });
+
 module.exports = {
   sequelize,
   User,
@@ -227,4 +235,5 @@ module.exports = {
   ClientProfessionalContact,
   Checklists,
   EssentialDocument,
+  MedicalTemplate,
 };

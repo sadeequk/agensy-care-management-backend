@@ -49,6 +49,33 @@ module.exports = (sequelize) =>
         type: DataTypes.DATEONLY,
         allowNull: true,
       },
+      
+      // Vitals
+      height: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      weight: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      blood_pressure: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      temperature: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      heart_rate: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      additional_vitals: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      
       recent_hospitalization: { type: DataTypes.BOOLEAN, allowNull: true },
       hospital_details: { type: DataTypes.STRING, allowNull: true },
       support_system_thoughts: { type: DataTypes.STRING, allowNull: true },
