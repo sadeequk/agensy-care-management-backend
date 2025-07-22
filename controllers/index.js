@@ -7,4 +7,5 @@ module.exports = {
   essentialDocumentController: require("./essential.document.controller"),
   caregiverInformationSheetController: require("./caregiver.information.sheet.controller"),
   medicalTemplateController: require("./medical.template.controller"),
+  initialCarePlanAssessmentController: require("./initial.care.plan.assessment.controller"),
 };
