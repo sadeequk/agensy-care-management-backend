@@ -8,4 +8,5 @@ module.exports = {
   caregiverInformationSheetController: require("./caregiver.information.sheet.controller"),
   medicalTemplateController: require("./medical.template.controller"),
   initialCarePlanAssessmentController: require("./initial.care.plan.assessment.controller"),
+  comprehensiveCarePlanAssessmentController: require("./comprehensive.care.plan.assessment.controller"),
 };

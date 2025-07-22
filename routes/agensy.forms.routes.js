@@ -28,6 +28,8 @@ router.post("/medical-template", agensyFormControllers.medicalTemplateController
 router.get("/initial-care-plan-assessment", agensyFormControllers.initialCarePlanAssessmentController.existing_details_get);
 router.post("/initial-care-plan-assessment", agensyFormControllers.initialCarePlanAssessmentController.initial_care_plan_assessment_post);
 
+// router.get("/comprehensive-care-plan-assessment", agensyFormControllers.comprehensiveCarePlanAssessmentController.existing_details_get);
+// router.post("/comprehensive-care-plan-assessment", agensyFormControllers.comprehensiveCarePlanAssessmentController.comprehensive_care_plan_assessment_post);
 
 //^CHECKLISTS
 router.get("/checklists/:formType", agensyFormControllers.checkListController.existing_details_get);

@@ -121,6 +121,7 @@ exports.FORM_TYPES = {
   CAREGIVER_INFORMATION_SHEET: "caregiver_information_sheet",
   MEDICAL_TEMPLATE: "medical_template",
   INITIAL_CARE_PLAN_ASSESSMENT: "initial_care_plan_assessment",
+  COMPREHENSIVE_CARE_PLAN_ASSESSMENT: "comprehensive_care_plan_assessment",
   //checklists 
   START_OF_CARE: "start_of_care",
   CARE_PLAN: "care_plan",
