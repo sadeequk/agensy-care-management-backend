@@ -37,22 +37,15 @@ exports.getExistingDetails = (clientId) =>
       });
       const medicationsData = medications || [];
 
-      const healthcareProviders = await HealthcareProvider.findOne({
+      const healthcareProviders = await HealthcareProvider.findAll({
         where: {
           client_id: clientId,
-          specialty_provider: true,
         },
         attributes: ["id", "provider_name", "address", "phone", "notes", "follow_up"],
+        order: [["created_at", "ASC"]],
       });
 
-      const healthcareProvidersData = healthcareProviders || {
-        id: null,
-        provider_name: null,
-        address: null,
-        phone: null,
-        follow_up: null,
-        notes: null,
-      };
+      const healthcareProvidersData = healthcareProviders || [];
 
       //* Home Health Agency
       const clientHomeHealthAgency = await ClientHomeHealthAgency.findOne({
@@ -156,26 +149,33 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
         result.medications = updatedMedications;
       }
 
-      //* Healthcare Providers
-      if (data.healthcare_providers) {
-        const existingProvider = await HealthcareProvider.findOne({
-          where: {
-            client_id: clientId,
-            specialty_provider: true,
-          },
-        });
+      //* Healthcare Providers - Handle multiple providers
+      if (data.healthcare_providers && Array.isArray(data.healthcare_providers)) {
+        const updatedHealthcareProviders = [];
 
-        if (existingProvider) {
-          await existingProvider.update(data.healthcare_providers);
-          result.healthcare_providers = existingProvider;
-        } else {
-          const newProvider = await HealthcareProvider.create({
-            ...data.healthcare_providers,
-            client_id: clientId,
-            specialty_provider: true,
-          });
-          result.healthcare_providers = newProvider;
+        for (const providerData of data.healthcare_providers) {
+          if (providerData.id) {
+            const existingProvider = await HealthcareProvider.findOne({
+              where: {
+                id: providerData.id,
+                client_id: clientId,
+              },
+            });
+
+            if (existingProvider) {
+              await existingProvider.update(providerData);
+              updatedHealthcareProviders.push(existingProvider);
+            }
+          } else {
+            const newProvider = await HealthcareProvider.create({
+              ...providerData,
+              client_id: clientId,
+            });
+            updatedHealthcareProviders.push(newProvider);
+          }
         }
+
+        result.healthcare_providers = updatedHealthcareProviders;
       }
 
       //* Home Health Agency
@@ -215,8 +215,6 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
           result.health_history = newHealthHistory;
         }
       }
-
-  
 
       //* Resolve with updated details
       const allDetails = await this.getExistingDetails(clientId);

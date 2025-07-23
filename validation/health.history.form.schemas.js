@@ -17,14 +17,16 @@ exports.health_history_post = Joi.object({
     })
   ),
   
-  healthcare_providers: Joi.object({
-    id: Joi.string().uuid().optional(),
-    provider_name: Joi.string().optional().allow(null),
-    address: Joi.string().optional().allow(null),
-    phone: Joi.string().optional().allow(null),
-    notes: Joi.string().optional().allow(null),
-    follow_up: Joi.string().optional().allow(null),
-  }),
+  healthcare_providers: Joi.array().items(
+    Joi.object({
+      id: Joi.string().uuid().optional(),
+      provider_name: Joi.string().optional().allow(null),
+      address: Joi.string().optional().allow(null),
+      phone: Joi.string().optional().allow(null),
+      notes: Joi.string().optional().allow(null),
+      follow_up: Joi.string().optional().allow(null),
+    })
+  ),
   
   home_health_agency: Joi.object({
     id: Joi.string().uuid().optional(),
