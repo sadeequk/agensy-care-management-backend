@@ -5,5 +5,4 @@ const { upload } = require('../helpers/aws.textract');
 
 router.post("/scan", upload, documentScanningController.scan_document_post);
 
-
-module.exports = router; 
+module.exports = router;               

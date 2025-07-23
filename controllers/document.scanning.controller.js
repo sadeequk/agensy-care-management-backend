@@ -1,29 +1,17 @@
-const documentScanningService = require("../services/document.scanning.service");
+const scanningService = require('../services/document.scanning.service');
 
-module.exports.scan_document_post = async function scan_document_post(req, res) {
+exports.scan_document_post = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.fail('No document file uploaded');
-    }
-
-    console.log(`Processing uploaded file: ${req.file.originalname} (${req.file.size} bytes)`);
-
-    const result = await documentScanningService.scanDocument(req.file.buffer);
+    if (!req.file) return res.fail('No document uploaded');
+    console.log('Uploaded mimetype:', req.file.mimetype);
+    const result = await scanningService.scanDocument(req.file.buffer, req.file.mimetype);
 
     return res.success({
-      text: result.text,
       keyValuePairs: result.keyValuePairs,
+      fullText: result.text
     });
-  } catch (error) {
-    console.error('Document scanning controller error:', error);
-    
-    // if (error.code === 'LIMIT_FILE_SIZE') {
-    //   return res.fail('File too large. Maximum size is 20MB');
-    // }
-    // if (error.message && error.message.includes('Invalid file type')) {
-    //   return res.fail(error.message);
-    // }
-    
-    return res.serverError(error.message);
+  } catch (err) {
+    console.error('Scan error:', err);
+    return res.serverError(err.message);
   }
 };
