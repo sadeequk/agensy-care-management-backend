@@ -21,6 +21,7 @@ exports.care_recipient_questionnaire_post = Joi.object({
     date_of_divorce_or_widowhood: Joi.date().iso().optional().allow(null),
     loss_impact_description: Joi.string().max(1000).optional().allow(null),
     dnr: Joi.string().max(255).optional().allow(null),
+    preferred_hospital: Joi.string().optional().allow(null),
     trust: Joi.string().max(255).optional().allow(null),
     lifecare: Joi.string().max(255).optional().allow(null),
     will: Joi.string().max(255).optional().allow(null),

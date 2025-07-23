@@ -48,6 +48,7 @@ exports.getExistingDetails = (clientId, userId) =>
           "email",  
           "cultural_background",
           "education",
+          "preferred_hospital",
           "religion",
           "active_religion_location",
           "marital_status",
