@@ -24,7 +24,7 @@ module.exports = (sequelize) =>
       },
       date_of_birth: {
         type: DataTypes.DATEONLY,
-        allowNull: false,
+        allowNull: true,
       },
       birth_place: {
         type: DataTypes.STRING(100),

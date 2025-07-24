@@ -7,17 +7,17 @@ exports.client_post = Joi.object({
   date_of_birth: Joi.date().iso().optional().allow(null),
   gender: Joi.string()
     .optional()
-    .valid(...Object.values(GENDER_TYPES)),
+    .valid(...Object.values(GENDER_TYPES)).allow(null),
   marital_status: Joi.string()
     .optional()
-    .valid(...Object.values(MARITAL_STATUS)),
+    .valid(...Object.values(MARITAL_STATUS)).allow(null),
   address: Joi.string().optional().max(200).allow(null),
   city: Joi.string().optional().max(100).allow(null),
   state: Joi.string().optional().max(50).allow(null),
   zip: Joi.string().optional().max(20).allow(null),
   living_situation: Joi.string()
     .optional()
-    .valid(...Object.values(LIVING_SITUATION)),
+    .valid(...Object.values(LIVING_SITUATION)).allow(null),
   preferred_hospital: Joi.string().max(200).optional().allow(null),
   hospital_address: Joi.string().max(200).optional().allow(null),
   hospital_phone: Joi.string().max(20).optional().allow(null),
