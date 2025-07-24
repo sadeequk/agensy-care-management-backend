@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const agensyFormControllers = require("../controllers/index");
 
-
 router.get("/face-sheet-short", agensyFormControllers.facesheetShortFormController.existing_details_get);
 router.post("/face-sheet-short", agensyFormControllers.facesheetShortFormController.face_sheet_short_post);
 
@@ -14,7 +13,6 @@ router.post("/health-history", agensyFormControllers.healthHistoryFormController
 
 router.get("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.existing_details_get);
 router.post("/care-recipient-questionnaire", agensyFormControllers.careRecipientQuestionnaireController.care_recipient_questionnaire_post);
-
 
 router.get("/essential-documents", agensyFormControllers.essentialDocumentController.existing_details_get);
 router.post("/essential-documents", agensyFormControllers.essentialDocumentController.essential_document_post);
@@ -28,8 +26,11 @@ router.post("/medical-template", agensyFormControllers.medicalTemplateController
 router.get("/initial-care-plan-assessment", agensyFormControllers.initialCarePlanAssessmentController.existing_details_get);
 router.post("/initial-care-plan-assessment", agensyFormControllers.initialCarePlanAssessmentController.initial_care_plan_assessment_post);
 
-// router.get("/comprehensive-care-plan-assessment", agensyFormControllers.comprehensiveCarePlanAssessmentController.existing_details_get);
-// router.post("/comprehensive-care-plan-assessment", agensyFormControllers.comprehensiveCarePlanAssessmentController.comprehensive_care_plan_assessment_post);
+router.get("/comprehensive-care-plan-assessment", agensyFormControllers.comprehensiveCarePlanAssessmentController.existing_details_get);
+router.post(
+  "/comprehensive-care-plan-assessment",
+  agensyFormControllers.comprehensiveCarePlanAssessmentController.comprehensive_care_plan_assessment_post
+);
 
 //^CHECKLISTS
 router.get("/checklists/:formType", agensyFormControllers.checkListController.existing_details_get);

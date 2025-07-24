@@ -5,21 +5,21 @@ const {
   FormsHistory,
   CarePlanCategory,
 } = require("../models");
-const { FORM_TYPES , CARE_PLAN_CATEGORIES} = require("../constants");
+const { FORM_TYPES, CARE_PLAN_CATEGORIES } = require("../constants");
 
 exports.getExistingDetails = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
       const lastUpdate = await FormsHistory.findOne({
-        where: { 
-          client_id: clientId, 
-          form_type: FORM_TYPES.INITIAL_CARE_PLAN_ASSESSMENT 
+        where: {
+          client_id: clientId,
+          form_type: FORM_TYPES.INITIAL_CARE_PLAN_ASSESSMENT,
         },
         order: [["created_at", "DESC"]],
       });
 
       //client info
-    const clientInfo = await Client.findOne({
+      const clientInfo = await Client.findOne({
         where: { id: clientId },
         attributes: ["id", "first_name", "last_name", "date_of_birth"],
       });
@@ -30,27 +30,33 @@ exports.getExistingDetails = (clientId) =>
         date_of_birth: null,
       };
 
-        //* Focused Recommendations
-    const focusedRecommendations = await FocusedRecommendations.findAll({
-        where: { 
-         client_id: clientId,
+      //* Focused Recommendations
+      const focusedRecommendations = await FocusedRecommendations.findAll({
+        where: {
+          client_id: clientId,
         },
         attributes: ["id", "option_number", "name", "description", "details"],
         order: [["option_number", "ASC"]],
-        });
+      });
 
-    const focusedRecommendationsData = focusedRecommendations || [];
-
+      const focusedRecommendationsData = focusedRecommendations || [];
 
       //* Initial Care Plan Assessment
-      const initialCarePlanAssessment = await InitialCarePlanAssessment.findOne({
-        where: { client_id: clientId },
-        attributes: [
-          "id", "date_of_assessment", "date_of_care_plan",
-          "person_completing_assessment", "present_for_assessment", "goals_for_assessment",
-          "next_step_care_recipient", "next_step_care_partner"
-        ],
-      });
+      const initialCarePlanAssessment = await InitialCarePlanAssessment.findOne(
+        {
+          where: { client_id: clientId },
+          attributes: [
+            "id",
+            "date_of_assessment",
+            "date_of_care_plan",
+            "person_completing_assessment",
+            "present_for_assessment",
+            "goals_for_assessment",
+            "next_step_care_recipient",
+            "next_step_care_partner",
+          ],
+        }
+      );
 
       const initialCarePlanAssessmentData = initialCarePlanAssessment || {
         id: null,
@@ -63,11 +69,13 @@ exports.getExistingDetails = (clientId) =>
         next_step_care_partner: null,
       };
 
-
       //* Functional ADLS
       const functional_adls = await CarePlanCategory.findOne({
-        where: { client_id: clientId, category_name: CARE_PLAN_CATEGORIES.FUNCTIONAL_ADLS },
-        attributes: [ "category_name","summary"],
+        where: {
+          client_id: clientId,
+          category_name: CARE_PLAN_CATEGORIES.FUNCTIONAL_ADLS,
+        },
+        attributes: ["category_name", "summary"],
       });
 
       const functional_adls_data = functional_adls || {
@@ -77,9 +85,12 @@ exports.getExistingDetails = (clientId) =>
       };
 
       //* Functional IADLS
-      const functional_iadls= await CarePlanCategory.findOne({
-        where: { client_id: clientId, category_name: CARE_PLAN_CATEGORIES.FUNCTIONAL_IADLS },
-        attributes: [ "category_name","summary"],    
+      const functional_iadls = await CarePlanCategory.findOne({
+        where: {
+          client_id: clientId,
+          category_name: CARE_PLAN_CATEGORIES.FUNCTIONAL_IADLS,
+        },
+        attributes: ["category_name", "summary"],
       });
       const functional_iadls_data = functional_iadls || {
         id: null,
@@ -87,13 +98,16 @@ exports.getExistingDetails = (clientId) =>
         summary: null,
       };
 
-      //* Home Safety       
+      //* Home Safety
       const home_safety = await CarePlanCategory.findOne({
-        where: { client_id: clientId, category_name: CARE_PLAN_CATEGORIES.HOME_SAFETY },
-        attributes: [ "category_name","summary"],
+        where: {
+          client_id: clientId,
+          category_name: CARE_PLAN_CATEGORIES.HOME_SAFETY,
+        },
+        attributes: ["category_name", "summary"],
       });
 
-      const home_safety_data = home_safety || { 
+      const home_safety_data = home_safety || {
         id: null,
         category_name: CARE_PLAN_CATEGORIES.HOME_SAFETY,
         summary: null,
@@ -101,8 +115,11 @@ exports.getExistingDetails = (clientId) =>
 
       //* Memory & Reasoning
       const memory_and_recommendations = await CarePlanCategory.findOne({
-        where: { client_id: clientId, category_name: CARE_PLAN_CATEGORIES.MEMORY_REASONING },
-        attributes: ["category_name","summary"],
+        where: {
+          client_id: clientId,
+          category_name: CARE_PLAN_CATEGORIES.MEMORY_REASONING,
+        },
+        attributes: ["category_name", "summary"],
       });
       const memory_and_recommendations_data = memory_and_recommendations || {
         id: null,
@@ -112,8 +129,11 @@ exports.getExistingDetails = (clientId) =>
 
       //* Geriatric Depression
       const geriatric_depression = await CarePlanCategory.findOne({
-        where: { client_id: clientId, category_name: CARE_PLAN_CATEGORIES.GERIATRIC_DEPRESSION },
-        attributes: [ "category_name","summary"],
+        where: {
+          client_id: clientId,
+          category_name: CARE_PLAN_CATEGORIES.GERIATRIC_DEPRESSION,
+        },
+        attributes: ["category_name", "summary"],
       });
       const geriatric_depression_data = geriatric_depression || {
         id: null,
@@ -123,8 +143,11 @@ exports.getExistingDetails = (clientId) =>
 
       //* Nutritional Health
       const nutritional_health = await CarePlanCategory.findOne({
-        where: { client_id: clientId, category_name: CARE_PLAN_CATEGORIES.NUTRITIONAL_HEALTH },
-        attributes: ["category_name","summary"],
+        where: {
+          client_id: clientId,
+          category_name: CARE_PLAN_CATEGORIES.NUTRITIONAL_HEALTH,
+        },
+        attributes: ["category_name", "summary"],
       });
       const nutritional_health_data = nutritional_health || {
         id: null,
@@ -134,8 +157,11 @@ exports.getExistingDetails = (clientId) =>
 
       //* Legal & Financial
       const legal_and_financial = await CarePlanCategory.findOne({
-        where: { client_id: clientId, category_name: CARE_PLAN_CATEGORIES.LEGAL_FINANCIAL },
-        attributes: ["category_name","summary"],
+        where: {
+          client_id: clientId,
+          category_name: CARE_PLAN_CATEGORIES.LEGAL_FINANCIAL,
+        },
+        attributes: ["category_name", "summary"],
       });
       const legal_and_financial_data = legal_and_financial || {
         id: null,
@@ -145,10 +171,13 @@ exports.getExistingDetails = (clientId) =>
 
       //* Care Giver Support
       const care_giver_support = await CarePlanCategory.findOne({
-        where: { client_id: clientId, category_name: CARE_PLAN_CATEGORIES.CARE_GIVER_SUPPORT },
-        attributes: [ "category_name","summary"],
+        where: {
+          client_id: clientId,
+          category_name: CARE_PLAN_CATEGORIES.CARE_GIVER_SUPPORT,
+        },
+        attributes: ["category_name", "summary"],
       });
-      
+
       const care_giver_support_data = care_giver_support || {
         id: null,
         category_name: CARE_PLAN_CATEGORIES.CARE_GIVER_SUPPORT,
@@ -201,17 +230,22 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
       }
 
       //* Focused Recommendations
-      if (data.focused_recommendations && Array.isArray(data.focused_recommendations)) {
+      if (
+        data.focused_recommendations &&
+        Array.isArray(data.focused_recommendations)
+      ) {
         const updatedRecommendations = [];
 
         for (const recommendationData of data.focused_recommendations) {
           if (recommendationData.id) {
-            const existingRecommendation = await FocusedRecommendations.findOne({
-              where: {
-                id: recommendationData.id,
-                client_id: clientId,
-              },
-            });
+            const existingRecommendation = await FocusedRecommendations.findOne(
+              {
+                where: {
+                  id: recommendationData.id,
+                  client_id: clientId,
+                },
+              }
+            );
 
             if (existingRecommendation) {
               await existingRecommendation.update(recommendationData);
@@ -230,25 +264,45 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
         result.focused_recommendations = updatedRecommendations;
       }
 
-
       //* Care Plan Categories
       const categories = [
-        { field: 'functional_adls', name: CARE_PLAN_CATEGORIES.FUNCTIONAL_ADLS },
-        { field: 'functional_iadls', name: CARE_PLAN_CATEGORIES.FUNCTIONAL_IADLS },
-        { field: 'home_safety', name: CARE_PLAN_CATEGORIES.HOME_SAFETY },
-        { field: 'memory_and_recommendations', name: CARE_PLAN_CATEGORIES.MEMORY_REASONING },
-        { field: 'geriatric_depression', name: CARE_PLAN_CATEGORIES.GERIATRIC_DEPRESSION },
-        { field: 'nutritional_health', name: CARE_PLAN_CATEGORIES.NUTRITIONAL_HEALTH },
-        { field: 'legal_and_financial', name: CARE_PLAN_CATEGORIES.LEGAL_FINANCIAL },
-        { field: 'care_giver_support', name: CARE_PLAN_CATEGORIES.CARE_GIVER_SUPPORT }
+        {
+          field: "functional_adls",
+          name: CARE_PLAN_CATEGORIES.FUNCTIONAL_ADLS,
+        },
+        {
+          field: "functional_iadls",
+          name: CARE_PLAN_CATEGORIES.FUNCTIONAL_IADLS,
+        },
+        { field: "home_safety", name: CARE_PLAN_CATEGORIES.HOME_SAFETY },
+        {
+          field: "memory_and_recommendations",
+          name: CARE_PLAN_CATEGORIES.MEMORY_REASONING,
+        },
+        {
+          field: "geriatric_depression",
+          name: CARE_PLAN_CATEGORIES.GERIATRIC_DEPRESSION,
+        },
+        {
+          field: "nutritional_health",
+          name: CARE_PLAN_CATEGORIES.NUTRITIONAL_HEALTH,
+        },
+        {
+          field: "legal_and_financial",
+          name: CARE_PLAN_CATEGORIES.LEGAL_FINANCIAL,
+        },
+        {
+          field: "care_giver_support",
+          name: CARE_PLAN_CATEGORIES.CARE_GIVER_SUPPORT,
+        },
       ];
 
-        for (const category of categories) {
+      for (const category of categories) {
         if (data[category.field]) {
           const existing = await CarePlanCategory.findOne({
-            where: { client_id: clientId, category_name: category.name }
+            where: { client_id: clientId, category_name: category.name },
           });
-          
+
           if (existing) {
             await existing.update({ summary: data[category.field].summary });
             result[category.field] = existing;
@@ -268,7 +322,10 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
       const allDetails = await this.getExistingDetails(clientId);
       resolve(allDetails);
     } catch (error) {
-      console.error("InitialCarePlanAssessmentService [saveOrUpdateDetails] Error:", error);
+      console.error(
+        "InitialCarePlanAssessmentService [saveOrUpdateDetails] Error:",
+        error
+      );
       reject(error);
     }
-  }); 
+  });

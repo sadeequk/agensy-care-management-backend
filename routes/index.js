@@ -15,11 +15,7 @@ router.use("/clients", verifyCognitoToken, require("./client.routes"));
 router.use("/client/:clientId/contacts", verifyCognitoToken, require("./client.contact.routes"));
 router.use("/client/:clientId/notes", verifyCognitoToken, require("./note.routes"));
 router.use("/client/:clientId/medications", verifyCognitoToken, require("./client.medication.routes"));
-router.use(
-  "/client/:clientId/healthcare-providers",
-  verifyCognitoToken,
-  require("./client.healthcare.provider.routes")
-);
+router.use("/client/:clientId/healthcare-providers", verifyCognitoToken, require("./client.healthcare.provider.routes"));
 router.use("/client/:clientId/medical", verifyCognitoToken, require("./client.medical.routes")); //singular
 router.use("/client/:clientId/documents", verifyCognitoToken, require("./client.document.routes"));
 router.use("/client/:clientId/users", verifyCognitoToken, require("./client.users.routes"));
@@ -29,6 +25,6 @@ router.use("/general-documents", verifyCognitoToken, require("./general.document
 router.use("/threads", verifyCognitoToken, require("./thread.routes"));
 router.use("/subscription", require("./subscription.routes"));
 router.use("/client/:clientId/agensy-forms", verifyCognitoToken, require("./agensy.forms.routes"));
-router.use("/documents", require("./document.scanning.route"));// universal document scanning 
+router.use("/documents", require("./document.scanning.route")); // universal document scanning
 
 module.exports = router;

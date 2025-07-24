@@ -25,11 +25,10 @@ exports.checklist_post = async (req, res) => {
     const primaryUserId = req.user.role == USER_ROLES.PRIMARY_USER ? req.user.id : req.user.primary_user_id;
     const record = await checkListService.saveOrUpdateDetails(clientId, primaryUserId, validatedFormType, data);
 
-
-    await formHistoryService.recordFormUpdate(clientId, userId, primaryUserId, validatedFormType);//here the form type is basiclly the CHECKLIST_TYPE
+    await formHistoryService.recordFormUpdate(clientId, userId, primaryUserId, validatedFormType); //here the form type is basiclly the CHECKLIST_TYPE
     return res.success(record);
   } catch (error) {
     console.error("StartOfCareChecklistController [start_of_care_checklist_post] Error:", error);
     return res.serverError(error);
   }
-}; 
+};
