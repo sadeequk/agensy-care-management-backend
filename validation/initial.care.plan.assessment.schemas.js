@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi');
 
 exports.initial_care_plan_assessment_post = Joi.object({
   initial_care_plan_assessment: Joi.object({
@@ -20,38 +20,37 @@ exports.initial_care_plan_assessment_post = Joi.object({
       description: Joi.string().optional().max(500).allow(null),
       details: Joi.string().optional().max(3000).allow(null),
     })
-  ).optional(),
+  ),
 
-  // Category fields as separate objects
   functional_adls: Joi.object({
     summary: Joi.string().optional().allow(null),
-  }).optional(),
+  }),
 
   functional_iadls: Joi.object({
     summary: Joi.string().optional().allow(null),
-  }).optional(),
+  }),
 
   home_safety: Joi.object({
     summary: Joi.string().optional().allow(null),
-  }).optional(),
+  }),
 
   memory_and_recommendations: Joi.object({
     summary: Joi.string().optional().allow(null),
-  }).optional(),
+  }),
 
   geriatric_depression: Joi.object({
     summary: Joi.string().optional().allow(null),
-  }).optional(),
+  }),
 
   nutritional_health: Joi.object({
     summary: Joi.string().optional().allow(null),
-  }).optional(),
+  }),
 
   legal_and_financial: Joi.object({
     summary: Joi.string().optional().allow(null),
-  }).optional(),
+  }),
 
   care_giver_support: Joi.object({
     summary: Joi.string().optional().allow(null),
-  }).optional(),
+  }),
 });

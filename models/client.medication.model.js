@@ -1,8 +1,8 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) =>
   sequelize.define(
-    "ClientMedication",
+    'ClientMedication',
     {
       id: {
         type: DataTypes.UUID,
@@ -33,6 +33,10 @@ module.exports = (sequelize) =>
         type: DataTypes.STRING(255),
         allowNull: true,
       },
+      indication: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
       start_date: {
         type: DataTypes.DATEONLY,
         allowNull: true,
@@ -55,7 +59,7 @@ module.exports = (sequelize) =>
       },
     },
     {
-      tableName: "client_medications",
+      tableName: 'client_medications',
       timestamps: true,
       underscored: true,
     }
