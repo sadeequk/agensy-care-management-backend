@@ -30,6 +30,7 @@ const InitialCarePlanAssessment = require('./initial.care.plan.assessment.model'
 const CarePlanCategory = require('./care.plan.category.model')(sequelize);
 const FocusedRecommendations = require('./focused.recommendations.model')(sequelize);
 const ComprehensiveCarePlanAssessment = require('./comprehensive.care.plan.assessment.model')(sequelize);
+const CaregiverInformationSheet = require('./caregiver.information.sheet.model')(sequelize);
 
 //^ User to User Relation (One-To-Many)
 User.hasMany(User, { foreignKey: 'primary_user_id', as: 'subUsers' }); //sub users for a parent user
@@ -183,7 +184,7 @@ ClientInsurance.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
 Client.hasMany(ClientRelatives, { foreignKey: 'client_id', as: 'relatives', onDelete: 'CASCADE' });
 ClientRelatives.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
 
-// //^ Client to ClientProfessionalContact Relation (One-To-Many)
+// //^ Client to ClientProfessionalContact Relation (One-To-Many
 Client.hasMany(ClientProfessionalContact, { foreignKey: 'client_id', as: 'professionalContacts', onDelete: 'CASCADE' });
 ClientProfessionalContact.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
 
@@ -237,6 +238,13 @@ ComprehensiveCarePlanAssessment.belongsTo(Client, { foreignKey: 'client_id', as:
 //^ ComprehensiveCarePlanAssessment to User Relation (Many-To-One)
 ComprehensiveCarePlanAssessment.belongsTo(User, { foreignKey: 'primary_user_id', as: 'primaryUser' });
 
+//^ Client to CaregiverInformationSheet Relation (One-To-One)
+Client.hasOne(CaregiverInformationSheet, { foreignKey: 'client_id', as: 'caregiverInformationSheet', onDelete: 'CASCADE' });
+CaregiverInformationSheet.belongsTo(Client, { foreignKey: 'client_id', as: 'client' });
+
+//^ CaregiverInformationSheet to User Relation (Many-To-One)
+CaregiverInformationSheet.belongsTo(User, { foreignKey: 'primary_user_id', as: 'primaryUser' });
+
 module.exports = {
   sequelize,
   User,
@@ -270,4 +278,5 @@ module.exports = {
   ComprehensiveCarePlanAssessment,
   CarePlanCategory,
   FocusedRecommendations,
+  CaregiverInformationSheet,
 };

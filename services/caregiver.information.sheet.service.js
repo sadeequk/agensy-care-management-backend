@@ -1,30 +1,27 @@
-const {
-  CaregiverInformationSheet,
-  FormsHistory,
-  User,
-} = require("../models");
-const { FORM_TYPES } = require("../constants");
+const { CaregiverInformationSheet, FormsHistory } = require('../models');
+const { FORM_TYPES } = require('../constants');
 
 exports.getExistingDetails = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
       const lastUpdate = await FormsHistory.findOne({
-        where: { 
-          client_id: clientId, 
-          form_type: FORM_TYPES.CAREGIVER_INFORMATION_SHEET 
+        where: {
+          client_id: clientId,
+          form_type: FORM_TYPES.CAREGIVER_INFORMATION_SHEET,
         },
 
-        order: [["created_at", "DESC"]],
+        order: [['created_at', 'DESC']],
       });
 
       const existingForm = await CaregiverInformationSheet.findOne({
         where: { client_id: clientId },
-        order: [["created_at", "DESC"]],
+        order: [['created_at', 'DESC']],
       });
+      const existingFormData = existingForm || null;
 
       resolve({
         last_update: lastUpdate,
-        form_data: existingForm || null,
+        form_data: existingFormData,
       });
     } catch (error) {
       reject(error);
@@ -55,4 +52,4 @@ exports.saveOrUpdateDetails = (clientId, primaryUserId, data) =>
     } catch (error) {
       reject(error);
     }
-  }); 
+  });
