@@ -1,14 +1,12 @@
 const Joi = require('joi');
 
-exports.medical_template_get = Joi.object({
+exports.medical_template_post = Joi.object({
   client_info: Joi.object({
     id: Joi.string().uuid().optional(),
     first_name: Joi.string().optional().max(255).allow(null),
     last_name: Joi.string().optional().max(255).allow(null),
     date_of_birth: Joi.date().iso().optional().allow(null),
   }),
-});
-exports.medical_template_post = Joi.object({
   medical_info: Joi.object({
     id: Joi.string().uuid().optional(),
     diagnoses: Joi.string().optional().max(500).allow(null),
