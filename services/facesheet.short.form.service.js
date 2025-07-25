@@ -2,6 +2,17 @@ const { CONTACT_TYPES } = require('../constants');
 const { FaceSheetShortForm, Client, ClientMedical, ClientContact, ClientMedication, HealthcareProvider, FormsHistory, User } = require('../models');
 const { FORM_TYPES } = require('../constants');
 
+// Helper function to check if all emergency contact fields are null/empty
+const isEmergencyContactEmpty = (emergencyContact) => {
+  if (!emergencyContact) return true;
+
+  const fields = ['first_name', 'last_name', 'relationship', 'phone', 'email', 'address'];
+  return fields.every((field) => {
+    const value = emergencyContact[field];
+    return value === null || value === undefined || value === '';
+  });
+};
+
 exports.getExistingDetails = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -190,7 +201,8 @@ exports.updateFaceSheetShortForm = (clientId, data) =>
       }
 
       //* Emergency Contact
-      if (data.emergency_contact) {
+      // if (data.emergency_contact) {
+      if (data.emergency_contact && !isEmergencyContactEmpty(data.emergency_contact)) {
         const existingContact = await ClientContact.findOne({
           where: {
             client_id: clientId,
