@@ -205,7 +205,7 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
           }
         }
 
-        result.healthcare_providers = updatedProviders;
+        result.healthcare_providers = updatedHealthcareProviders;
       }
 
       //* Medical Template
