@@ -1,5 +1,5 @@
-const Joi = require("joi");
-const { VACCINATION_TYPES, LIVING_SITUATION } = require("../constants");
+const Joi = require('joi');
+const { VACCINATION_TYPES, LIVING_SITUATION } = require('../constants');
 
 exports.facesheet_put = Joi.object({
   client_info: Joi.object({
@@ -25,7 +25,8 @@ exports.facesheet_put = Joi.object({
     marital_status: Joi.string().max(50).optional().allow(null),
     living_situation: Joi.string()
       .optional()
-      .valid(...Object.values(LIVING_SITUATION)).allow(null),
+      .valid(...Object.values(LIVING_SITUATION))
+      .allow(null),
   }),
   emergency_contact: Joi.object({
     first_name: Joi.string().optional().min(2).max(100).allow(null),
@@ -40,6 +41,7 @@ exports.facesheet_put = Joi.object({
       id: Joi.string().uuid().optional(),
       medication_name: Joi.string().optional().min(2).max(255).allow(null),
       dosage: Joi.string().optional().max(100).allow(null),
+      frequency: Joi.string().optional().max(100).allow(null),
       purpose: Joi.string().max(255).optional().allow(null),
       start_date: Joi.date().iso().optional().allow(null),
       end_date: Joi.date().iso().optional().allow(null),
@@ -73,7 +75,8 @@ exports.facesheet_put = Joi.object({
       id: Joi.string().uuid().optional(),
       name: Joi.string()
         .optional()
-        .valid(...Object.values(VACCINATION_TYPES)).allow(null),
+        .valid(...Object.values(VACCINATION_TYPES))
+        .allow(null),
       date: Joi.date().iso().optional().allow(null),
       next_vaccine: Joi.string().max(255).optional().allow(null),
     })

@@ -1,22 +1,23 @@
-const Joi = require("joi");
+const Joi = require('joi');
 
 exports.health_history_post = Joi.object({
   medical_info: Joi.object({
     id: Joi.string().uuid().optional(),
     diagnoses: Joi.string().optional().allow(null),
   }),
-  
+
   medications: Joi.array().items(
     Joi.object({
       id: Joi.string().uuid().optional(),
       medication_name: Joi.string().required(),
       dosage: Joi.string().optional().allow(null),
+      frequency: Joi.string().optional().allow(null),
       prescribing_doctor: Joi.string().optional().allow(null),
       start_date: Joi.date().iso().optional().allow(null),
       end_date: Joi.date().iso().optional().allow(null),
     })
   ),
-  
+
   healthcare_providers: Joi.array().items(
     Joi.object({
       id: Joi.string().uuid().optional(),
@@ -27,7 +28,7 @@ exports.health_history_post = Joi.object({
       follow_up: Joi.string().optional().allow(null),
     })
   ),
-  
+
   home_health_agency: Joi.object({
     id: Joi.string().uuid().optional(),
     name: Joi.string().optional().allow(null),
@@ -38,7 +39,7 @@ exports.health_history_post = Joi.object({
     start_date: Joi.date().iso().optional().allow(null),
     discharge_date: Joi.date().iso().optional().allow(null),
   }),
-  
+
   health_history: Joi.object({
     id: Joi.string().uuid().optional(),
     date: Joi.date().iso().optional().allow(null),
@@ -51,4 +52,4 @@ exports.health_history_post = Joi.object({
     what_worked: Joi.string().optional().allow(null),
     notes: Joi.string().optional().allow(null),
   }),
-}); 
+});

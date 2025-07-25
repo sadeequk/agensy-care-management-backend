@@ -1,29 +1,21 @@
-const {
-  ClientMedical,
-  ClientMedication,
-  HealthcareProvider,
-  ClientHomeHealthAgency,
-  HealthHistoryForm,
-  FormsHistory,
-} = require("../models");
-const {FORM_TYPES } = require("../constants");
-
+const { ClientMedical, ClientMedication, HealthcareProvider, ClientHomeHealthAgency, HealthHistoryForm, FormsHistory } = require('../models');
+const { FORM_TYPES } = require('../constants');
 
 exports.getExistingDetails = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
       const lastUpdate = await FormsHistory.findOne({
-        where: { 
-          client_id: clientId, 
-          form_type: FORM_TYPES.HEALTH_HISTORY 
+        where: {
+          client_id: clientId,
+          form_type: FORM_TYPES.HEALTH_HISTORY,
         },
-        order: [["created_at", "DESC"]],
+        order: [['created_at', 'DESC']],
       });
 
       //* Medical Info
       const medicalInfo = await ClientMedical.findOne({
         where: { client_id: clientId },
-        attributes: ["id", "diagnoses"],
+        attributes: ['id', 'diagnoses'],
       });
       const medicalInfoData = medicalInfo || {
         id: null,
@@ -33,7 +25,7 @@ exports.getExistingDetails = (clientId) =>
       //* Medications
       const medications = await ClientMedication.findAll({
         where: { client_id: clientId },
-        attributes: ["id", "medication_name", "dosage", "prescribing_doctor", "start_date", "end_date"],
+        attributes: ['id', 'medication_name', 'frequency', 'dosage', 'prescribing_doctor', 'start_date', 'end_date'],
       });
       const medicationsData = medications || [];
 
@@ -41,8 +33,8 @@ exports.getExistingDetails = (clientId) =>
         where: {
           client_id: clientId,
         },
-        attributes: ["id", "provider_name", "address", "phone", "notes", "follow_up"],
-        order: [["created_at", "ASC"]],
+        attributes: ['id', 'provider_name', 'address', 'phone', 'notes', 'follow_up'],
+        order: [['created_at', 'ASC']],
       });
 
       const healthcareProvidersData = healthcareProviders || [];
@@ -50,7 +42,7 @@ exports.getExistingDetails = (clientId) =>
       //* Home Health Agency
       const clientHomeHealthAgency = await ClientHomeHealthAgency.findOne({
         where: { client_id: clientId },
-        attributes: ["id", "name", "phone", "address", "fax", "service_received", "start_date", "discharge_date"],
+        attributes: ['id', 'name', 'phone', 'address', 'fax', 'service_received', 'start_date', 'discharge_date'],
       });
 
       const clientHomeHealthAgencyData = clientHomeHealthAgency || {
@@ -66,7 +58,18 @@ exports.getExistingDetails = (clientId) =>
 
       const healthHistory = await HealthHistoryForm.findOne({
         where: { client_id: clientId },
-        attributes: ["id", "what_worked", "date", "notes", "description_of_health_concern", "admitting_diagnosis", "treatment", "onset_of_symptoms", "frequency_of_symptoms", "severity_of_symptoms"],
+        attributes: [
+          'id',
+          'what_worked',
+          'date',
+          'notes',
+          'description_of_health_concern',
+          'admitting_diagnosis',
+          'treatment',
+          'onset_of_symptoms',
+          'frequency_of_symptoms',
+          'severity_of_symptoms',
+        ],
       });
       const healthHistoryData = healthHistory || {
         id: null,
@@ -92,7 +95,7 @@ exports.getExistingDetails = (clientId) =>
 
       resolve(generalDetails);
     } catch (error) {
-      console.error("FaceSheetShortFormService [getGeneralDetails] Error:", error);
+      console.error('FaceSheetShortFormService [getGeneralDetails] Error:', error);
       reject(error);
     }
   });
@@ -220,7 +223,7 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
       const allDetails = await this.getExistingDetails(clientId);
       resolve(allDetails);
     } catch (error) {
-      console.error("HealthHistoryFormService [saveOrUpdateDetails] Error:", error);
+      console.error('HealthHistoryFormService [saveOrUpdateDetails] Error:', error);
       reject(error);
     }
   });

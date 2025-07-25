@@ -1,25 +1,15 @@
-const { CONTACT_TYPES } = require("../constants");
-const {
-  FaceSheetShortForm,
-  Client,
-  ClientMedical,
-  ClientContact,
-  ClientMedication,
-  HealthcareProvider,
-  FormsHistory,
-  User,
-} = require("../models");
-const { FORM_TYPES } = require("../constants");
+const { CONTACT_TYPES } = require('../constants');
+const { FaceSheetShortForm, Client, ClientMedical, ClientContact, ClientMedication, HealthcareProvider, FormsHistory, User } = require('../models');
+const { FORM_TYPES } = require('../constants');
 
 exports.getExistingDetails = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
-
       //* Forms History
       const lastUpdate = await FormsHistory.findOne({
-        where: { 
-          client_id: clientId, 
-          form_type: FORM_TYPES.FACE_SHEET_SHORT 
+        where: {
+          client_id: clientId,
+          form_type: FORM_TYPES.FACE_SHEET_SHORT,
         },
         // include: [
         //   {
@@ -28,35 +18,35 @@ exports.getExistingDetails = (clientId) =>
         //     attributes: ["id", "first_name", "last_name", "email"],
         //   },
         // ],
-        order: [["created_at", "DESC"]],
+        order: [['created_at', 'DESC']],
       });
 
       //* Client Info
       const clientInfo = await Client.findByPk(clientId, {
         attributes: [
-          "id",
-          "first_name",
-          "last_name",
-          "ssn",
-          "date_of_birth",
-          "phone",
-          "address",
-          "preferred_hospital",
-          "hospital_address",
-          "hospital_phone",
-          "pharmacy_name",
-          "pharmacy_address",
-          "pharmacy_phone",
-          "pharmacy_fax",
-          "code_status",
-          "advance_directive",
+          'id',
+          'first_name',
+          'last_name',
+          'ssn',
+          'date_of_birth',
+          'phone',
+          'address',
+          'preferred_hospital',
+          'hospital_address',
+          'hospital_phone',
+          'pharmacy_name',
+          'pharmacy_address',
+          'pharmacy_phone',
+          'pharmacy_fax',
+          'code_status',
+          'advance_directive',
         ],
       });
 
       //* Medical Info
       const medicalInfo = await ClientMedical.findOne({
         where: { client_id: clientId },
-        attributes: ["id", "allergies", "diagnoses", "surgical_history"],
+        attributes: ['id', 'allergies', 'diagnoses', 'surgical_history'],
       });
 
       const medicalInfoData = medicalInfo || {
@@ -70,9 +60,9 @@ exports.getExistingDetails = (clientId) =>
       const emergencyContact = await ClientContact.findOne({
         where: {
           client_id: clientId,
-          contact_type: "emergency",
+          contact_type: 'emergency',
         },
-        attributes: ["id", "first_name", "last_name", "email", "phone", "relationship", "address"],
+        attributes: ['id', 'first_name', 'last_name', 'email', 'phone', 'relationship', 'address'],
       });
 
       const emergencyContactData = emergencyContact || {
@@ -88,8 +78,19 @@ exports.getExistingDetails = (clientId) =>
       //* Medications
       const medications = await ClientMedication.findAll({
         where: { client_id: clientId },
-        attributes: ["id", "client_id", "medication_name", "dosage", "purpose", "prescribing_doctor", "refill_due" , "start_date" , "end_date"],
-        order: [["created_at", "ASC"]],
+        attributes: [
+          'id',
+          'client_id',
+          'medication_name',
+          'frequency',
+          'dosage',
+          'purpose',
+          'prescribing_doctor',
+          'refill_due',
+          'start_date',
+          'end_date',
+        ],
+        order: [['created_at', 'ASC']],
       });
 
       const medicationsData = medications || [];
@@ -100,17 +101,8 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId,
           specialty_provider: false,
         },
-        attributes: [
-          "id",
-          "provider_type",
-          "provider_name",
-          "specialty",
-          "address",
-          "phone",
-          "last_visit",
-          "next_visit",
-        ],
-        order: [["created_at", "ASC"]],
+        attributes: ['id', 'provider_type', 'provider_name', 'specialty', 'address', 'phone', 'last_visit', 'next_visit'],
+        order: [['created_at', 'ASC']],
       });
 
       const healthcareProvidersData = healthcareProviders || [];
@@ -119,17 +111,17 @@ exports.getExistingDetails = (clientId) =>
       const shortForm = await FaceSheetShortForm.findOne({
         where: { client_id: clientId },
         attributes: [
-          "id",
-          "insurance",
-          "medicare",
-          "group_number",
-          "id_number",
-          "mpoa",
-          "mpoa_phone",
-          "mpoa_address",
-          "dpoa",
-          "dpoa_phone",
-          "dpoa_address",
+          'id',
+          'insurance',
+          'medicare',
+          'group_number',
+          'id_number',
+          'mpoa',
+          'mpoa_phone',
+          'mpoa_address',
+          'dpoa',
+          'dpoa_phone',
+          'dpoa_address',
         ],
       });
 
@@ -159,7 +151,7 @@ exports.getExistingDetails = (clientId) =>
 
       resolve(generalDetails);
     } catch (error) {
-      console.error("FaceSheetShortFormService [getGeneralDetails] Error:", error);
+      console.error('FaceSheetShortFormService [getGeneralDetails] Error:', error);
       reject(error);
     }
   });
@@ -300,7 +292,7 @@ exports.updateFaceSheetShortForm = (clientId, data) =>
       const allDetails = await this.getExistingDetails(clientId);
       resolve(allDetails);
     } catch (error) {
-      console.error("FaceSheetShortFormService [updateFaceSheetShortForm] Error:", error);
+      console.error('FaceSheetShortFormService [updateFaceSheetShortForm] Error:', error);
       reject(error);
     }
   });

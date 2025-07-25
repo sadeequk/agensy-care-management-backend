@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi');
 
 exports.facesheet_put = Joi.object({
   client_info: Joi.object({
@@ -33,6 +33,7 @@ exports.facesheet_put = Joi.object({
       dosage: Joi.string().optional().max(100).allow(null),
       purpose: Joi.string().max(255).optional().allow(null),
       prescribing_doctor: Joi.string().max(255).optional().allow(null),
+      frequency: Joi.string().optional().max(100).allow(null),
       start_date: Joi.date().iso().optional().allow(null),
       end_date: Joi.date().iso().optional().allow(null),
       refill_due: Joi.date().iso().optional().allow(null),
