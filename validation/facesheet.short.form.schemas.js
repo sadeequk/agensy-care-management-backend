@@ -25,7 +25,7 @@ exports.facesheet_put = Joi.object({
     phone: Joi.string().max(20).optional().allow(null),
     email: Joi.string().max(255).optional().allow(null),
     address: Joi.string().max(255).optional().allow(null),
-  }),
+  }).optional(),
   medications: Joi.array().items(
     Joi.object({
       id: Joi.string().uuid().optional(),
