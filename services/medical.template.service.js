@@ -1,28 +1,21 @@
-const {
-  ClientMedical,
-  ClientMedication,
-  HealthcareProvider,
-  MedicalTemplate,
-  FormsHistory,
-  Client,
-} = require("../models");
-const { FORM_TYPES } = require("../constants");
+const { ClientMedical, ClientMedication, HealthcareProvider, MedicalTemplate, FormsHistory, Client } = require('../models');
+const { FORM_TYPES } = require('../constants');
 
 exports.getExistingDetails = (clientId) =>
   new Promise(async (resolve, reject) => {
     try {
       const lastUpdate = await FormsHistory.findOne({
-        where: { 
-          client_id: clientId, 
-          form_type: FORM_TYPES.MEDICAL_TEMPLATE 
+        where: {
+          client_id: clientId,
+          form_type: FORM_TYPES.MEDICAL_TEMPLATE,
         },
-        order: [["created_at", "DESC"]],
+        order: [['created_at', 'DESC']],
       });
 
       //* Client Information
       const clientInfo = await Client.findOne({
         where: { id: clientId },
-        attributes: ["id", "first_name", "last_name", "date_of_birth"],
+        attributes: ['id', 'first_name', 'last_name', 'date_of_birth'],
       });
       const clientInfoData = clientInfo || {
         id: null,
@@ -34,7 +27,18 @@ exports.getExistingDetails = (clientId) =>
       //* Medical Info
       const medicalInfo = await ClientMedical.findOne({
         where: { client_id: clientId },
-        attributes: ["id", "diagnoses", "allergies", "surgical_history", "height", "weight", "blood_pressure", "temperature", "heart_rate", "additional_vitals"],
+        attributes: [
+          'id',
+          'diagnoses',
+          'allergies',
+          'surgical_history',
+          'height',
+          'weight',
+          'blood_pressure',
+          'temperature',
+          'heart_rate',
+          'additional_vitals',
+        ],
       });
       const medicalInfoData = medicalInfo || {
         id: null,
@@ -52,36 +56,34 @@ exports.getExistingDetails = (clientId) =>
       //* Medications
       const medications = await ClientMedication.findAll({
         where: { client_id: clientId },
-        attributes: ["id", "medication_name", "dosage","frequency", "notes", "start_date", "end_date"],
+        attributes: ['id', 'medication_name', 'dosage', 'frequency', 'notes', 'start_date', 'end_date'],
       });
       const medicationsData = medications || [];
 
       //* Healthcare Providers
-      const healthcareProviders = await HealthcareProvider.findOne({
+      const healthcareProviders = await HealthcareProvider.findAll({
         where: {
           client_id: clientId,
-          specialty_provider: true,
         },
-        attributes: ["id", "provider_name", "address", "phone", "notes", "follow_up", "specialty"],
+        attributes: ['id', 'provider_name', 'address', 'phone', 'notes', 'follow_up', 'specialty'],
       });
 
-      const healthcareProvidersData = healthcareProviders || {
-        id: null,
-        provider_name: null,
-        address: null,
-        phone: null,
-        follow_up: null,
-        notes: null,
-        specialty: null,
-      };
+      const healthcareProvidersData = healthcareProviders || [];
 
       //* Medical Template
       const medicalTemplate = await MedicalTemplate.findOne({
         where: { client_id: clientId },
         attributes: [
-          "id", "date",
-          "reason_for_visit", "top_3_concerns", "tests_labs_imaging", "visit_notes",
-          "recommendations", "referrals", "follow_up", "report_given_to"
+          'id',
+          'date',
+          'reason_for_visit',
+          'top_3_concerns',
+          'tests_labs_imaging',
+          'visit_notes',
+          'recommendations',
+          'referrals',
+          'follow_up',
+          'report_given_to',
         ],
       });
       const medicalTemplateData = medicalTemplate || {
@@ -117,6 +119,18 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
   new Promise(async (resolve, reject) => {
     try {
       const result = {};
+
+      //* Client Information
+      if (data.client_info) {
+        const existingClient = await Client.findOne({
+          where: { id: clientId },
+        });
+
+        if (existingClient) {
+          await existingClient.update(data.client_info);
+          result.client_info = existingClient;
+        }
+      }
 
       //* Medical Information
       if (data.medical_info) {
@@ -165,26 +179,33 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
         result.medications = updatedMedications;
       }
 
-      //* Healthcare Providers
-      if (data.healthcare_providers) {
-        const existingProvider = await HealthcareProvider.findOne({
-          where: {
-            client_id: clientId,
-            specialty_provider: true,
-          },
-        });
+      //* Healthcare Providers - Handle multiple providers
+      if (data.healthcare_providers && Array.isArray(data.healthcare_providers)) {
+        const updatedHealthcareProviders = [];
 
-        if (existingProvider) {
-          await existingProvider.update(data.healthcare_providers);
-          result.healthcare_providers = existingProvider;
-        } else {
-          const newProvider = await HealthcareProvider.create({
-            ...data.healthcare_providers,
-            client_id: clientId,
-            specialty_provider: true,
-          });
-          result.healthcare_providers = newProvider;
+        for (const providerData of data.healthcare_providers) {
+          if (providerData.id) {
+            const existingProvider = await HealthcareProvider.findOne({
+              where: {
+                id: providerData.id,
+                client_id: clientId,
+              },
+            });
+
+            if (existingProvider) {
+              await existingProvider.update(providerData);
+              updatedHealthcareProviders.push(existingProvider);
+            }
+          } else {
+            const newProvider = await HealthcareProvider.create({
+              ...providerData,
+              client_id: clientId,
+            });
+            updatedHealthcareProviders.push(newProvider);
+          }
         }
+
+        result.healthcare_providers = updatedProviders;
       }
 
       //* Medical Template
@@ -210,7 +231,7 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
       const allDetails = await this.getExistingDetails(clientId);
       resolve(allDetails);
     } catch (error) {
-      console.error("MedicalTemplateService [saveOrUpdateDetails] Error:", error);
+      console.error('MedicalTemplateService [saveOrUpdateDetails] Error:', error);
       reject(error);
     }
-  }); 
+  });

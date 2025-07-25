@@ -22,7 +22,7 @@ exports.getExistingDetails = (clientId) =>
         order: [['created_at', 'DESC']],
       });
 
-      //! Client info
+      //* Client info
       const clientInfo = await Client.findOne({
         where: { id: clientId },
         attributes: ['id', 'first_name', 'last_name', 'date_of_birth', 'preferred_hospital', 'pharmacy_name'],
