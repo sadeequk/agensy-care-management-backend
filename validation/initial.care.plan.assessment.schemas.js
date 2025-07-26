@@ -20,27 +20,43 @@ exports.initial_care_plan_assessment_post = Joi.object({
     })
   ),
   functional_adls: Joi.object({
+    id: Joi.string().uuid().optional(),
+    category_name: Joi.string().optional().allow(null),
     summary: Joi.string().optional().allow(null),
   }),
   functional_iadls: Joi.object({
+    id: Joi.string().uuid().optional(),
+    category_name: Joi.string().optional().allow(null),
     summary: Joi.string().optional().allow(null),
   }),
   home_safety: Joi.object({
+    id: Joi.string().uuid().optional(),
+    category_name: Joi.string().optional().allow(null),
     summary: Joi.string().optional().allow(null),
   }),
   memory_and_recommendations: Joi.object({
+    id: Joi.string().uuid().optional(),
+    category_name: Joi.string().optional().allow(null),
     summary: Joi.string().optional().allow(null),
   }),
   geriatric_depression: Joi.object({
+    id: Joi.string().uuid().optional(),
+    category_name: Joi.string().optional().allow(null),
     summary: Joi.string().optional().allow(null),
   }),
   nutritional_health: Joi.object({
+    id: Joi.string().uuid().optional(),
+    category_name: Joi.string().optional().allow(null),
     summary: Joi.string().optional().allow(null),
   }),
   legal_and_financial: Joi.object({
+    id: Joi.string().uuid().optional(),
+    category_name: Joi.string().optional().allow(null),
     summary: Joi.string().optional().allow(null),
   }),
   care_giver_support: Joi.object({
+    id: Joi.string().uuid().optional(),
+    category_name: Joi.string().optional().allow(null),
     summary: Joi.string().optional().allow(null),
   }),
 });
