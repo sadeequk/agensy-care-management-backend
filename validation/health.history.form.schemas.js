@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
 exports.health_history_post = Joi.object({
   medical_info: Joi.object({

@@ -1,47 +1,47 @@
-const Joi = require('joi');
-const { CARE_PLAN_CATEGORIES } = require('../constants');
+const Joi = require("joi");
+const { CARE_PLAN_CATEGORIES } = require("../constants");
 
 exports.comprehensive_care_plan_assessment_post = Joi.object({
   client_info: Joi.object({
-    first_name: Joi.string().optional().max(255).allow(null),
-    last_name: Joi.string().optional().max(255).allow(null),
+    first_name: Joi.string().optional().allow(null),
+    last_name: Joi.string().optional().allow(null),
     date_of_birth: Joi.date().iso().optional().allow(null),
-    preferred_hospital: Joi.string().optional().max(255).allow(null),
-    pharmacy_name: Joi.string().optional().max(255).allow(null),
+    preferred_hospital: Joi.string().optional().allow(null),
+    pharmacy_name: Joi.string().optional().allow(null),
   }),
 
   initial_assessment: Joi.object({
     id: Joi.string().uuid().optional(),
     date_of_assessment: Joi.date().iso().optional().allow(null),
     date_of_care_plan: Joi.date().iso().optional().allow(null),
-    person_completing_assessment: Joi.string().max(1000).optional().allow(null),
-    present_for_assessment: Joi.string().max(1000).optional().allow(null),
-    goals_for_assessment: Joi.string().max(2000).optional().allow(null),
-    next_step_care_recipient: Joi.string().max(1000).optional().allow(null),
-    next_step_care_partner: Joi.string().max(1000).optional().allow(null),
+    person_completing_assessment: Joi.string().optional().allow(null),
+    present_for_assessment: Joi.string().optional().allow(null),
+    goals_for_assessment: Joi.string().optional().allow(null),
+    next_step_care_recipient: Joi.string().optional().allow(null),
+    next_step_care_partner: Joi.string().optional().allow(null),
   }),
 
   comprehensive_care_plan_assessment: Joi.object({
     id: Joi.string().uuid().optional(),
-    initial_request: Joi.string().max(2000).optional().allow(null),
-    care_recipient_goals: Joi.string().max(2000).optional().allow(null),
-    demographic_and_historic_information: Joi.string().max(2000).optional().allow(null),
-    medical_history: Joi.string().max(2000).optional().allow(null),
+    initial_request: Joi.string().optional().allow(null),
+    care_recipient_goals: Joi.string().optional().allow(null),
+    demographic_and_historic_information: Joi.string().optional().allow(null),
+    medical_history: Joi.string().optional().allow(null),
   }),
 
   focused_recommendations: Joi.array().items(
     Joi.object({
       id: Joi.string().uuid().optional(),
       option_number: Joi.number().integer().min(1).required(),
-      name: Joi.string().optional().max(255).allow(null),
-      description: Joi.string().optional().max(500).allow(null),
-      details: Joi.string().optional().max(3000).allow(null),
+      name: Joi.string().optional().allow(null),
+      description: Joi.string().optional().allow(null),
+      details: Joi.string().optional().allow(null),
     })
   ),
 
   functional_adls: Joi.object({
     category_name: Joi.string().valid(CARE_PLAN_CATEGORIES.FUNCTIONAL_ADLS).optional(),
-    summary: Joi.string().max(2000).optional().allow(null),
+    summary: Joi.string().optional().allow(null),
     deficits_noted: Joi.boolean().optional(),
     detailed_table: Joi.object().unknown().optional().allow(null),
     additional_data: Joi.object().unknown().optional().allow(null),
@@ -49,7 +49,7 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
 
   functional_iadls: Joi.object({
     category_name: Joi.string().valid(CARE_PLAN_CATEGORIES.FUNCTIONAL_IADLS).optional(),
-    summary: Joi.string().max(2000).optional().allow(null),
+    summary: Joi.string().optional().allow(null),
     deficits_noted: Joi.boolean().optional(),
     detailed_table: Joi.object().unknown().optional().allow(null),
     additional_data: Joi.object().unknown().optional().allow(null),
@@ -57,7 +57,7 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
 
   home_safety: Joi.object({
     category_name: Joi.string().valid(CARE_PLAN_CATEGORIES.HOME_SAFETY).optional(),
-    summary: Joi.string().max(2000).optional().allow(null),
+    summary: Joi.string().optional().allow(null),
     deficits_noted: Joi.boolean().optional(),
     detailed_table: Joi.object().unknown().optional().allow(null),
     additional_data: Joi.object().unknown().optional().allow(null),
@@ -65,7 +65,7 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
 
   memory_and_reasoning: Joi.object({
     category_name: Joi.string().valid(CARE_PLAN_CATEGORIES.MEMORY_REASONING).optional(),
-    summary: Joi.string().max(2000).optional().allow(null),
+    summary: Joi.string().optional().allow(null),
     deficits_noted: Joi.boolean().optional(),
     detailed_table: Joi.object().unknown().optional().allow(null),
     additional_data: Joi.object().unknown().optional().allow(null),
@@ -73,7 +73,7 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
 
   geriatric_depression: Joi.object({
     category_name: Joi.string().valid(CARE_PLAN_CATEGORIES.GERIATRIC_DEPRESSION).optional(),
-    summary: Joi.string().max(2000).optional().allow(null),
+    summary: Joi.string().optional().allow(null),
     deficits_noted: Joi.boolean().optional(),
     detailed_table: Joi.object().unknown().optional().allow(null),
     additional_data: Joi.object().unknown().optional().allow(null),
@@ -81,7 +81,7 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
 
   nutritional_health: Joi.object({
     category_name: Joi.string().valid(CARE_PLAN_CATEGORIES.NUTRITIONAL_HEALTH).optional(),
-    summary: Joi.string().max(2000).optional().allow(null),
+    summary: Joi.string().optional().allow(null),
     deficits_noted: Joi.boolean().optional(),
     detailed_table: Joi.object().unknown().optional().allow(null),
     additional_data: Joi.object().unknown().optional().allow(null),
@@ -89,7 +89,7 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
 
   legal_and_financial: Joi.object({
     category_name: Joi.string().valid(CARE_PLAN_CATEGORIES.LEGAL_FINANCIAL).optional(),
-    summary: Joi.string().max(2000).optional().allow(null),
+    summary: Joi.string().optional().allow(null),
     deficits_noted: Joi.boolean().optional(),
     detailed_table: Joi.object().unknown().optional().allow(null),
     additional_data: Joi.object().unknown().optional().allow(null),
@@ -97,7 +97,7 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
 
   care_giver_support: Joi.object({
     category_name: Joi.string().valid(CARE_PLAN_CATEGORIES.CARE_GIVER_SUPPORT).optional(),
-    summary: Joi.string().max(2000).optional().allow(null),
+    summary: Joi.string().optional().allow(null),
     deficits_noted: Joi.boolean().optional(),
     detailed_table: Joi.object().unknown().optional().allow(null),
     additional_data: Joi.object().unknown().optional().allow(null),
@@ -106,12 +106,12 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
   medications: Joi.array().items(
     Joi.object({
       id: Joi.string().uuid().optional(),
-      name: Joi.string().optional().max(255).allow(null),
-      dosage: Joi.string().optional().max(255).allow(null),
-      frequency: Joi.string().optional().max(255).allow(null),
+      name: Joi.string().optional().allow(null),
+      dosage: Joi.string().optional().allow(null),
+      frequency: Joi.string().optional().allow(null),
       start_date: Joi.date().iso().optional().allow(null),
       end_date: Joi.date().iso().optional().allow(null),
-      indication: Joi.string().optional().max(500).allow(null),
+      indication: Joi.string().optional().allow(null),
     })
   ),
 
@@ -124,11 +124,11 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
     .items(
       Joi.object({
         id: Joi.string().uuid().optional(),
-        provider_name: Joi.string().optional().max(255).allow(null),
-        provider_type: Joi.string().optional().max(255).allow(null),
-        specialty: Joi.string().optional().max(255).allow(null),
-        address: Joi.string().optional().max(500).allow(null),
-        phone: Joi.string().optional().max(20).allow(null),
+        provider_name: Joi.string().optional().allow(null),
+        provider_type: Joi.string().optional().allow(null),
+        specialty: Joi.string().optional().allow(null),
+        address: Joi.string().optional().allow(null),
+        phone: Joi.string().optional().allow(null),
       })
     )
     .optional(),
