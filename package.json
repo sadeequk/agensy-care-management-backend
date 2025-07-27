@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/agensy-care-management",
-    "dev": "nodemon ./bin/agensy-care-management"
+    "dev": "nodemon ./bin/agensy-care-management",
+    "migrate": "sequelize db:migrate"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.835.0",
