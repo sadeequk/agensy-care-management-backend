@@ -15,11 +15,11 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       first_name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       last_name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       date_of_birth: {
@@ -27,35 +27,35 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       birth_place: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       ssn: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       address: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       city: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       state: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       zip: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       phone: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       relation: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       gender: {
@@ -67,7 +67,7 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       language: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       living_situation: {
@@ -75,43 +75,43 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       code_status: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       advance_directive: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       preferred_hospital: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       hospital_address: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       hospital_phone: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       pharmacy_name: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       pharmacy_address: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       pharmacy_phone: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       pharmacy_fax: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       race: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       last_care_plan_date: {
@@ -119,23 +119,23 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       email: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       cultural_background: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       education: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       religion: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       active_religion_location: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       date_of_divorce_or_widowhood: {
@@ -146,19 +146,19 @@ module.exports = (sequelize) =>
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      dnr: { type: DataTypes.STRING, allowNull: true },
-      trust: { type: DataTypes.STRING, allowNull: true },
-      lifecare: { type: DataTypes.STRING, allowNull: true },
-      will: { type: DataTypes.STRING, allowNull: true },
-      living_will: { type: DataTypes.STRING, allowNull: true },
-      funeral_arrangements: { type: DataTypes.STRING, allowNull: true },
-      cemetery_plot: { type: DataTypes.STRING, allowNull: true },
-      monthly_income: { type: DataTypes.STRING, allowNull: true },
-      spouse_income: { type: DataTypes.STRING, allowNull: true },
-      savings: { type: DataTypes.STRING, allowNull: true },
-      other_assets: { type: DataTypes.STRING, allowNull: true },
+      dnr: { type: DataTypes.TEXT, allowNull: true },
+      trust: { type: DataTypes.TEXT, allowNull: true },
+      lifecare: { type: DataTypes.TEXT, allowNull: true },
+      will: { type: DataTypes.TEXT, allowNull: true },
+      living_will: { type: DataTypes.TEXT, allowNull: true },
+      funeral_arrangements: { type: DataTypes.TEXT, allowNull: true },
+      cemetery_plot: { type: DataTypes.TEXT, allowNull: true },
+      monthly_income: { type: DataTypes.TEXT, allowNull: true },
+      spouse_income: { type: DataTypes.TEXT, allowNull: true },
+      savings: { type: DataTypes.TEXT, allowNull: true },
+      other_assets: { type: DataTypes.TEXT, allowNull: true },
       financial_problems_description: { type: DataTypes.TEXT, allowNull: true },
-   
+
       notes: {
         type: DataTypes.TEXT,
         allowNull: true,

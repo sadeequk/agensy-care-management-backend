@@ -14,19 +14,19 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       address: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       relationship: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       phone: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       help_description: {
@@ -39,4 +39,4 @@ module.exports = (sequelize) =>
       timestamps: true,
       underscored: true,
     }
-  ); 
+  );

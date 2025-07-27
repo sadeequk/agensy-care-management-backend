@@ -14,35 +14,35 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       insurance_type: {
-        type: DataTypes.STRING, 
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       medicare_a: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       medicare_b: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       medicare_numbers: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       supplement_plan: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       provider: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       policy_number: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       phone: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       mental_health_coverage: {
@@ -50,27 +50,27 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       hmo: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       hmo_policy_number: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       hmo_phone: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       long_term_care_insurance_name: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       long_term_care_insurance_policy_number: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       long_term_care_insurance_phone: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
@@ -79,4 +79,4 @@ module.exports = (sequelize) =>
       timestamps: true,
       underscored: true,
     }
-  ); 
+  );

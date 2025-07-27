@@ -18,27 +18,27 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       condition: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       onset_date: {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      problem:{
-        type: DataTypes.STRING,
+      problem: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
-      treatment:{
-        type: DataTypes.STRING,
+      treatment: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
-      medications:{
-        type: DataTypes.STRING,
+      medications: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       notes: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },

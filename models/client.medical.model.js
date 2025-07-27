@@ -30,7 +30,7 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       cognitive_status: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       last_cognitive_screening: {
@@ -38,47 +38,47 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       test_type: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       cognitive_score: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       last_checkup_date: {
         type: DataTypes.DATEONLY,
         allowNull: true,
       },
-      
+
       // Vitals
       height: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       weight: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       blood_pressure: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       temperature: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       heart_rate: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       additional_vitals: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
-      
+
       recent_hospitalization: { type: DataTypes.BOOLEAN, allowNull: true },
-      hospital_details: { type: DataTypes.STRING, allowNull: true },
-      support_system_thoughts: { type: DataTypes.STRING, allowNull: true },
+      hospital_details: { type: DataTypes.TEXT, allowNull: true },
+      support_system_thoughts: { type: DataTypes.TEXT, allowNull: true },
       notes: {
         type: DataTypes.TEXT,
         allowNull: true,

@@ -14,15 +14,15 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       role: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
-      },      
+      },
       name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       phone: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
@@ -31,4 +31,4 @@ module.exports = (sequelize) =>
       timestamps: true,
       underscored: true,
     }
-  ); 
+  );

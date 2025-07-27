@@ -1,8 +1,8 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) =>
   sequelize.define(
-    'ClientMedication',
+    "ClientMedication",
     {
       id: {
         type: DataTypes.UUID,
@@ -14,27 +14,27 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       medication_name: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       dosage: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       frequency: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       purpose: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       prescribing_doctor: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       indication: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       start_date: {
@@ -59,7 +59,7 @@ module.exports = (sequelize) =>
       },
     },
     {
-      tableName: 'client_medications',
+      tableName: "client_medications",
       timestamps: true,
       underscored: true,
     }

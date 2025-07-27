@@ -14,27 +14,27 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       provider_type: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       provider_name: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       specialty: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       address: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       phone: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       fax: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       last_visit: {
@@ -54,11 +54,11 @@ module.exports = (sequelize) =>
         defaultValue: false,
       },
       follow_up: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       for_what_problem: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       active: {
