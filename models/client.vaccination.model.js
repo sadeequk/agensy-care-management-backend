@@ -19,7 +19,7 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       date: {
@@ -27,8 +27,7 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       next_vaccine: {
-        // type: DataTypes.DATEONLY,
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
