@@ -18,7 +18,7 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       date: {
@@ -26,15 +26,15 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       results: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       ordered_by: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       repeat: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
