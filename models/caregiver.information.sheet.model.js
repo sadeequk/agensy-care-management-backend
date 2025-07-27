@@ -1,8 +1,8 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) =>
   sequelize.define(
-    'CaregiverInformationSheet',
+    "CaregiverInformationSheet",
     {
       id: {
         type: DataTypes.UUID,
@@ -19,11 +19,11 @@ module.exports = (sequelize) =>
       },
       // Basic Information
       name: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       nickname_preferred_name: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       // Schedule Information
@@ -64,32 +64,32 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       likes: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       dislikes: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       redirection_techniques: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       triggers: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       helpful_information: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       documentation: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
     {
-      tableName: 'caregiver_information_sheet',
+      tableName: "caregiver_information_sheet",
       timestamps: true,
       underscored: true,
     }
