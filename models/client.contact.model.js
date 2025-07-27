@@ -18,27 +18,27 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       first_name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       last_name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       relationship: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       phone: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       email: {
-        type: DataTypes.STRING(255),  
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       address: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       notes: {

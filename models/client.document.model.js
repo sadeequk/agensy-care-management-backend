@@ -26,23 +26,23 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       category: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING,
         allowNull: true,
       },
       document_type: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING,
         allowNull: false,
       },
       title: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       description: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       file_name: {
-        type: DataTypes.STRING(2048),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       file_size: {
@@ -50,7 +50,7 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       file_type: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING,
         allowNull: false,
       },
       version: {
