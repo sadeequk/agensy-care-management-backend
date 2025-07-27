@@ -22,15 +22,15 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       name: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       details: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
@@ -39,4 +39,4 @@ module.exports = (sequelize) =>
       timestamps: true,
       underscored: true,
     }
-  ); 
+  );

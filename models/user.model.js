@@ -16,24 +16,24 @@ module.exports = (sequelize) =>
         defaultValue: null,
       },
       email: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: false,
         unique: true,
       },
       cognito_id: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         unique: true,
       },
       first_name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       last_name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       phone: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.TEXT,
       },
       role: {
         type: DataTypes.ENUM(...Object.values(USER_ROLES)),
@@ -45,14 +45,14 @@ module.exports = (sequelize) =>
         defaultValue: false,
       },
       avatar: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       last_login: {
         type: DataTypes.DATE,
       },
       socket_id: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       active: {
@@ -60,11 +60,11 @@ module.exports = (sequelize) =>
         defaultValue: true,
       },
       relation: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       stripe_customer_id: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       subscription_status: {

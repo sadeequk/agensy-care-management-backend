@@ -23,15 +23,15 @@ module.exports = (sequelize) =>
       },
       // Visit Details
       reason_for_visit: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       top_3_concerns: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       tests_labs_imaging: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       visit_notes: {
@@ -39,19 +39,19 @@ module.exports = (sequelize) =>
         allowNull: true,
       },
       recommendations: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       referrals: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       follow_up: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       report_given_to: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },
@@ -60,4 +60,4 @@ module.exports = (sequelize) =>
       timestamps: true,
       underscored: true,
     }
-  ); 
+  );

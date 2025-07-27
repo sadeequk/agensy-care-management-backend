@@ -18,11 +18,11 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       category: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       document_name: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       in_place: {
@@ -40,4 +40,4 @@ module.exports = (sequelize) =>
       timestamps: true,
       underscored: true,
     }
-  ); 
+  );

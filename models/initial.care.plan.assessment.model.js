@@ -27,7 +27,7 @@ module.exports = (sequelize) =>
       },
 
       person_completing_assessment: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       present_for_assessment: {
@@ -38,20 +38,19 @@ module.exports = (sequelize) =>
         type: DataTypes.TEXT,
         allowNull: true,
       },
-     
-     next_step_care_recipient:{
-        type: DataTypes.STRING,
-        allowNull: true,
-     },
-     next_step_care_partner:{
-        type: DataTypes.STRING,
-        allowNull: true,
-     },
 
+      next_step_care_recipient: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      next_step_care_partner: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
     },
     {
       tableName: "initial_care_plan_assessments",
       timestamps: true,
       underscored: true,
     }
-  ); 
+  );
