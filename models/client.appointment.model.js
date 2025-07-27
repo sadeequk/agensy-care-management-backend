@@ -26,15 +26,15 @@ module.exports = (sequelize) =>
         allowNull: false,
       },
       title: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       appointment_type: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       location: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       start_time: {
