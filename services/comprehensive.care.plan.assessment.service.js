@@ -8,8 +8,8 @@ const {
   ClientMedication,
   ClientMedical,
   HealthcareProvider,
-} = require('../models');
-const { FORM_TYPES, CARE_PLAN_CATEGORIES } = require('../constants');
+} = require("../models");
+const { FORM_TYPES, CARE_PLAN_CATEGORIES } = require("../constants");
 
 exports.getExistingDetails = (clientId) =>
   new Promise(async (resolve, reject) => {
@@ -19,20 +19,20 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId,
           form_type: FORM_TYPES.COMPREHENSIVE_CARE_PLAN_ASSESSMENT,
         },
-        order: [['created_at', 'DESC']],
+        order: [["created_at", "DESC"]],
       });
 
       //* Client info
       const clientInfo = await Client.findOne({
         where: { id: clientId },
-        attributes: ['id', 'first_name', 'last_name', 'date_of_birth', 'preferred_hospital', 'pharmacy_name'],
+        attributes: ["id", "first_name", "last_name", "date_of_birth", "preferred_hospital", "pharmacy_name"],
       });
 
       // Focused Recommendations
       const focused_recommendations = await FocusedRecommendations.findAll({
         where: { client_id: clientId },
-        attributes: ['id', 'option_number', 'name', 'description', 'details'],
-        order: [['option_number', 'ASC']],
+        attributes: ["id", "option_number", "name", "description", "details"],
+        order: [["option_number", "ASC"]],
       });
 
       const focusedRecommendationsData = focused_recommendations || [];
@@ -40,7 +40,7 @@ exports.getExistingDetails = (clientId) =>
       //* Medications
       const medications = await ClientMedication.findAll({
         where: { client_id: clientId },
-        attributes: ['id', 'medication_name', 'dosage', 'frequency', 'start_date', 'end_date', 'indication'],
+        attributes: ["id", "medication_name", "dosage", "frequency", "start_date", "end_date", "indication"],
       });
 
       const medicationsData = medications || [];
@@ -48,7 +48,7 @@ exports.getExistingDetails = (clientId) =>
       //* Medical Info
       const medical_info = await ClientMedical.findOne({
         where: { client_id: clientId },
-        attributes: ['id', 'allergies', 'surgical_history'],
+        attributes: ["id", "allergies", "surgical_history"],
       });
 
       const medicalData = medical_info || {
@@ -59,7 +59,7 @@ exports.getExistingDetails = (clientId) =>
 
       const health_care_providers = await HealthcareProvider.findAll({
         where: { client_id: clientId },
-        attributes: ['id', 'provider_name', 'provider_type', 'specialty', 'address', 'phone'],
+        attributes: ["id", "provider_name", "provider_type", "specialty", "address", "phone"],
       });
 
       const healthCareprovidersData = health_care_providers || [];
@@ -70,7 +70,7 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId,
           category_name: CARE_PLAN_CATEGORIES.FUNCTIONAL_ADLS,
         },
-        attributes: ['category_name', 'summary', 'deficits_noted', 'detailed_table', 'additional_data'],
+        attributes: ["category_name", "summary", "deficits_noted", "detailed_table", "additional_data"],
       });
 
       const functionalAdlsData = functional_adls || {
@@ -88,7 +88,7 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId,
           category_name: CARE_PLAN_CATEGORIES.FUNCTIONAL_IADLS,
         },
-        attributes: ['category_name', 'summary', 'detailed_table', 'additional_data'],
+        attributes: ["category_name", "summary", "detailed_table", "additional_data"],
       });
 
       const functionalIadlsData = functional_iadls || {
@@ -105,7 +105,7 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId,
           category_name: CARE_PLAN_CATEGORIES.HOME_SAFETY,
         },
-        attributes: ['category_name', 'summary', 'deficits_noted', 'detailed_table'],
+        attributes: ["category_name", "summary", "deficits_noted", "detailed_table"],
       });
 
       const homeSafetyData = home_safety || {
@@ -122,7 +122,7 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId,
           category_name: CARE_PLAN_CATEGORIES.MEMORY_REASONING,
         },
-        attributes: ['category_name', 'summary', 'deficits_noted', 'detailed_table'],
+        attributes: ["category_name", "summary", "deficits_noted", "detailed_table"],
       });
 
       const memoryAndReasoningData = memory_and_reasoning || {
@@ -139,7 +139,7 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId,
           category_name: CARE_PLAN_CATEGORIES.GERIATRIC_DEPRESSION,
         },
-        attributes: ['category_name', 'summary', 'deficits_noted', 'detailed_table'],
+        attributes: ["category_name", "summary", "deficits_noted", "detailed_table"],
       });
       const geriatricDepressionData = geriatric_depression || {
         id: null,
@@ -155,7 +155,7 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId,
           category_name: CARE_PLAN_CATEGORIES.NUTRITIONAL_HEALTH,
         },
-        attributes: ['category_name', 'summary', 'deficits_noted', 'detailed_table'],
+        attributes: ["category_name", "summary", "deficits_noted", "detailed_table"],
       });
 
       const nutritionalHealthData = nutritional_health || {
@@ -172,7 +172,7 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId,
           category_name: CARE_PLAN_CATEGORIES.LEGAL_FINANCIAL,
         },
-        attributes: ['category_name', 'summary', 'deficits_noted', 'detailed_table'],
+        attributes: ["category_name", "summary", "deficits_noted", "detailed_table"],
       });
       const legalAndFinancialData = legal_and_financial || {
         id: null,
@@ -188,7 +188,7 @@ exports.getExistingDetails = (clientId) =>
           client_id: clientId,
           category_name: CARE_PLAN_CATEGORIES.CARE_GIVER_SUPPORT,
         },
-        attributes: ['category_name', 'summary', 'deficits_noted', 'detailed_table'],
+        attributes: ["category_name", "summary", "deficits_noted", "detailed_table"],
       });
 
       const careGiverSupportData = care_giver_support || {
@@ -203,14 +203,14 @@ exports.getExistingDetails = (clientId) =>
       const initialAssessment = await InitialCarePlanAssessment.findOne({
         where: { client_id: clientId },
         attributes: [
-          'id',
-          'date_of_assessment',
-          'date_of_care_plan',
-          'person_completing_assessment',
-          'present_for_assessment',
-          'goals_for_assessment',
-          'next_step_care_recipient',
-          'next_step_care_partner',
+          "id",
+          "date_of_assessment",
+          "date_of_care_plan",
+          "person_completing_assessment",
+          "present_for_assessment",
+          "goals_for_assessment",
+          "next_step_care_recipient",
+          "next_step_care_partner",
         ],
       });
 
@@ -228,7 +228,7 @@ exports.getExistingDetails = (clientId) =>
       //* Comprehensive Care Plan Assessment
       const comprehensiveAssessment = await ComprehensiveCarePlanAssessment.findOne({
         where: { client_id: clientId },
-        attributes: ['id', 'initial_request', 'care_recipient_goals', 'demographic_and_historic_information', 'medical_history'],
+        attributes: ["id", "initial_request", "care_recipient_goals", "demographic_and_historic_information", "medical_history"],
       });
 
       const comprehensiveAssessmentData = comprehensiveAssessment || {
@@ -250,6 +250,7 @@ exports.getExistingDetails = (clientId) =>
         functional_adls: functionalAdlsData,
         functional_iadls: functionalIadlsData,
         home_safety: homeSafetyData,
+        care_giver_support: careGiverSupportData,
         memory_and_reasoning: memoryAndReasoningData,
         geriatric_depression: geriatricDepressionData,
         nutritional_health: nutritionalHealthData,
@@ -430,32 +431,32 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
       // Care Plan Categories (Comprehensive)
       const categories = [
         {
-          field: 'functional_adls',
+          field: "functional_adls",
           name: CARE_PLAN_CATEGORIES.FUNCTIONAL_ADLS,
         },
         {
-          field: 'functional_iadls',
+          field: "functional_iadls",
           name: CARE_PLAN_CATEGORIES.FUNCTIONAL_IADLS,
         },
-        { field: 'home_safety', name: CARE_PLAN_CATEGORIES.HOME_SAFETY },
+        { field: "home_safety", name: CARE_PLAN_CATEGORIES.HOME_SAFETY },
         {
-          field: 'memory_and_reasoning',
+          field: "memory_and_reasoning",
           name: CARE_PLAN_CATEGORIES.MEMORY_REASONING,
         },
         {
-          field: 'geriatric_depression',
+          field: "geriatric_depression",
           name: CARE_PLAN_CATEGORIES.GERIATRIC_DEPRESSION,
         },
         {
-          field: 'nutritional_health',
+          field: "nutritional_health",
           name: CARE_PLAN_CATEGORIES.NUTRITIONAL_HEALTH,
         },
         {
-          field: 'legal_and_financial',
+          field: "legal_and_financial",
           name: CARE_PLAN_CATEGORIES.LEGAL_FINANCIAL,
         },
         {
-          field: 'care_giver_support',
+          field: "care_giver_support",
           name: CARE_PLAN_CATEGORIES.CARE_GIVER_SUPPORT,
         },
       ];
@@ -491,11 +492,29 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
         }
       }
 
+      if (data.comprehensive_care_plan_assessment) {
+        const existingAssessment = await ComprehensiveCarePlanAssessment.findOne({
+          where: { client_id: clientId },
+        });
+
+        if (existingAssessment) {
+          await existingAssessment.update(data.comprehensive_care_plan_assessment);
+          result.comprehensive_care_plan_assessment = existingAssessment;
+        } else {
+          const newAssessment = await ComprehensiveCarePlanAssessment.create({
+            ...data.comprehensive_care_plan_assessment,
+            client_id: clientId,
+            primary_user_id: primaryUserId,
+          });
+          result.comprehensive_care_plan_assessment = newAssessment;
+        }
+      }
+
       // Resolve with updated details
       const allDetails = await this.getExistingDetails(clientId);
       resolve(allDetails);
     } catch (error) {
-      console.error('ComprehensiveCarePlanAssessmentService [saveOrUpdateDetails] Error:', error);
+      console.error("ComprehensiveCarePlanAssessmentService [saveOrUpdateDetails] Error:", error);
       reject(error);
     }
   });
