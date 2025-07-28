@@ -106,7 +106,7 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
   medications: Joi.array().items(
     Joi.object({
       id: Joi.string().uuid().optional(),
-      name: Joi.string().optional().allow(null),
+      medication_name: Joi.string().optional().allow(null),
       dosage: Joi.string().optional().allow(null),
       frequency: Joi.string().optional().allow(null),
       start_date: Joi.date().iso().optional().allow(null),
