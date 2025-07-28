@@ -57,12 +57,12 @@ exports.getExistingDetails = (clientId) =>
         surgical_history: null,
       };
 
-      const health_care_providers = await HealthcareProvider.findAll({
+      const healthcare_providers = await HealthcareProvider.findAll({
         where: { client_id: clientId },
         attributes: ["id", "provider_name", "provider_type", "specialty", "address", "phone"],
       });
 
-      const healthCareprovidersData = health_care_providers || [];
+      const healthcareProvidersData = healthcare_providers || [];
 
       //* Functional ADLS
       const functional_adls = await CarePlanCategory.findOne({
@@ -246,7 +246,7 @@ exports.getExistingDetails = (clientId) =>
         initial_assessment: initialAssessmentData,
         medications: medicationsData,
         medical_info: medicalData,
-        health_care_providers: healthCareprovidersData,
+        healthcare_providers: healthcareProvidersData,
         functional_adls: functionalAdlsData,
         functional_iadls: functionalIadlsData,
         home_safety: homeSafetyData,
@@ -399,10 +399,10 @@ exports.saveOrUpdateDetails = (clientId, data, primaryUserId) =>
       }
 
       // Healthcare Providers
-      if (data.health_care_providers && Array.isArray(data.health_care_providers)) {
+      if (data.healthcare_providers && Array.isArray(data.healthcare_providers)) {
         const updatedProviders = [];
 
-        for (const providerData of data.health_care_providers) {
+        for (const providerData of data.healthcare_providers) {
           if (providerData.id) {
             const existingProvider = await HealthcareProvider.findOne({
               where: {

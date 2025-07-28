@@ -120,7 +120,7 @@ exports.comprehensive_care_plan_assessment_post = Joi.object({
     surgical_history: Joi.string().optional().allow(null),
   }),
 
-  health_care_providers: Joi.array()
+  healthcare_providers: Joi.array()
     .items(
       Joi.object({
         id: Joi.string().uuid().optional(),
