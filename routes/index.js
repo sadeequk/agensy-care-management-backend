@@ -25,6 +25,6 @@ router.use("/general-documents", verifyCognitoToken, require("./general.document
 router.use("/threads", verifyCognitoToken, require("./thread.routes"));
 router.use("/subscription", require("./subscription.routes"));
 router.use("/client/:clientId/agensy-forms", verifyCognitoToken, require("./agensy.forms.routes"));
-router.use("/documents", require("./document.scanning.route")); // universal document scanning
+router.use("/scan-documents", require("./document.scanning.route")); // universal document scanning
 
 module.exports = router;
