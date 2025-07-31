@@ -112,7 +112,7 @@ exports.VACCINATION_TYPES = {
   HEPATITIS_B: "Hepatitis B",
 };
 
-exports.FORM_TYPES = { 
+exports.FORM_TYPES = {
   FACE_SHEET_SHORT: "face_sheet_short",
   FACE_SHEET_LONG: "face_sheet_long",
   HEALTH_HISTORY: "health_history",
@@ -122,24 +122,22 @@ exports.FORM_TYPES = {
   MEDICAL_TEMPLATE: "medical_template",
   INITIAL_CARE_PLAN_ASSESSMENT: "initial_care_plan_assessment",
   COMPREHENSIVE_CARE_PLAN_ASSESSMENT: "comprehensive_care_plan_assessment",
-  //checklists 
+  //checklists
   START_OF_CARE: "start_of_care",
   CARE_PLAN: "care_plan",
-  HOSPITALIZATION: "hospitalization", 
+  HOSPITALIZATION: "hospitalization",
   MOVE_IN: "move_in",
   NEXT_STEP_AFTER_DEATH: "next_step_after_death",
 };
-
 
 //validating checklist
 exports.CHECKLIST_TYPES = {
   START_OF_CARE: "start_of_care",
   CARE_PLAN: "care_plan",
-  HOSPITALIZATION: "hospitalization", 
+  HOSPITALIZATION: "hospitalization",
   MOVE_IN: "move_in",
   NEXT_STEP_AFTER_DEATH: "next_step_after_death",
-}
-
+};
 
 exports.CARE_PLAN_CATEGORIES = {
   FUNCTIONAL_ADLS: "functional_adls",
@@ -150,4 +148,11 @@ exports.CARE_PLAN_CATEGORIES = {
   NUTRITIONAL_HEALTH: "nutritional_health",
   LEGAL_FINANCIAL: "legal_financial",
   CARE_GIVER_SUPPORT: "care_giver_support",
+};
+
+exports.OCR_DOCUMENT_TYPES = {
+  ID_CARD: "id_card",
+  INSURANCE_CARD: "insurance_card",
+  DRIVER_LICENSE: "driver_license",
+  MEDICAL_RECORD: "medical_record",
 };

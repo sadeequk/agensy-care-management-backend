@@ -16,17 +16,14 @@ exports.upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 20 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/heic'];
+    const allowedTypes = ["application/pdf", "image/jpeg", "image/png", "image/jpg", "image/heic"];
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Invalid file type. Only PDF, JPEG, PNG, JPG, and HEIC files are allowed.'), false);
+      cb(new Error("Invalid file type. Only PDF, JPEG, PNG, JPG, and HEIC files are allowed."), false);
     }
   },
 }).single("document");
-
-
-
 
 // Entry point
 exports.scanDocument = async (buffer, mimeType) => {
@@ -39,7 +36,7 @@ exports.scanDocument = async (buffer, mimeType) => {
 // PDF processing
 async function processPdfDocument(pdfBuffer) {
   try {
-    console.log('Trying AWS Textract (FORMS + TABLES) for PDF...');
+    console.log("Trying AWS Textract (FORMS + TABLES) for PDF...");
     const result = await textract.analyzeDocument({
       Document: { Bytes: pdfBuffer },
       FeatureTypes: ["FORMS", "TABLES"],
@@ -61,11 +58,11 @@ async function processPdfDocument(pdfBuffer) {
     try {
       console.log("Trying final fallback: PDF text extraction...");
       const pdfData = await pdfParse(pdfBuffer);
-      const extractedText = pdfData.text || '';
+      const extractedText = pdfData.text || "";
       const keyValuePairs = parseTextForKeyValuePairs(extractedText);
       return {
         keyValuePairs,
-        text: extractedText
+        text: extractedText,
       };
     } catch (parseError) {
       console.error("PDF text parsing failed:", parseError.message);
@@ -109,16 +106,14 @@ async function processImageDocument(imageBuffer, mimeType) {
 // Extract key-value pairs from Textract blocks
 function processTextract(blocks = []) {
   const blockMap = {};
-  blocks.forEach(block => (blockMap[block.Id] = block));
+  blocks.forEach((block) => (blockMap[block.Id] = block));
 
   const keyValuePairs = {};
-  const keyBlocks = blocks.filter(
-    b => b.BlockType === "KEY_VALUE_SET" && b.EntityTypes?.includes("KEY")
-  );
+  const keyBlocks = blocks.filter((b) => b.BlockType === "KEY_VALUE_SET" && b.EntityTypes?.includes("KEY"));
 
-  keyBlocks.forEach(keyBlock => {
+  keyBlocks.forEach((keyBlock) => {
     const key = getText(keyBlock, blockMap);
-    const valRel = keyBlock.Relationships?.find(r => r.Type === "VALUE");
+    const valRel = keyBlock.Relationships?.find((r) => r.Type === "VALUE");
     let value = "";
 
     if (valRel?.Ids?.length) {
@@ -132,8 +127,8 @@ function processTextract(blocks = []) {
   });
 
   const fullText = blocks
-    .filter(b => b.BlockType === "LINE")
-    .map(b => b.Text)
+    .filter((b) => b.BlockType === "LINE")
+    .map((b) => b.Text)
     .join(" ");
 
   return { keyValuePairs, text: fullText };
@@ -142,9 +137,9 @@ function processTextract(blocks = []) {
 // Helper: extract text from Textract block
 function getText(block, blockMap) {
   let text = "";
-  block.Relationships?.forEach(r => {
+  block.Relationships?.forEach((r) => {
     if (r.Type === "CHILD") {
-      r.Ids.forEach(id => {
+      r.Ids.forEach((id) => {
         const word = blockMap[id];
         if (word?.BlockType === "WORD") {
           text += word.Text + " ";
@@ -158,11 +153,11 @@ function getText(block, blockMap) {
 // Fallback text parser
 function parseTextForKeyValuePairs(text) {
   const keyValuePairs = {};
-  const lines = text.split('\n');
+  const lines = text.split("\n");
   for (let line of lines) {
     const trimmed = line.trim();
     if (trimmed.includes(":")) {
-      const [key, value] = trimmed.split(":").map(s => s.trim());
+      const [key, value] = trimmed.split(":").map((s) => s.trim());
       if (key && value) keyValuePairs[key] = value;
     }
   }

@@ -1,26 +1,24 @@
 const scanningService = require("../services/document.scanning.service");
+const { OCR_DOCUMENT_TYPES } = require("../constants");
 
 exports.scan_document_post = async (req, res) => {
   try {
-    console.log("Uploaded mimetype:", req.file.mimetype);
-    const result = await scanningService.scanDocument(req.file.buffer, req.file.mimetype);
+    if (!req.file) {
+      return res.fail("No file uploaded. Please upload a document file with field name 'document'");
+    }
 
-    return res.success({
-      keyValuePairs: result.keyValuePairs,
-      fullText: result.text,
-    });
-  } catch (err) {
-    console.error("Scan error:", err);
-    return res.serverError(err.message);
-  }
-};
+    if (!req.body.document_type) {
+      return res.fail("Document type is required. Please provide 'document_type' field");
+    }
 
-exports.scan_document_with_ai_post = async (req, res) => {
-  try {
-    console.log("AI Document scanning - Uploaded mimetype:", req.file.mimetype);
-    console.log("File size:", req.file.size, "bytes");
+    const documentType = req.body.document_type;
+    const validDocumentTypes = Object.values(OCR_DOCUMENT_TYPES);
 
-    const result = await scanningService.scanDocumentWithAI(req.file.buffer, req.file.mimetype);
+    if (!validDocumentTypes.includes(documentType)) {
+      return res.fail("Invalid document type. Please select: " + validDocumentTypes.join(", "));
+    }
+
+    const result = await scanningService.scanDocumentWithAI(req.file.buffer, req.file.mimetype, documentType);
 
     return res.success({
       documentType: result.documentType,
