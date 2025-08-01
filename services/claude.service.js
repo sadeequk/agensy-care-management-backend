@@ -14,7 +14,6 @@ const getDocumentSchemas = () => {
       fields: {
         first_name: "First name or given name",
         last_name: "Last name or surname",
-        middle_name: "Middle name or initial",
         date_of_birth: "Date of birth",
         gender: "Gender or sex",
         nationality: "Nationality or citizenship",
@@ -23,7 +22,6 @@ const getDocumentSchemas = () => {
         expiry_date: "Expiry date or expiration date",
         issuing_authority: "Issuing authority or country",
         address: "Address",
-        photo: "Photo or image",
       },
     },
     insurance_card: {
