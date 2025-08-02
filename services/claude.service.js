@@ -98,7 +98,7 @@ INSTRUCTIONS:
 2. Map the extracted information to the expected fields
 3. Use your understanding of document types to intelligently match fields
 4. If a field is not found, leave it as null
-5. For dates, try to standardize the format to YYYY-MM-DD if possible
+5. For dates, try to standardize the format to MM/DD/YYYY if possible
 6. For names, separate first, middle, and last names appropriately
 7. Return ONLY a valid JSON object with the mapped fields
 

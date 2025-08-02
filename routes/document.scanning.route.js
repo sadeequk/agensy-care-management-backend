@@ -5,8 +5,4 @@ const { upload } = require("../helpers/aws.textract");
 
 router.post("/", upload, documentScanningController.scan_document_post);
 
-router.get("/", (req, res) => {
-  res.success("document.scanning", { title: "Agensy Care Management - Document Scanning" });
-});
-
 module.exports = router;
